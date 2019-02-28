@@ -1,0 +1,59 @@
+apply plugin: 'com.android.application'
+
+def ext = rootProject.ext
+android {
+    compileSdkVersion ext.android["compileSdkVersion"]
+    defaultConfig {
+        applicationId ext.android["applicationId"]
+        minSdkVersion ext.android["minSdkVersion"]
+        targetSdkVersion ext.android["targetSdkVersion"]
+        versionCode ext.android["versionCode"]
+        versionName ext.android["versionName"]
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation ext.dependencies['appcompat']
+    implementation ext.dependencies['material']
+
+    //retrofit2
+    implementation ext.dependencies['retrofit']
+    implementation ext.dependencies['converter-gson']
+    implementation ext.dependencies['adapter-rxjava2']
+
+    //gson
+    implementation ext.dependencies['gson']
+
+    //okhttp3
+    implementation ext.dependencies['okhttp']
+    implementation ext.dependencies['logging-interceptor']
+
+    //Rxjava2
+    implementation ext.dependencies['rxjava']
+    implementation ext.dependencies['rxandroid']
+
+    //RxLifecycle
+    implementation ext.dependencies['rxlifecycle']
+    implementation ext.dependencies['rxlifecycle-components']
+
+    //Glide
+    implementation ext.dependencies['glide']
+    annotationProcessor ext.dependencies['glide-compiler']
+
+    //circleimageview
+    implementation ext.dependencies['circleimageview']
+
+    //RvAdapterHelper
+    implementation ext.dependencies['BaseRecyclerViewAdapterHelper']
+
+    //MMKV
+    implementation ext.dependencies['mmkv']
+}
