@@ -49,6 +49,11 @@ ext {
 
             //MMKV
             "mmkv"                         : "com.tencent:mmkv:1.0.17",
+
+            //autosize
+            "autosize"                     : "me.jessyan:autosize:1.1.2",
     ]
+
+
 
 }

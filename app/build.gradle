@@ -10,9 +10,17 @@ android {
         versionCode ext.android["versionCode"]
         versionName ext.android["versionName"]
     }
+    dataBinding {
+        enabled = true
+    }
     buildTypes {
+        debug {
+            minifyEnabled false
+            buildConfigField("String", "BASE_URL", '"http://111.225.204.147:18080/RepairTime/"')
+        }
         release {
             minifyEnabled false
+            buildConfigField("String", "BASE_URL", '"http://111.225.204.147:18080/RepairTime/"')
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -56,4 +64,7 @@ dependencies {
 
     //MMKV
     implementation ext.dependencies['mmkv']
+
+    //autosize
+    implementation ext.dependencies['autosize']
 }
