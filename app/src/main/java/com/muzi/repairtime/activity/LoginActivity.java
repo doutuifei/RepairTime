@@ -3,7 +3,7 @@ package com.muzi.repairtime.activity;
 import android.util.Log;
 import android.view.View;
 
-import com.muzi.repairtime.Entity.BaseEntity;
+import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseActivity;
 import com.muzi.repairtime.databinding.ActivityLoginBinding;

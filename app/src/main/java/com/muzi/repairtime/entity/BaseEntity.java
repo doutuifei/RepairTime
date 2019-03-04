@@ -1,4 +1,4 @@
-package com.muzi.repairtime.Entity;
+package com.muzi.repairtime.entity;
 
 /**
  * 作者: lipeng
