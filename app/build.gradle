@@ -52,10 +52,11 @@ dependencies {
     implementation ext.dependencies['rxlifecycle']
     implementation ext.dependencies['rxlifecycle-components']
 
+    implementation ext.dependencies['lifecycle-extensions']
+    annotationProcessor ext.dependencies['lifecycle-compiler']
+
     //Glide
     implementation ext.dependencies['glide']
-    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     annotationProcessor ext.dependencies['glide-compiler']
 
     //circleimageview

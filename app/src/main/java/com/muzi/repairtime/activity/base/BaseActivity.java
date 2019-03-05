@@ -2,16 +2,17 @@ package com.muzi.repairtime.activity.base;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import com.muzi.repairtime.manager.ActivityManager;
 import com.muzi.repairtime.widget.LoadingDialog;
 import com.muzi.repairtime.widget.SingleDialogHelper;
 import com.trello.rxlifecycle2.components.RxActivity;
 
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
+
 
 /**
  * 作者: lipeng

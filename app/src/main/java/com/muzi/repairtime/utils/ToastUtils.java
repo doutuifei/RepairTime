@@ -1,6 +1,7 @@
 package com.muzi.repairtime.utils;
 
 import android.content.Context;
+import android.support.annotation.StringRes;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -8,8 +9,6 @@ import android.widget.Toast;
 
 import com.muzi.repairtime.App;
 import com.muzi.repairtime.R;
-
-import androidx.annotation.StringRes;
 
 
 /**

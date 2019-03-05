@@ -3,13 +3,12 @@ package com.muzi.repairtime.widget;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.muzi.repairtime.R;
-
-import androidx.annotation.NonNull;
 
 
 /**
