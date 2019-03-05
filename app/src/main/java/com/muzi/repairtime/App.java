@@ -2,6 +2,8 @@ package com.muzi.repairtime;
 
 import android.app.Application;
 
+import com.muzi.repairtime.data.DataProxy;
+import com.muzi.repairtime.data.MmkvModel;
 import com.muzi.repairtime.http.RxUtils;
 
 /**
@@ -19,6 +21,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         RxUtils.initErrorHandler();
+        DataProxy.getInstance().init(new MmkvModel(this));
     }
 
     public static App getInstance() {

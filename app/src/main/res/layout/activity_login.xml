@@ -4,6 +4,11 @@
 
     <data>
 
+        <import type="com.muzi.repairtime.activity.LoginActivity.ClickHandler" />
+
+        <variable
+            name="click"
+            type="ClickHandler" />
     </data>
 
     <LinearLayout
@@ -13,11 +18,39 @@
         android:orientation="vertical"
         tools:context=".activity.LoginActivity">
 
-        <Button
-            android:id="@+id/login"
+        <EditText
+            android:id="@+id/et_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="请输入手机号"
+            android:inputType="phone"
+            android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/et_psd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:maxLines="1" />
+
+        <CheckBox
+            android:id="@+id/cb_psd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="记住密码" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{click::login}"
             android:text="登录" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{click::register}"
+            android:text="注册" />
 
     </LinearLayout>
 

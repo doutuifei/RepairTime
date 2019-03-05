@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.muzi.repairtime.manager.ActivityManager;
 import com.muzi.repairtime.widget.LoadingDialog;
 import com.muzi.repairtime.widget.SingleDialogHelper;
 import com.trello.rxlifecycle2.components.RxActivity;
@@ -22,12 +23,13 @@ public abstract class BaseActivity<V extends ViewDataBinding> extends RxActivity
 
     private SingleDialogHelper singleDialogHelper;
 
-    private V v;
+    private V binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        v = DataBindingUtil.setContentView(this, getLayoutId());
+        ActivityManager.getInstance().addActivity(this);
+        binding = DataBindingUtil.setContentView(this, getLayoutId());
         init();
     }
 
@@ -36,7 +38,7 @@ public abstract class BaseActivity<V extends ViewDataBinding> extends RxActivity
     protected abstract void init();
 
     public V getBinding() {
-        return v;
+        return binding;
     }
 
     @Override
@@ -67,11 +69,12 @@ public abstract class BaseActivity<V extends ViewDataBinding> extends RxActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityManager.getInstance().removeActivity(this);
         if (singleDialogHelper != null) {
             singleDialogHelper.release();
         }
-        if (v != null) {
-            v.unbind();
+        if (binding != null) {
+            binding.unbind();
         }
     }
 

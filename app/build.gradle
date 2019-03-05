@@ -30,7 +30,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation ext.dependencies['appcompat']
-    implementation ext.dependencies['material']
+    implementation ext.dependencies['constraintlayout']
 
     //retrofit2
     implementation ext.dependencies['retrofit']
@@ -54,6 +54,8 @@ dependencies {
 
     //Glide
     implementation ext.dependencies['glide']
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     annotationProcessor ext.dependencies['glide-compiler']
 
     //circleimageview
