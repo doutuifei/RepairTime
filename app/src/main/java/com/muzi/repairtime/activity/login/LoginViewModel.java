@@ -1,14 +1,12 @@
 package com.muzi.repairtime.activity.login;
 
 import android.app.Application;
-import android.content.Intent;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.muzi.repairtime.App;
 import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.activity.main.MainActivity;
@@ -18,7 +16,6 @@ import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.LoginApi;
-import com.muzi.repairtime.manager.AppManager;
 import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.StringUtils;
 import com.muzi.repairtime.utils.ToastUtils;
@@ -73,7 +70,7 @@ public class LoginViewModel extends BaseViewModel {
                 .login(phone.get(), password.get())
                 .compose(RxUtils.<BaseEntity>scheduling())
                 .compose(RxUtils.<BaseEntity>bindToLifecycle(getLifecycleProvider()))
-                .subscribe(new EntityObserver<BaseEntity>() {
+                .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess() {
                         if (rememb.get()) {
@@ -82,8 +79,8 @@ public class LoginViewModel extends BaseViewModel {
                         }else {
                             DataProxy.getInstance().remove(Constans.KEY_PHONE, Constans.KEY_PSD);
                         }
-                        App.getInstance().startActivity(new Intent(App.getInstance(), MainActivity.class));
-                        AppManager.getAppManager().finishActivity();
+                        startActivity(MainActivity.class);
+                        finish();
                     }
                 });
     }
@@ -94,7 +91,7 @@ public class LoginViewModel extends BaseViewModel {
      * @param view
      */
     public void register(View view) {
-        App.getInstance().startActivity(new Intent(App.getInstance(), RegisterActivity.class));
+        startActivity(RegisterActivity.class);
     }
 
 }
