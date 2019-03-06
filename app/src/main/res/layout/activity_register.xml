@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="click"
-            type="com.muzi.repairtime.activity.RegisterActivity.ClickHandler" />
+            name="viewModel"
+            type="com.muzi.repairtime.activity.register.RegisterViewModel" />
 
     </data>
 
@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            tools:context=".activity.RegisterActivity">
+            tools:context=".activity.register.RegisterActivity">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
-                android:onClick="@{click::login}"
+                android:onClick="@{viewModel::login}"
                 android:text="直接登录"
                 android:textColor="@color/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +107,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/colorAccent"
                 android:gravity="center"
-                android:onClick="@{click::register}"
+                android:onClick="@{viewModel::register}"
                 android:text="注册"
                 android:textColor="@android:color/white"
                 app:layout_constraintTop_toBottomOf="@id/et_company" />

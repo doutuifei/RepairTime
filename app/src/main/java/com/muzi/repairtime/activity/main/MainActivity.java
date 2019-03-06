@@ -1,14 +1,13 @@
-package com.muzi.repairtime.activity;
+package com.muzi.repairtime.activity.main;
 
 import android.os.Bundle;
 
 import com.muzi.repairtime.BR;
 import com.muzi.repairtime.R;
-import com.muzi.repairtime.activity.base.BaseActivity1;
-import com.muzi.repairtime.activity.main.MainViewModel;
+import com.muzi.repairtime.activity.base.BaseActivity;
 import com.muzi.repairtime.databinding.ActivityMainBinding;
 
-public class MainActivity extends BaseActivity1<ActivityMainBinding, MainViewModel> {
+public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
