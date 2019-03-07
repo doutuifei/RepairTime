@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
-import com.muzi.repairtime.widget.LoadingDialog;
+import com.muzi.repairtime.widget.dialog.LoadingDialog;
 import com.muzi.repairtime.widget.SingleDialogHelper;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -84,6 +84,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         binding.setVariable(viewModelId, viewModel);
         //让ViewModel拥有View的生命周期感应
         getLifecycle().addObserver(viewModel);
+        viewModel.initContext(this);
         //注入RxLifecycle生命周期
         viewModel.injectLifecycleProvider(this);
     }

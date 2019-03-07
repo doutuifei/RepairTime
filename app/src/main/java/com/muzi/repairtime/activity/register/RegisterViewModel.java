@@ -9,6 +9,13 @@ import android.view.View;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.command.BindingCommand;
 import com.muzi.repairtime.command.BindingConsumerAction;
+import com.muzi.repairtime.entity.GroupEntity;
+import com.muzi.repairtime.http.RxHttp;
+import com.muzi.repairtime.http.RxUtils;
+import com.muzi.repairtime.http.api.LoginApi;
+import com.muzi.repairtime.observer.BaseObserver;
+import com.muzi.repairtime.utils.ToastUtils;
+import com.muzi.repairtime.widget.dialog.GroupDialog;
 
 /**
  * 作者: lipeng
@@ -26,7 +33,13 @@ public class RegisterViewModel extends BaseViewModel {
 
     public ObservableField<String> confirmPsd = new ObservableField<>("");
 
-    public ObservableField<String> company = new ObservableField<>("");
+    public ObservableField<String> group = new ObservableField<>("");
+
+    /**
+     * 科室信息
+     */
+    private GroupEntity groupEntity;
+    private GroupDialog groupDialog;
 
     public RegisterViewModel(@NonNull Application application) {
         super(application);
@@ -58,6 +71,47 @@ public class RegisterViewModel extends BaseViewModel {
      */
     public void register(View view) {
 
+    }
+
+    /**
+     * 获取科室
+     *
+     * @param view
+     */
+    public void getGroups(View view) {
+        if (groupEntity == null) {
+            RxHttp.getApi(LoginApi.class)
+                    .getGroups()
+                    .compose(RxUtils.<GroupEntity>scheduling())
+                    .compose(RxUtils.<GroupEntity>bindToLifecycle(getLifecycleProvider()))
+                    .subscribe(new BaseObserver<GroupEntity>() {
+                        @Override
+                        public void onNext(GroupEntity entity) {
+                            groupEntity = entity;
+                            showGroupDialog();
+                        }
+
+                        @Override
+                        public void onError(String msg) {
+                            super.onError(msg);
+                            ToastUtils.showToast(msg);
+                        }
+                    });
+        } else {
+            showGroupDialog();
+        }
+    }
+
+    private void showGroupDialog() {
+        if (groupDialog == null) {
+            groupDialog = new GroupDialog(getContext(), groupEntity) {
+                @Override
+                public void onSelect(GroupEntity.PagesBean pagesBean) {
+                    group.set(pagesBean.getName());
+                }
+            };
+        }
+        groupDialog.show();
     }
 
 }

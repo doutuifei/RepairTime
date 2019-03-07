@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -22,11 +23,16 @@ import java.util.Map;
  * 功能:
  */
 public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, IBaseView {
+    private Context context;
     private UIChangeLiveData uc;
     private LifecycleProvider lifecycle;
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    public void initContext(Context context) {
+        this.context = context;
     }
 
     /**
@@ -121,6 +127,11 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, I
      */
     public void onBackPressed() {
         uc.onBackPressedEvent.call();
+    }
+
+    @Override
+    public Context getContext() {
+        return context;
     }
 
     @Override

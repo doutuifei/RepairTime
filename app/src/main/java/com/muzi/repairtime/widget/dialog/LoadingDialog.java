@@ -1,4 +1,4 @@
-package com.muzi.repairtime.widget;
+package com.muzi.repairtime.widget.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;

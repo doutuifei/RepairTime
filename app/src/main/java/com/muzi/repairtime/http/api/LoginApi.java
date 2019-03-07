@@ -1,6 +1,7 @@
 package com.muzi.repairtime.http.api;
 
 import com.muzi.repairtime.entity.BaseEntity;
+import com.muzi.repairtime.entity.GroupEntity;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -31,6 +32,9 @@ public interface LoginApi {
     @POST("user/login")
     Observable<BaseEntity> login(@Field("phone") String phone,
                                  @Field("pass") String psd);
+
+    @POST("user/getGroups")
+    Observable<GroupEntity> getGroups();
 
     /**
      * 验证手机号是否注册
@@ -69,5 +73,6 @@ public interface LoginApi {
     @POST("user/changePass")
     Observable<BaseEntity> changePass(@Field("pass") String pass,
                                       @Field("newPass") String newPass);
+
 
 }
