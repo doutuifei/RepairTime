@@ -109,8 +109,7 @@ public class RegisterViewModel extends BaseViewModel {
                                     .register(userName.get(),
                                             phone.get(),
                                             password.get(),
-                                            group.get()
-                                    );
+                                            group.get());
                         }
                     }
                 })
@@ -120,7 +119,9 @@ public class RegisterViewModel extends BaseViewModel {
                     @Override
                     public void onSuccess(BaseEntity entity) {
                         ToastUtils.showToast(entity.getMsg());
-                        LiveEventBus.get().with(EventConstan.ACCOUNT).setValue(new String[]{phone.get(), password.get()});
+                        LiveEventBus.get()
+                                .with(EventConstan.ACCOUNT)
+                                .setValue(new String[]{phone.get(), password.get()});
                         finish();
                     }
                 });
@@ -176,4 +177,5 @@ public class RegisterViewModel extends BaseViewModel {
         groupDialog = null;
         groupEntity = null;
     }
+
 }

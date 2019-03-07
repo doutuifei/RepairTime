@@ -71,4 +71,7 @@ dependencies {
 
     //autosize
     implementation ext.dependencies['autosize']
+
+    //PersistentCookieJar
+    implementation ext.dependencies['persistentCookieJar']
 }

@@ -1,5 +1,9 @@
 package com.muzi.repairtime.http;
 
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+import com.muzi.repairtime.App;
 import com.muzi.repairtime.BuildConfig;
 import com.muzi.repairtime.http.interceptor.NetworkInterceptor;
 import com.muzi.repairtime.http.interceptor.RetryIntercepter;
@@ -56,7 +60,9 @@ public class RxHttp {
                 }).setLevel(HttpLoggingInterceptor.Level.BODY))
                 // 失败后尝试重新请求
                 .retryOnConnectionFailure(true)
-                .addInterceptor(new RetryIntercepter(MAX_RETRY));
+                .addInterceptor(new RetryIntercepter(MAX_RETRY))
+                //session
+                .cookieJar(new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(App.getInstance())));
 
 
         //构建Retrofit
