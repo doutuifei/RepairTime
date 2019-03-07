@@ -76,8 +76,7 @@
                 android:paddingLeft="15dp"
                 android:text="@={viewModel.phone}"
                 android:textSize="13sp"
-                app:layout_constraintTop_toBottomOf="@id/et_name"
-                app:onTextChanged="@{viewModel.phoneCommand}" />
+                app:layout_constraintTop_toBottomOf="@id/et_name" />
 
             <EditText
                 android:id="@+id/et_psd"
