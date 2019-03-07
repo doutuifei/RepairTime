@@ -54,7 +54,6 @@ dependencies {
     implementation ext.dependencies['rxlifecycle-components']
 
     implementation ext.dependencies['lifecycle-extensions']
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     annotationProcessor ext.dependencies['lifecycle-compiler']
 
     //Glide
