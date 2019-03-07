@@ -26,6 +26,7 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, I
     private Context context;
     private UIChangeLiveData uc;
     private LifecycleProvider lifecycle;
+    private LifecycleOwner lifecycleOwner;
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
@@ -33,6 +34,14 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, I
 
     public void initContext(Context context) {
         this.context = context;
+    }
+
+    public void inLifecycleOwner(LifecycleOwner lifecycleOwner) {
+        this.lifecycleOwner = lifecycleOwner;
+    }
+
+    public LifecycleOwner getLifecycleOwner() {
+        return lifecycleOwner;
     }
 
     /**

@@ -11,7 +11,7 @@ import com.muzi.repairtime.utils.ToastUtils;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public abstract class EntityObserver<T> extends BaseObserver<BaseEntity> {
+public abstract class EntityObserver<T extends BaseEntity> extends BaseObserver<T> {
 
     public EntityObserver() {
     }
@@ -21,10 +21,10 @@ public abstract class EntityObserver<T> extends BaseObserver<BaseEntity> {
     }
 
     @Override
-    public final void onNext(BaseEntity entity) {
+    public void onNext(T entity) {
         switch (entity.getErrInfo()) {
             case "0":
-                onSuccess();
+                onSuccess(entity);
                 break;
             default:
                 onError(entity.getMsg());
@@ -32,7 +32,8 @@ public abstract class EntityObserver<T> extends BaseObserver<BaseEntity> {
         }
     }
 
-    public abstract void onSuccess();
+
+    public abstract void onSuccess(T t);
 
     @Override
     public void onError(String msg) {

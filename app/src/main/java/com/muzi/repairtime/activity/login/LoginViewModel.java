@@ -1,9 +1,11 @@
 package com.muzi.repairtime.activity.login;
 
 import android.app.Application;
+import android.arch.lifecycle.Observer;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -13,6 +15,8 @@ import com.muzi.repairtime.activity.main.MainActivity;
 import com.muzi.repairtime.activity.register.RegisterActivity;
 import com.muzi.repairtime.data.DataProxy;
 import com.muzi.repairtime.entity.BaseEntity;
+import com.muzi.repairtime.event.EventConstan;
+import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.LoginApi;
@@ -50,6 +54,15 @@ public class LoginViewModel extends BaseViewModel {
                 StringUtils.isNotEmpty(password));
         this.phone.set(phone);
         this.password.set(password);
+
+        LiveEventBus.get().with(EventConstan.ACCOUNT, String[].class)
+                .observe(getLifecycleOwner(), new Observer<String[]>() {
+                    @Override
+                    public void onChanged(@Nullable String[] strings) {
+                        LoginViewModel.this.phone.set(strings[0]);
+                        LoginViewModel.this.password.set(strings[1]);
+                    }
+                });
     }
 
     /**
@@ -72,11 +85,11 @@ public class LoginViewModel extends BaseViewModel {
                 .compose(RxUtils.<BaseEntity>bindToLifecycle(getLifecycleProvider()))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
-                    public void onSuccess() {
+                    public void onSuccess(BaseEntity entity) {
                         if (rememb.get()) {
                             DataProxy.getInstance().set(Constans.KEY_PHONE, phone.get());
                             DataProxy.getInstance().set(Constans.KEY_PSD, password.get());
-                        }else {
+                        } else {
                             DataProxy.getInstance().remove(Constans.KEY_PHONE, Constans.KEY_PSD);
                         }
                         startActivity(MainActivity.class);

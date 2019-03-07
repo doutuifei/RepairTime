@@ -58,9 +58,9 @@ public interface LoginApi {
     @FormUrlEncoded
     @POST("user/register")
     Observable<BaseEntity> register(@Field("name") String name,
+                                    @Field("phone") String phone,
                                     @Field("pass") String pass,
-                                    @Field("group") String group,
-                                    @Field("phone") String phone);
+                                    @Field("group") String group);
 
     /**
      * 修改密码
