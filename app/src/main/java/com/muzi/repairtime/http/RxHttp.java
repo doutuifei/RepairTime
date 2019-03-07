@@ -43,7 +43,7 @@ public class RxHttp {
     }
 
     public RxHttp() {
-        // 创建一个OkHttpClient
+        //创建一个OkHttpClient
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
                 //超时时间
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
@@ -51,7 +51,7 @@ public class RxHttp {
                 .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 //检查网络状态
                 .addInterceptor(new NetworkInterceptor())
-                // 打印参数
+                //打印参数
                 .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                     @Override
                     public void log(String message) {
