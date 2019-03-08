@@ -38,21 +38,21 @@
                 android:id="@+id/tv_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{viewModel::login}"
                 android:text="直接登录"
                 android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="@id/tv_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_title" />
+                app:layout_constraintTop_toTopOf="@id/tv_title"
+                app:onClickCommand="@{viewModel.loginClickCommand}" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{viewModel::login}"
                 android:text="已有账号?"
                 app:layout_constraintBottom_toBottomOf="@id/tv_title"
                 app:layout_constraintEnd_toStartOf="@id/tv_login"
-                app:layout_constraintTop_toTopOf="@id/tv_title" />
+                app:layout_constraintTop_toTopOf="@id/tv_title"
+                app:onClickCommand="@{viewModel.loginClickCommand}" />
 
             <EditText
                 android:id="@+id/et_name"
@@ -112,7 +112,7 @@
                 android:background="@drawable/bg_input"
                 android:gravity="center_vertical"
                 android:hint="选择科室"
-                android:onClick="@{viewModel::getGroups}"
+                app:onClickCommand="@{viewModel.groupsClickCommand}"
                 android:paddingLeft="15dp"
                 android:text="@={viewModel.group}"
                 android:textSize="13sp"
@@ -125,11 +125,11 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bg_button"
                 android:gravity="center"
-                android:onClick="@{viewModel::register}"
                 android:text="注册"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/et_company" />
+                app:layout_constraintTop_toBottomOf="@id/et_company"
+                app:onClickCommand="@{viewModel.registerClickCommand}" />
 
             <TextView
                 android:layout_width="match_parent"

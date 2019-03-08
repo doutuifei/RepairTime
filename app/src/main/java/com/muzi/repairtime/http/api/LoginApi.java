@@ -33,6 +33,11 @@ public interface LoginApi {
     Observable<BaseEntity> login(@Field("phone") String phone,
                                  @Field("pass") String psd);
 
+    /**
+     * 获取科室信息
+     *
+     * @return
+     */
     @POST("user/getGroups")
     Observable<GroupEntity> getGroups();
 
@@ -73,6 +78,5 @@ public interface LoginApi {
     @POST("user/changePass")
     Observable<BaseEntity> changePass(@Field("pass") String pass,
                                       @Field("newPass") String newPass);
-
 
 }

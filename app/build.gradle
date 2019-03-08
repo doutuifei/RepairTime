@@ -49,6 +49,9 @@ dependencies {
     implementation ext.dependencies['rxjava']
     implementation ext.dependencies['rxandroid']
 
+    //Rxbinding
+    implementation ext.dependencies['rxbinding']
+
     //RxLifecycle
     implementation ext.dependencies['rxlifecycle']
     implementation ext.dependencies['rxlifecycle-components']

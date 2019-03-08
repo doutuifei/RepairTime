@@ -22,6 +22,7 @@ public abstract class EntityObserver<T extends BaseEntity> extends BaseObserver<
 
     @Override
     public void onNext(T entity) {
+        super.onNext(entity);
         switch (entity.getErrInfo()) {
             case "0":
                 onSuccess(entity);
@@ -31,7 +32,6 @@ public abstract class EntityObserver<T extends BaseEntity> extends BaseObserver<
                 break;
         }
     }
-
 
     public abstract void onSuccess(T t);
 

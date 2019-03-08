@@ -13,6 +13,8 @@ import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.activity.main.MainActivity;
 import com.muzi.repairtime.activity.register.RegisterActivity;
+import com.muzi.repairtime.command.BindingCommand;
+import com.muzi.repairtime.command.BindingConsumerAction;
 import com.muzi.repairtime.data.DataProxy;
 import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.event.EventConstan;
@@ -45,6 +47,26 @@ public class LoginViewModel extends BaseViewModel {
         super(application);
     }
 
+    /**
+     * 点击登录
+     */
+    public BindingCommand<View> loginClickCommand = new BindingCommand<>(new BindingConsumerAction<View>() {
+        @Override
+        public void call(View view) {
+            login();
+        }
+    });
+
+    /**
+     * 注册
+     */
+    public BindingCommand<View> registerClickCommand = new BindingCommand<View>(new BindingConsumerAction<View>() {
+        @Override
+        public void call(View view) {
+            startActivity(RegisterActivity.class);
+        }
+    });
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -67,10 +89,8 @@ public class LoginViewModel extends BaseViewModel {
 
     /**
      * 登录
-     *
-     * @param view
      */
-    public void login(View view) {
+    public void login() {
         if (TextUtils.isEmpty(phone.get())) {
             ToastUtils.showToast("请输入手机号");
             return;
@@ -96,15 +116,6 @@ public class LoginViewModel extends BaseViewModel {
                         finish();
                     }
                 });
-    }
-
-    /**
-     * 注册
-     *
-     * @param view
-     */
-    public void register(View view) {
-        startActivity(RegisterActivity.class);
     }
 
 }

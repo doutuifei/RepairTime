@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.muzi.repairtime.activity.base.BaseViewModel;
+import com.muzi.repairtime.command.BindingCommand;
+import com.muzi.repairtime.command.BindingConsumerAction;
 import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.entity.GroupEntity;
 import com.muzi.repairtime.event.EventConstan;
@@ -31,6 +33,12 @@ import io.reactivex.functions.Function;
  */
 public class RegisterViewModel extends BaseViewModel {
 
+    /**
+     * 科室信息
+     */
+    private GroupEntity groupEntity;
+    private GroupDialog groupDialog;
+
     public ObservableField<String> userName = new ObservableField<>("");
 
     public ObservableField<String> phone = new ObservableField<>("");
@@ -42,30 +50,40 @@ public class RegisterViewModel extends BaseViewModel {
     public ObservableField<String> group = new ObservableField<>("");
 
     /**
-     * 科室信息
+     * 直接登录
      */
-    private GroupEntity groupEntity;
-    private GroupDialog groupDialog;
+    public BindingCommand<View> loginClickCommand = new BindingCommand<>(new BindingConsumerAction<View>() {
+        @Override
+        public void call(View view) {
+            finish();
+        }
+    });
+
+    /**
+     * 注册
+     */
+    public BindingCommand<View> registerClickCommand = new BindingCommand<View>(new BindingConsumerAction<View>() {
+        @Override
+        public void call(View view) {
+            register();
+        }
+    });
+
+    public BindingCommand<View> groupsClickCommand = new BindingCommand<View>(new BindingConsumerAction<View>() {
+        @Override
+        public void call(View view) {
+            getGroups();
+        }
+    });
 
     public RegisterViewModel(@NonNull Application application) {
         super(application);
     }
 
     /**
-     * 直接登录
-     *
-     * @param view
-     */
-    public void login(View view) {
-        finish();
-    }
-
-    /**
      * 注册
-     *
-     * @param view
      */
-    public void register(View view) {
+    public void register() {
         if (StringUtils.isEmpty(userName.get())) {
             ToastUtils.showToast("请输入姓名");
             return;
@@ -129,10 +147,8 @@ public class RegisterViewModel extends BaseViewModel {
 
     /**
      * 获取科室
-     *
-     * @param view
      */
-    public void getGroups(View view) {
+    public void getGroups() {
         if (groupEntity == null) {
             RxHttp.getApi(LoginApi.class)
                     .getGroups()

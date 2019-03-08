@@ -68,11 +68,11 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bg_button"
-                android:onClick="@{viewModel::login}"
                 android:text="登录"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/et_psd" />
+                app:layout_constraintTop_toBottomOf="@id/et_psd"
+                app:onClickCommand="@{viewModel.loginClickCommand}" />
 
             <CheckBox
                 android:id="@+id/cb_psd"
@@ -89,23 +89,22 @@
                 android:id="@+id/tv_register_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{viewModel::register}"
                 android:text="还没有账号?"
                 app:layout_constraintBottom_toBottomOf="@id/cb_psd"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/cb_psd" />
+                app:layout_constraintTop_toTopOf="@id/cb_psd"
+                app:onClickCommand="@{viewModel.registerClickCommand}" />
 
             <TextView
                 android:id="@+id/tv_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{viewModel::register}"
                 android:text="马上注册"
                 android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="@id/cb_psd"
                 app:layout_constraintStart_toEndOf="@id/tv_register_note"
-                app:layout_constraintTop_toTopOf="@id/cb_psd" />
-
+                app:layout_constraintTop_toTopOf="@id/cb_psd"
+                app:onClickCommand="@{viewModel.registerClickCommand}" />
 
         </android.support.constraint.ConstraintLayout>
 
