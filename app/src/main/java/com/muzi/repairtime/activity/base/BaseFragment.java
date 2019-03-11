@@ -88,6 +88,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         registorUIChangeLiveDataCallBack();
         //页面数据初始化方法
         initData();
+        initView();
         //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
         initViewObservable();
     }
@@ -214,6 +215,11 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
 
     @Override
     public void initData() {
+
+    }
+
+    @Override
+    public void initView() {
 
     }
 

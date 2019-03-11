@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.activity.base.BaseViewModel;
-import com.muzi.repairtime.activity.main.MainActivity;
+import com.muzi.repairtime.activity.main.employee.MainActivity;
 import com.muzi.repairtime.activity.register.RegisterActivity;
 import com.muzi.repairtime.command.BindingCommand;
 import com.muzi.repairtime.command.BindingConsumerAction;

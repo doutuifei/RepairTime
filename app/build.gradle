@@ -29,8 +29,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation ext.dependencies['design']
     implementation ext.dependencies['appcompat']
-    implementation ext.dependencies['recyclerview']
     implementation ext.dependencies['constraintlayout']
 
     //retrofit2

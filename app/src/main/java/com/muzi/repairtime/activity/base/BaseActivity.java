@@ -44,6 +44,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         registorUIChangeLiveDataCallBack();
         //页面数据初始化方法
         initData();
+        initView();
         //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
         initViewObservable();
     }
@@ -88,11 +89,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         viewModel.inLifecycleOwner(this);
         //注入RxLifecycle生命周期
         viewModel.injectLifecycleProvider(this);
-    }
-
-    @Override
-    public void initParam() {
-
     }
 
     //注册ViewModel与View的契约UI回调事件
@@ -202,7 +198,17 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     }
 
     @Override
+    public void initParam() {
+
+    }
+
+    @Override
     public void initData() {
+
+    }
+
+    @Override
+    public void initView() {
 
     }
 
