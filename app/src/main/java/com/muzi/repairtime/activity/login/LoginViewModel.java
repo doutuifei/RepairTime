@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.Observer;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -11,9 +12,7 @@ import android.view.View;
 
 import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.activity.base.BaseViewModel;
-import com.muzi.repairtime.activity.main.administrator.AdministratorActivity;
-import com.muzi.repairtime.activity.main.employee.EmplpoyeeActivity;
-import com.muzi.repairtime.activity.main.maintenance.MaintenanceActivity;
+import com.muzi.repairtime.activity.main.MainActivity;
 import com.muzi.repairtime.activity.register.RegisterActivity;
 import com.muzi.repairtime.command.BindingCommand;
 import com.muzi.repairtime.command.BindingConsumerAction;
@@ -114,20 +113,10 @@ public class LoginViewModel extends BaseViewModel {
                         } else {
                             DataProxy.getInstance().remove(Constans.KEY_PHONE, Constans.KEY_PSD);
                         }
-                        switch (entity.getUser().getType()) {
-                            case "普通用户":
-                                startActivity(EmplpoyeeActivity.class);
-                                finish();
-                                break;
-                            case "维修员":
-                                startActivity(MaintenanceActivity.class);
-                                finish();
-                                break;
-                            case "管理员":
-                                startActivity(AdministratorActivity.class);
-                                finish();
-                                break;
-                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("user", entity.getUser());
+                        startActivity(MainActivity.class, bundle);
+                        finish();
                     }
                 });
     }

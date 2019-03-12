@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.main.employee.EmplpoyeeActivity">
+    tools:context=".activity.main.MainActivity">
 
     <data>
 
         <variable
-            name="viewModel"
-            type="com.muzi.repairtime.activity.main.employee.EmplpoyeeViewModel" />
+            name="user"
+            type="com.muzi.repairtime.entity.LoginEntity.UserBean" />
 
     </data>
 
@@ -31,8 +31,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:headerLayout="@layout/nav_header_main"
-            app:menu="@menu/activity_main_drawer" />
+            app:user="@{user}" />
 
     </android.support.v4.widget.DrawerLayout>
 

@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="user"
+            type="com.muzi.repairtime.entity.LoginEntity.UserBean" />
+
     </data>
 
     <LinearLayout
@@ -30,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:text="普通员工"
+            android:text="@{user.name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     </LinearLayout>

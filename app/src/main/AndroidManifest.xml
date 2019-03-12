@@ -35,7 +35,7 @@
         <!--注册-->
         <activity android:name=".activity.register.RegisterActivity" />
         <!--普通员-->
-        <activity android:name=".activity.main.employee.EmplpoyeeActivity" />
+        <activity android:name=".activity.main.MainActivity" />
         <!--管理员-->
         <activity android:name=".activity.main.administrator.AdministratorActivity" />
         <!--维修员-->

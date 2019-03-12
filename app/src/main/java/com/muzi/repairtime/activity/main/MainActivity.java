@@ -1,20 +1,17 @@
-package com.muzi.repairtime.activity.main.employee;
+package com.muzi.repairtime.activity.main;
 
-import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
-import com.muzi.repairtime.BR;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseActivity;
+import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.databinding.ActivityMainBinding;
-import com.muzi.repairtime.event.EventConstan;
-import com.muzi.repairtime.event.LiveEventBus;
+import com.muzi.repairtime.entity.LoginEntity;
 import com.muzi.repairtime.fragment.AppliedFragment;
 import com.muzi.repairtime.fragment.ApplyFragment;
 import com.muzi.repairtime.fragment.ChangePsdFragment;
@@ -25,11 +22,13 @@ import me.yokeyword.fragmentation.SupportFragment;
 /**
  * 普通员工
  */
-public class EmplpoyeeActivity extends BaseActivity<ActivityMainBinding, EmplpoyeeViewModel> implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewModel> implements NavigationView.OnNavigationItemSelectedListener {
 
     private int nextPosition, currePosition = 0;
 
-    private SupportFragment[] fragments = new SupportFragment[4];
+    private LoginEntity.UserBean userBean;
+
+    private SupportFragment[] fragments;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -38,7 +37,13 @@ public class EmplpoyeeActivity extends BaseActivity<ActivityMainBinding, Emplpoy
 
     @Override
     public int initVariableId() {
-        return BR.viewModel;
+        return 0;
+    }
+
+    @Override
+    public void initParam() {
+        super.initParam();
+        userBean = getIntent().getExtras().getParcelable("user");
     }
 
     @Override
@@ -51,11 +56,33 @@ public class EmplpoyeeActivity extends BaseActivity<ActivityMainBinding, Emplpoy
 
         binding.navView.setNavigationItemSelectedListener(this);
 
-        initFragment();
+        switch (userBean.getType()) {
+            case "普通用户":
+                binding.navView.inflateMenu(R.menu.activity_main_drawer);
+                initEmployee();
+                break;
+            case "维修员":
+
+                break;
+            case "管理员":
+
+                break;
+        }
+
     }
 
-    private void initFragment() {
+    @Override
+    public void initData() {
+        super.initData();
+        binding.setUser(userBean);
+    }
+
+    /**
+     * 初始化普通员工界面
+     */
+    private void initEmployee() {
         SupportFragment userInfoFragment = findFragment(UserInfoFragment.class);
+        fragments = new SupportFragment[4];
         if (userInfoFragment == null) {
             fragments[0] = UserInfoFragment.getInstance();
             fragments[1] = ApplyFragment.getInstance();
@@ -73,7 +100,6 @@ public class EmplpoyeeActivity extends BaseActivity<ActivityMainBinding, Emplpoy
             fragments[3] = findFragment(ChangePsdFragment.class);
         }
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -116,18 +142,4 @@ public class EmplpoyeeActivity extends BaseActivity<ActivityMainBinding, Emplpoy
         }
     }
 
-    @Override
-    public void initViewObservable() {
-        super.initViewObservable();
-        /**
-         * 用户
-         */
-        LiveEventBus.get().with(EventConstan.USER_INFO, String.class)
-                .observe(this, new Observer<String>() {
-                    @Override
-                    public void onChanged(@Nullable String s) {
-//                        binding.navView.getHeaderView(0)
-                    }
-                });
-    }
 }
