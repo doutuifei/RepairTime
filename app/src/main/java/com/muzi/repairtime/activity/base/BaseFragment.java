@@ -38,6 +38,19 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initParam();
+        viewModelId = initVariableId();
+        viewModel = initViewModel();
+        if (viewModel == null) {
+            Class modelClass;
+            Type type = getClass().getGenericSuperclass();
+            if (type instanceof ParameterizedType) {
+                modelClass = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
+            } else {
+                //如果没有指定泛型参数，则默认使用BaseViewModel
+                modelClass = BaseViewModel.class;
+            }
+            viewModel = (VM) createViewModel(this, modelClass);
+        }
     }
 
     @Override
@@ -57,26 +70,13 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, initContentView(inflater, container, savedInstanceState), container, false);
-        viewModelId = initVariableId();
-        viewModel = initViewModel();
-        if (viewModel == null) {
-            Class modelClass;
-            Type type = getClass().getGenericSuperclass();
-            if (type instanceof ParameterizedType) {
-                modelClass = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
-            } else {
-                //如果没有指定泛型参数，则默认使用BaseViewModel
-                modelClass = BaseViewModel.class;
-            }
-            viewModel = (VM) createViewModel(this, modelClass);
-        }
         binding.setVariable(viewModelId, viewModel);
         //让ViewModel拥有View的生命周期感应
         getLifecycle().addObserver(viewModel);
-        viewModel.initContext(getContext());
         viewModel.inLifecycleOwner(this);
         //注入RxLifecycle生命周期
         viewModel.injectLifecycleProvider(this);
+        viewModel.initContext(getContext());
         return binding.getRoot();
     }
 

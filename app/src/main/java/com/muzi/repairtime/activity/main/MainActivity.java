@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.muzi.repairtime.R;
@@ -93,6 +94,7 @@ public abstract class MainActivity extends BaseActivity<ActivityMainBinding, Bas
                 nextPosition = i;
                 showHideFragment(fragments[nextPosition], fragments[currePosition]);
                 currePosition = nextPosition;
+                break;
             }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START);

@@ -4,7 +4,7 @@ import com.muzi.repairtime.R;
 import com.muzi.repairtime.fragment.AppliedFragment;
 import com.muzi.repairtime.fragment.ApplyFragment;
 import com.muzi.repairtime.fragment.ChangePsdFragment;
-import com.muzi.repairtime.fragment.UserInfoFragment;
+import com.muzi.repairtime.fragment.user.UserInfoFragment;
 
 import me.yokeyword.fragmentation.SupportFragment;
 
@@ -35,9 +35,9 @@ public class MaintenanceActivity extends MainActivity {
     public int[] getNavIds() {
         int[] ids = new int[4];
         ids[0] = R.id.nav_info;
-        ids[0] = R.id.nav_apply;
-        ids[0] = R.id.nav_applied;
-        ids[0] = R.id.nav_change_psd;
+        ids[1] = R.id.nav_apply;
+        ids[2] = R.id.nav_applied;
+        ids[3] = R.id.nav_change_psd;
         return ids;
     }
 
