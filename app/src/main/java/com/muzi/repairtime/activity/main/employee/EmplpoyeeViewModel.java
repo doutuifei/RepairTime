@@ -11,12 +11,10 @@ import com.muzi.repairtime.activity.base.BaseViewModel;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public class MainViewModel extends BaseViewModel {
+public class EmplpoyeeViewModel extends BaseViewModel {
 
-    public MainViewModel(@NonNull Application application) {
+    public EmplpoyeeViewModel(@NonNull Application application) {
         super(application);
     }
-
-
 
 }

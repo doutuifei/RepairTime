@@ -13,4 +13,8 @@ public class EventConstan {
      */
     public static final String ACCOUNT = "account";
 
+    /**
+     * 用户信息
+     */
+    public static final String USER_INFO = "user_info";
 }

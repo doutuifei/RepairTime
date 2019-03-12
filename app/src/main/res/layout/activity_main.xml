@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.main.employee.MainActivity">
+    tools:context=".activity.main.employee.EmplpoyeeActivity">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.muzi.repairtime.activity.main.employee.MainViewModel" />
+            type="com.muzi.repairtime.activity.main.employee.EmplpoyeeViewModel" />
 
     </data>
 

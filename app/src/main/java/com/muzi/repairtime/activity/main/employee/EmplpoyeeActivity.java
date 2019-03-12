@@ -1,7 +1,9 @@
 package com.muzi.repairtime.activity.main.employee;
 
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,6 +13,8 @@ import com.muzi.repairtime.BR;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseActivity;
 import com.muzi.repairtime.databinding.ActivityMainBinding;
+import com.muzi.repairtime.event.EventConstan;
+import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.fragment.AppliedFragment;
 import com.muzi.repairtime.fragment.ApplyFragment;
 import com.muzi.repairtime.fragment.ChangePsdFragment;
@@ -21,11 +25,11 @@ import me.yokeyword.fragmentation.SupportFragment;
 /**
  * 普通员工
  */
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> implements NavigationView.OnNavigationItemSelectedListener {
+public class EmplpoyeeActivity extends BaseActivity<ActivityMainBinding, EmplpoyeeViewModel> implements NavigationView.OnNavigationItemSelectedListener {
+
+    private int nextPosition, currePosition = 0;
 
     private SupportFragment[] fragments = new SupportFragment[4];
-
-    private int nextPosition, currePosition;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -112,4 +116,18 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         }
     }
 
+    @Override
+    public void initViewObservable() {
+        super.initViewObservable();
+        /**
+         * 用户
+         */
+        LiveEventBus.get().with(EventConstan.USER_INFO, String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+//                        binding.navView.getHeaderView(0)
+                    }
+                });
+    }
 }

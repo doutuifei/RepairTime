@@ -11,12 +11,14 @@ import android.view.View;
 
 import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.activity.base.BaseViewModel;
-import com.muzi.repairtime.activity.main.employee.MainActivity;
+import com.muzi.repairtime.activity.main.administrator.AdministratorActivity;
+import com.muzi.repairtime.activity.main.employee.EmplpoyeeActivity;
+import com.muzi.repairtime.activity.main.maintenance.MaintenanceActivity;
 import com.muzi.repairtime.activity.register.RegisterActivity;
 import com.muzi.repairtime.command.BindingCommand;
 import com.muzi.repairtime.command.BindingConsumerAction;
 import com.muzi.repairtime.data.DataProxy;
-import com.muzi.repairtime.entity.BaseEntity;
+import com.muzi.repairtime.entity.LoginEntity;
 import com.muzi.repairtime.event.EventConstan;
 import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.http.RxHttp;
@@ -101,19 +103,31 @@ public class LoginViewModel extends BaseViewModel {
         }
         RxHttp.getApi(LoginApi.class)
                 .login(phone.get(), password.get())
-                .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.<BaseEntity>bindToLifecycle(getLifecycleProvider()))
-                .subscribe(new EntityObserver<BaseEntity>(this) {
+                .compose(RxUtils.<LoginEntity>scheduling())
+                .compose(RxUtils.<LoginEntity>bindToLifecycle(getLifecycleProvider()))
+                .subscribe(new EntityObserver<LoginEntity>(this) {
                     @Override
-                    public void onSuccess(BaseEntity entity) {
+                    public void onSuccess(LoginEntity entity) {
                         if (rememb.get()) {
                             DataProxy.getInstance().set(Constans.KEY_PHONE, phone.get());
                             DataProxy.getInstance().set(Constans.KEY_PSD, password.get());
                         } else {
                             DataProxy.getInstance().remove(Constans.KEY_PHONE, Constans.KEY_PSD);
                         }
-                        startActivity(MainActivity.class);
-                        finish();
+                        switch (entity.getUser().getType()) {
+                            case "普通用户":
+                                startActivity(EmplpoyeeActivity.class);
+                                finish();
+                                break;
+                            case "维修员":
+                                startActivity(MaintenanceActivity.class);
+                                finish();
+                                break;
+                            case "管理员":
+                                startActivity(AdministratorActivity.class);
+                                finish();
+                                break;
+                        }
                     }
                 });
     }
