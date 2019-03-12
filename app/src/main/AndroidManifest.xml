@@ -35,11 +35,11 @@
         <!--注册-->
         <activity android:name=".activity.register.RegisterActivity" />
         <!--普通员-->
-        <activity android:name=".activity.main.MainActivity" />
+        <activity android:name=".activity.main.EmployeeActivity" />
         <!--管理员-->
-        <activity android:name=".activity.main.administrator.AdministratorActivity" />
+        <activity android:name=".activity.main.AdministratorActivity" />
         <!--维修员-->
-        <activity android:name=".activity.main.maintenance.MaintenanceActivity" />
+        <activity android:name=".activity.main.MaintenanceActivity" />
 
     </application>
 

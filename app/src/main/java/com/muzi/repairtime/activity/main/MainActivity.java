@@ -12,23 +12,28 @@ import com.muzi.repairtime.activity.base.BaseActivity;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.databinding.ActivityMainBinding;
 import com.muzi.repairtime.entity.LoginEntity;
-import com.muzi.repairtime.fragment.AppliedFragment;
-import com.muzi.repairtime.fragment.ApplyFragment;
-import com.muzi.repairtime.fragment.ChangePsdFragment;
-import com.muzi.repairtime.fragment.UserInfoFragment;
 
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * 普通员工
  */
-public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewModel> implements NavigationView.OnNavigationItemSelectedListener {
+public abstract class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewModel> implements NavigationView.OnNavigationItemSelectedListener {
 
-    private int nextPosition, currePosition = 0;
+    public abstract int getMenuId();
+
+    public abstract SupportFragment[] getFragments();
+
+    public abstract int[] getNavIds();
+
+    public abstract int getFirst();
+
+    private int nextPosition, currePosition = getFirst();
 
     private LoginEntity.UserBean userBean;
 
     private SupportFragment[] fragments;
+    private int[] ids;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -44,6 +49,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     public void initParam() {
         super.initParam();
         userBean = getIntent().getExtras().getParcelable("user");
+        fragments = getFragments();
+        ids = getNavIds();
     }
 
     @Override
@@ -56,19 +63,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
 
         binding.navView.setNavigationItemSelectedListener(this);
 
-        switch (userBean.getType()) {
-            case "普通用户":
-                binding.navView.inflateMenu(R.menu.activity_main_drawer);
-                initEmployee();
-                break;
-            case "维修员":
+        binding.navView.inflateMenu(getMenuId());
 
-                break;
-            case "管理员":
-
-                break;
-        }
-
+        initFragment();
     }
 
     @Override
@@ -77,57 +74,26 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         binding.setUser(userBean);
     }
 
-    /**
-     * 初始化普通员工界面
-     */
-    private void initEmployee() {
-        SupportFragment userInfoFragment = findFragment(UserInfoFragment.class);
-        fragments = new SupportFragment[4];
-        if (userInfoFragment == null) {
-            fragments[0] = UserInfoFragment.getInstance();
-            fragments[1] = ApplyFragment.getInstance();
-            fragments[2] = AppliedFragment.getInstance();
-            fragments[3] = ChangePsdFragment.getInstance();
-            loadMultipleRootFragment(R.id.container, currePosition,
-                    fragments[0],
-                    fragments[1],
-                    fragments[2],
-                    fragments[3]);
+    private void initFragment() {
+        SupportFragment firstFragment = findFragment(fragments[currePosition].getClass());
+        if (firstFragment == null) {
+            loadMultipleRootFragment(R.id.container, currePosition, fragments);
         } else {
-            fragments[0] = userInfoFragment;
-            fragments[1] = findFragment(ApplyFragment.class);
-            fragments[2] = findFragment(AppliedFragment.class);
-            fragments[3] = findFragment(ChangePsdFragment.class);
+            for (int i = 0; i < fragments.length; i++) {
+                fragments[i] = findFragment(fragments[i].getClass());
+            }
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_info:
-                //个人信息
-                nextPosition = 0;
+        int id = item.getItemId();
+        for (int i = 0; i < ids.length; i++) {
+            if (id == ids[i]) {
+                nextPosition = i;
                 showHideFragment(fragments[nextPosition], fragments[currePosition]);
                 currePosition = nextPosition;
-                break;
-            case R.id.nav_apply:
-                //维修申请
-                nextPosition = 1;
-                showHideFragment(fragments[nextPosition], fragments[currePosition]);
-                currePosition = nextPosition;
-                break;
-            case R.id.nav_applied:
-                //我的申请
-                nextPosition = 2;
-                showHideFragment(fragments[nextPosition], fragments[currePosition]);
-                currePosition = nextPosition;
-                break;
-            case R.id.nav_change_psd:
-                //修改密码
-                nextPosition = 3;
-                showHideFragment(fragments[nextPosition], fragments[currePosition]);
-                currePosition = nextPosition;
-                break;
+            }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;

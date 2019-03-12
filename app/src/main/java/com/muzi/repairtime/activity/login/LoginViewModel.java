@@ -11,8 +11,10 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.muzi.repairtime.Constans;
+import com.muzi.repairtime.activity.main.AdministratorActivity;
+import com.muzi.repairtime.activity.main.EmployeeActivity;
 import com.muzi.repairtime.activity.base.BaseViewModel;
-import com.muzi.repairtime.activity.main.MainActivity;
+import com.muzi.repairtime.activity.main.MaintenanceActivity;
 import com.muzi.repairtime.activity.register.RegisterActivity;
 import com.muzi.repairtime.command.BindingCommand;
 import com.muzi.repairtime.command.BindingConsumerAction;
@@ -115,8 +117,20 @@ public class LoginViewModel extends BaseViewModel {
                         }
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("user", entity.getUser());
-                        startActivity(MainActivity.class, bundle);
-                        finish();
+                        switch (entity.getUser().getType()) {
+                            case "普通用户":
+                                startActivity(EmployeeActivity.class, bundle);
+                                finish();
+                                break;
+                            case "维修员":
+                                startActivity(MaintenanceActivity.class, bundle);
+                                finish();
+                                break;
+                            case "管理员":
+                                startActivity(AdministratorActivity.class, bundle);
+                                finish();
+                                break;
+                        }
                     }
                 });
     }
