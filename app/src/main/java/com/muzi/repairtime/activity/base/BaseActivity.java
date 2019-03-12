@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentActivity;
 
 import com.muzi.repairtime.widget.dialog.LoadingDialog;
 import com.muzi.repairtime.widget.SingleDialogHelper;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

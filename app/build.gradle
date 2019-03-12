@@ -77,4 +77,7 @@ dependencies {
 
     //PersistentCookieJar
     implementation ext.dependencies['persistentCookieJar']
+
+    //fragmentation
+    implementation ext.dependencies['fragmentation']
 }
