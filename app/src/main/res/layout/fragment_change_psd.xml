@@ -1,15 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.muzi.repairtime.fragment.psd.ChangePsdViewModel" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="修改密码"
-        tools:layout_editor_absoluteX="176dp"
-        tools:layout_editor_absoluteY="355dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
-</android.support.constraint.ConstraintLayout>
+        <EditText
+            android:id="@+id/et_old_psd"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_input"
+            android:hint="请输入原密码"
+            android:inputType="textPassword"
+            android:paddingLeft="15dp"
+            android:text="@={viewModel.oldPsdField}"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/et_name" />
+
+        <EditText
+            android:id="@+id/et_new_psd"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_input"
+            android:hint="密码"
+            android:inputType="textPassword"
+            android:paddingLeft="15dp"
+            android:text="@={viewModel.newPsdField}"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/et_old_psd" />
+
+        <EditText
+            android:id="@+id/et_confirm_psd"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_input"
+            android:hint="确认新密码"
+            android:inputType="textPassword"
+            android:paddingLeft="15dp"
+            android:text="@={viewModel.confirmPsdField}"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/et_new_psd" />
+
+        <Button
+            android:id="@+id/btn_commit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_button"
+            android:gravity="center"
+            android:text="注册"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_confirm_psd"
+            app:onClickCommand="@{viewModel.commitCommand}" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

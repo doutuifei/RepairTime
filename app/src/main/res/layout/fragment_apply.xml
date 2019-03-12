@@ -1,15 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.muzi.repairtime.fragment.apply.ApplyViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="维修申请"
-        tools:layout_editor_absoluteX="176dp"
-        tools:layout_editor_absoluteY="355dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginRight="20dp">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/et_item"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_input"
+            android:gravity="center_vertical"
+            android:hint="请选择维修项目"
+            android:paddingLeft="15dp"
+            android:text="@={viewModel.itemField}"
+            android:textSize="13sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:onClickCommand="@{viewModel.itemClickCommand}" />
+
+        <TextView
+            android:id="@+id/et_item1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_input"
+            android:gravity="center_vertical"
+            android:hint="请选择维修细项"
+            android:paddingLeft="15dp"
+            android:text="@={viewModel.item1Field}"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/et_item"
+            app:onClickCommand="@{viewModel.item1ClickCommand}" />
+
+        <EditText
+            android:id="@+id/et_describe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_input"
+            android:gravity="left"
+            android:hint="请输入对问题的描述"
+            android:lines="6"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="@={viewModel.describeField}"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/et_item1" />
+
+        <Button
+            android:id="@+id/btn_commit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_button"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/et_describe"
+            app:onClickCommand="@{viewModel.commitClickCommand}" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
