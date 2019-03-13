@@ -61,7 +61,7 @@ public class UserInfoViewModel extends BaseViewModel {
                 .getUserInfo()
                 .compose(RxUtils.<UserEntity>scheduling())
                 .compose(RxUtils.<UserEntity>bindToLifecycle(getLifecycleProvider()))
-                .subscribe(new BaseObserver<UserEntity>() {
+                .subscribe(new BaseObserver<UserEntity>(this) {
                     @Override
                     public void onNext(UserEntity entity) {
                         super.onNext(entity);

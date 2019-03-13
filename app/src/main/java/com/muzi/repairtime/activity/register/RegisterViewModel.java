@@ -20,8 +20,11 @@ import com.muzi.repairtime.observer.BaseObserver;
 import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.StringUtils;
 import com.muzi.repairtime.utils.ToastUtils;
-import com.muzi.repairtime.widget.dialog.GroupDialog;
+import com.muzi.repairtime.widget.dialog.ListDialog;
 
+import java.util.List;
+
+import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 
@@ -36,8 +39,8 @@ public class RegisterViewModel extends BaseViewModel {
     /**
      * 科室信息
      */
-    private GroupEntity groupEntity;
-    private GroupDialog groupDialog;
+    private List<String> groupList;
+    private ListDialog groupDialog;
 
     public ObservableField<String> userName = new ObservableField<>("");
 
@@ -149,15 +152,30 @@ public class RegisterViewModel extends BaseViewModel {
      * 获取科室
      */
     public void getGroups() {
-        if (groupEntity == null) {
+        if (groupList == null) {
             RxHttp.getApi(LoginApi.class)
                     .getGroups()
-                    .compose(RxUtils.<GroupEntity>scheduling())
-                    .compose(RxUtils.<GroupEntity>bindToLifecycle(getLifecycleProvider()))
-                    .subscribe(new BaseObserver<GroupEntity>() {
+                    .flatMap(new Function<GroupEntity, ObservableSource<GroupEntity.PagesBean>>() {
                         @Override
-                        public void onNext(GroupEntity entity) {
-                            groupEntity = entity;
+                        public ObservableSource<GroupEntity.PagesBean> apply(GroupEntity entity) throws Exception {
+                            return Observable.fromIterable(entity.getPages());
+                        }
+                    })
+                    .map(new Function<GroupEntity.PagesBean, String>() {
+                        @Override
+                        public String apply(GroupEntity.PagesBean pagesBean) throws Exception {
+                            return pagesBean.getName();
+                        }
+                    })
+                    .toList()
+                    .toObservable()
+                    .compose(RxUtils.<List<String>>scheduling())
+                    .compose(RxUtils.<List<String>>bindToLifecycle(getLifecycleProvider()))
+                    .subscribe(new BaseObserver<List<String>>() {
+                        @Override
+                        public void onNext(List<String> list) {
+                            super.onNext(list);
+                            groupList = list;
                             showGroupDialog();
                         }
 
@@ -177,10 +195,10 @@ public class RegisterViewModel extends BaseViewModel {
      */
     private void showGroupDialog() {
         if (groupDialog == null) {
-            groupDialog = new GroupDialog(getContext(), groupEntity) {
+            groupDialog = new ListDialog(getContext(), "选择科室", groupList) {
                 @Override
-                public void onSelect(GroupEntity.PagesBean pagesBean) {
-                    group.set(pagesBean.getName());
+                public void onSelect(int position) {
+                    group.set(groupList.get(position));
                 }
             };
         }
@@ -191,7 +209,7 @@ public class RegisterViewModel extends BaseViewModel {
     public void onDestroy() {
         super.onDestroy();
         groupDialog = null;
-        groupEntity = null;
+        groupList = null;
     }
 
 }

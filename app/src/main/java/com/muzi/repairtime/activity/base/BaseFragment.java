@@ -76,6 +76,8 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         viewModel.inLifecycleOwner(this);
         //注入RxLifecycle生命周期
         viewModel.injectLifecycleProvider(this);
+        //私有的ViewModel与View的契约事件回调逻辑
+        registorUIChangeLiveDataCallBack();
         viewModel.initContext(getContext());
         return binding.getRoot();
     }
@@ -83,8 +85,6 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //私有的ViewModel与View的契约事件回调逻辑
-        registorUIChangeLiveDataCallBack();
         //页面数据初始化方法
         initData();
         initView();

@@ -65,7 +65,7 @@ public class ChangePsdViewModel extends BaseViewModel {
                 .changePsd(oldPsdField.get(), newPsdField.get())
                 .compose(RxUtils.<BaseEntity>scheduling())
                 .compose(RxUtils.<BaseEntity>bindToLifecycle(getLifecycleProvider()))
-                .subscribe(new EntityObserver<BaseEntity>() {
+                .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {
                         ToastUtils.showToast(entity.getMsg());
