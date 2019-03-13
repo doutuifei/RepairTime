@@ -58,7 +58,7 @@ public interface RepairApi {
      * @return
      */
     @FormUrlEncoded
-    @POST("/order/myOrder")
+    @POST("order/myOrder")
     Observable<RepairEntity> getMyRepair(@Field("currentPage") int currentPage,
                                          @Field("status") String status);
 

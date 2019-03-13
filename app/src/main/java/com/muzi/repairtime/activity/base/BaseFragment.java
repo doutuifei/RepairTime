@@ -30,31 +30,12 @@ import java.util.Map;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseViewModel> extends RxFragment implements IBaseActivity {
+public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseViewModel> extends RxFragment implements IBaseActivity, IBaseView {
 
     protected V binding;
     protected VM viewModel;
     private int viewModelId;
     private SingleDialogHelper singleDialogHelper;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initParam(getArguments());
-        viewModelId = initVariableId();
-        viewModel = initViewModel();
-        if (viewModel == null) {
-            Class modelClass;
-            Type type = getClass().getGenericSuperclass();
-            if (type instanceof ParameterizedType) {
-                modelClass = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
-            } else {
-                //如果没有指定泛型参数，则默认使用BaseViewModel
-                modelClass = BaseViewModel.class;
-            }
-            viewModel = (VM) createViewModel(this, modelClass);
-        }
-    }
 
     @Override
     public void onDestroy() {
@@ -72,6 +53,19 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        viewModelId = initVariableId();
+        viewModel = initViewModel();
+        if (viewModel == null) {
+            Class modelClass;
+            Type type = getClass().getGenericSuperclass();
+            if (type instanceof ParameterizedType) {
+                modelClass = (Class) ((ParameterizedType) type).getActualTypeArguments()[1];
+            } else {
+                //如果没有指定泛型参数，则默认使用BaseViewModel
+                modelClass = BaseViewModel.class;
+            }
+            viewModel = (VM) createViewModel(this, modelClass);
+        }
         binding = DataBindingUtil.inflate(inflater, initContentView(inflater, container, savedInstanceState), container, false);
         binding.setVariable(viewModelId, viewModel);
         //让ViewModel拥有View的生命周期感应
@@ -88,6 +82,9 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Bundle bundle = getArguments();
+        initParam(bundle);
+        viewModel.initParam(bundle);
         //页面数据初始化方法
         initData();
         viewModel.initData();
@@ -96,6 +93,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         viewModel.initView();
         //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
         initViewObservable();
+        viewModel.initViewObservable();
     }
 
     //注册ViewModel与View的契约UI回调事件
@@ -104,14 +102,14 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         viewModel.getUC().getShowDialogEvent().observe(this, new Observer<Void>() {
             @Override
             public void onChanged(@Nullable Void v) {
-                showDialog();
+                showProgress();
             }
         });
         //加载对话框消失
         viewModel.getUC().getDismissDialogEvent().observe(this, new Observer<Void>() {
             @Override
             public void onChanged(@Nullable Void v) {
-                dismissDialog();
+                hideProgress();
             }
         });
         //跳入新页面
@@ -139,7 +137,14 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         });
     }
 
-    public void showDialog() {
+    @Nullable
+    @Override
+    public Context getContext() {
+        return super.getContext();
+    }
+
+    @Override
+    public void showProgress() {
         if (getActivity() != null && getActivity() instanceof IBaseView) {
             IBaseView iBaseView = (IBaseView) getActivity();
             iBaseView.showProgress();
@@ -156,7 +161,8 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         }
     }
 
-    public void dismissDialog() {
+    @Override
+    public void hideProgress() {
         if (getActivity() != null && getActivity() instanceof IBaseView) {
             IBaseView iBaseView = (IBaseView) getActivity();
             iBaseView.hideProgress();

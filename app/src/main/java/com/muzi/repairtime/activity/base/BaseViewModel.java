@@ -22,7 +22,7 @@ import java.util.Map;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, IBaseView {
+public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, IBaseView, IBaseActivity {
     private Context context;
     private UIChangeLiveData uc;
     private LifecycleProvider lifecycle;
@@ -57,10 +57,22 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, I
         return lifecycle;
     }
 
-    public void initView() {
+    @Override
+    public void initViewObservable() {
+
+    }
+
+    @Override
+    public void initParam(Bundle bundle) {
+
     }
 
     public void initData() {
+    }
+
+    @Override
+    public void initView() {
+
     }
 
     @Override

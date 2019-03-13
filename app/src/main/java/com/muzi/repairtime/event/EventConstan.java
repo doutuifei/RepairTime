@@ -12,4 +12,6 @@ public class EventConstan {
      * 账号信息
      */
     public static final String ACCOUNT = "account";
+
+
 }

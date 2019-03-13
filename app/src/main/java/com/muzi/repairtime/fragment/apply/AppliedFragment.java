@@ -65,6 +65,7 @@ public class AppliedFragment extends BaseFragment<FragmentAppliedBinding, Applie
         for (String title : titles) {
             binding.tabLayout.addTab(binding.tabLayout.newTab().setText(title));
         }
+        binding.viewPager.setOffscreenPageLimit(5);
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), titles, fragments);
         binding.viewPager.setAdapter(viewPagerAdapter);
         binding.tabLayout.setupWithViewPager(binding.viewPager);

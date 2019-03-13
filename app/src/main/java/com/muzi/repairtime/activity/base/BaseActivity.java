@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -25,7 +26,7 @@ import java.util.Map;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseViewModel> extends RxAppCompatActivity implements IBaseActivity {
+public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseViewModel> extends RxAppCompatActivity implements IBaseActivity, IBaseView {
 
     protected V binding;
     protected VM viewModel;
@@ -35,12 +36,14 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //页面接受的参数方法
-        initParam(getIntent().getExtras());
         //私有的初始化Databinding和ViewModel方法
         initViewDataBinding(savedInstanceState);
         //私有的ViewModel与View的契约事件回调逻辑
         registorUIChangeLiveDataCallBack();
+        //页面接受的参数方法
+        Bundle bundle = getIntent().getExtras();
+        initParam(getIntent().getExtras());
+        viewModel.initParam(bundle);
         //页面数据初始化方法
         initData();
         viewModel.initData();
@@ -48,6 +51,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         viewModel.initView();
         //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
         initViewObservable();
+        viewModel.initViewObservable();
     }
 
     @Override
@@ -98,14 +102,14 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         viewModel.getUC().getShowDialogEvent().observe(this, new Observer<Void>() {
             @Override
             public void onChanged(@Nullable Void v) {
-                showDialog();
+                showProgress();
             }
         });
         //加载对话框消失
         viewModel.getUC().getDismissDialogEvent().observe(this, new Observer<Void>() {
             @Override
             public void onChanged(@Nullable Void v) {
-                dismissDialog();
+                hideProgress();
             }
         });
         //跳入新页面
@@ -133,7 +137,13 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         });
     }
 
-    public void showDialog() {
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void showProgress() {
         if (singleDialogHelper == null) {
             singleDialogHelper = new SingleDialogHelper() {
                 @Override
@@ -145,7 +155,8 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         singleDialogHelper.show();
     }
 
-    public void dismissDialog() {
+    @Override
+    public void hideProgress() {
         if (singleDialogHelper != null) {
             singleDialogHelper.dismiss();
         }
