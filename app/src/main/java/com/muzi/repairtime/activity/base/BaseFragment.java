@@ -4,16 +4,19 @@ import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.muzi.repairtime.R;
 import com.muzi.repairtime.widget.SingleDialogHelper;
 import com.muzi.repairtime.widget.dialog.LoadingDialog;
 
@@ -243,6 +246,41 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
      */
     public <T extends ViewModel> T createViewModel(Fragment fragment, Class<T> cls) {
         return ViewModelProviders.of(fragment).get(cls);
+    }
+
+    /**
+     * toolbar
+     */
+    protected OnFragmentOpenDrawerListener mOpenDraweListener;
+
+    protected void initToolbarNav(Toolbar toolbar) {
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOpenDraweListener != null) {
+                    mOpenDraweListener.onOpenDrawer();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentOpenDrawerListener) {
+            mOpenDraweListener = (OnFragmentOpenDrawerListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mOpenDraweListener = null;
+    }
+
+    public interface OnFragmentOpenDrawerListener {
+        void onOpenDrawer();
     }
 
 }

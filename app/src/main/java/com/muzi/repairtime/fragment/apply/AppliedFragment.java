@@ -2,12 +2,14 @@ package com.muzi.repairtime.fragment.apply;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.muzi.repairtime.BR;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseFragment;
+import com.muzi.repairtime.adapter.ViewPagerAdapter;
 import com.muzi.repairtime.databinding.FragmentAppliedBinding;
 
 /**
@@ -17,6 +19,10 @@ import com.muzi.repairtime.databinding.FragmentAppliedBinding;
  * 功能: 我的申请
  */
 public class AppliedFragment extends BaseFragment<FragmentAppliedBinding, AppliedViewModel> {
+
+    private String[] titles = new String[5];
+    private Fragment[] fragments = new Fragment[5];
+    private ViewPagerAdapter viewPagerAdapter;
 
     public static AppliedFragment getInstance() {
         AppliedFragment fragment = new AppliedFragment();
@@ -33,6 +39,35 @@ public class AppliedFragment extends BaseFragment<FragmentAppliedBinding, Applie
     @Override
     public int initVariableId() {
         return BR.viewModel;
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+        titles[0] = "全部";
+        titles[1] = "未接单";
+        titles[2] = "已完成";
+        titles[3] = "未完成";
+        titles[4] = "维修中";
+
+        fragments[0] = ApplyItemFragment.getInstance("");
+        fragments[1] = ApplyItemFragment.getInstance("1");
+        fragments[2] = ApplyItemFragment.getInstance("3");
+        fragments[3] = ApplyItemFragment.getInstance("4");
+        fragments[4] = ApplyItemFragment.getInstance("2");
+    }
+
+    @Override
+    public void initView() {
+        super.initView();
+        binding.toolbar.setTitle("我的申请");
+        initToolbarNav(binding.toolbar);
+        for (String title : titles) {
+            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(title));
+        }
+        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), titles, fragments);
+        binding.viewPager.setAdapter(viewPagerAdapter);
+        binding.tabLayout.setupWithViewPager(binding.viewPager);
     }
 
 }

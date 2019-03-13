@@ -11,63 +11,84 @@
 
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/et_old_psd"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_input"
-            android:hint="请输入原密码"
-            android:inputType="textPassword"
-            android:paddingLeft="15dp"
-            android:text="@={viewModel.oldPsdField}"
-            android:textSize="13sp"
-            app:layout_constraintTop_toBottomOf="@id/et_name" />
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">
 
-        <EditText
-            android:id="@+id/et_new_psd"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:titleTextAppearance="@style/Toolbar_TextAppearance_White" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_input"
-            android:hint="密码"
-            android:inputType="textPassword"
-            android:paddingLeft="15dp"
-            android:text="@={viewModel.newPsdField}"
-            android:textSize="13sp"
-            app:layout_constraintTop_toBottomOf="@id/et_old_psd" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
-        <EditText
-            android:id="@+id/et_confirm_psd"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_input"
-            android:hint="确认新密码"
-            android:inputType="textPassword"
-            android:paddingLeft="15dp"
-            android:text="@={viewModel.confirmPsdField}"
-            android:textSize="13sp"
-            app:layout_constraintTop_toBottomOf="@id/et_new_psd" />
+            <EditText
+                android:id="@+id/et_old_psd"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_input"
+                android:hint="请输入原密码"
+                android:inputType="textPassword"
+                android:paddingLeft="15dp"
+                android:text="@={viewModel.oldPsdField}"
+                android:textSize="13sp"
+                app:layout_constraintTop_toBottomOf="@id/et_name" />
 
-        <Button
-            android:id="@+id/btn_commit"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_button"
-            android:gravity="center"
-            android:text="注册"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/et_confirm_psd"
-            app:onClickCommand="@{viewModel.commitCommand}" />
+            <EditText
+                android:id="@+id/et_new_psd"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_input"
+                android:hint="密码"
+                android:inputType="textPassword"
+                android:paddingLeft="15dp"
+                android:text="@={viewModel.newPsdField}"
+                android:textSize="13sp"
+                app:layout_constraintTop_toBottomOf="@id/et_old_psd" />
 
-    </android.support.constraint.ConstraintLayout>
+            <EditText
+                android:id="@+id/et_confirm_psd"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_input"
+                android:hint="确认新密码"
+                android:inputType="textPassword"
+                android:paddingLeft="15dp"
+                android:text="@={viewModel.confirmPsdField}"
+                android:textSize="13sp"
+                app:layout_constraintTop_toBottomOf="@id/et_new_psd" />
+
+            <Button
+                android:id="@+id/btn_commit"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:gravity="center"
+                android:text="注册"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@id/et_confirm_psd"
+                app:onClickCommand="@{viewModel.commitCommand}" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>

@@ -35,4 +35,11 @@ public class ChangePsdFragment extends BaseFragment<FragmentChangePsdBinding,Cha
         return BR.viewModel;
     }
 
+    @Override
+    public void initView() {
+        super.initView();
+        binding.toolbar.setTitle("修改密码");
+        initToolbarNav(binding.toolbar);
+    }
+
 }

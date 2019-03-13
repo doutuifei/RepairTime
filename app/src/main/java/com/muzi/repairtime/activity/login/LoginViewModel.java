@@ -11,9 +11,9 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.muzi.repairtime.Constans;
+import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.activity.main.AdministratorActivity;
 import com.muzi.repairtime.activity.main.EmployeeActivity;
-import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.activity.main.MaintenanceActivity;
 import com.muzi.repairtime.activity.register.RegisterActivity;
 import com.muzi.repairtime.command.BindingCommand;
@@ -69,7 +69,6 @@ public class LoginViewModel extends BaseViewModel {
             startActivity(RegisterActivity.class);
         }
     });
-
 
     @Override
     public void initData() {

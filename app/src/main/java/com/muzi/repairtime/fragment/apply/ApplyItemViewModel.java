@@ -11,9 +11,9 @@ import com.muzi.repairtime.activity.base.BaseViewModel;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public class AppliedViewModel extends BaseViewModel {
+public class ApplyItemViewModel extends BaseViewModel {
 
-    public AppliedViewModel(@NonNull Application application) {
+    public ApplyItemViewModel(@NonNull Application application) {
         super(application);
     }
 

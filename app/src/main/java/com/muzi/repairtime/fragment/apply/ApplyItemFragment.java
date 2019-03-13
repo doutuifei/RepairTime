@@ -1,4 +1,4 @@
-package com.muzi.repairtime.fragment.user;
+package com.muzi.repairtime.fragment.apply;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,26 +8,30 @@ import android.view.ViewGroup;
 import com.muzi.repairtime.BR;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseFragment;
-import com.muzi.repairtime.databinding.FragmentUserinfoBinding;
+import com.muzi.repairtime.databinding.FragmentItemApplyBinding;
 
 /**
  * 作者: lipeng
- * 时间: 2019/3/12
+ * 时间: 2019/3/13
  * 邮箱: lipeng@moyi365.com
- * 功能: 用户信息
+ * 功能:
  */
-public class UserInfoFragment extends BaseFragment<FragmentUserinfoBinding, UserInfoViewModel> {
+public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, ApplyItemViewModel> {
 
-    public static UserInfoFragment getInstance() {
-        UserInfoFragment fragment = new UserInfoFragment();
+    private String status;
+
+    public static ApplyItemFragment getInstance(String status) {
+        ApplyItemFragment fragment = new ApplyItemFragment();
         Bundle bundle = new Bundle();
+        bundle.putString("status", status);
         fragment.setArguments(bundle);
         return fragment;
     }
 
+
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return R.layout.fragment_userinfo;
+        return R.layout.fragment_item_apply;
     }
 
     @Override
@@ -36,10 +40,14 @@ public class UserInfoFragment extends BaseFragment<FragmentUserinfoBinding, User
     }
 
     @Override
-    public void initView() {
-        super.initView();
-        binding.toolbar.setTitle("个人信息");
-        initToolbarNav(binding.toolbar);
+    public void initParam(Bundle bundle) {
+        super.initParam(bundle);
+        status = bundle.getString("status");
     }
 
+    @Override
+    public void initView() {
+        super.initView();
+        binding.text.setText(status);
+    }
 }

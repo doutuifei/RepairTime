@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseActivity;
+import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.databinding.ActivityMainBinding;
 import com.muzi.repairtime.entity.LoginEntity;
@@ -18,7 +18,7 @@ import me.yokeyword.fragmentation.SupportFragment;
 /**
  * 普通员工
  */
-public abstract class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewModel> implements NavigationView.OnNavigationItemSelectedListener {
+public abstract class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewModel> implements NavigationView.OnNavigationItemSelectedListener, BaseFragment.OnFragmentOpenDrawerListener {
 
     public abstract int getMenuId();
 
@@ -56,10 +56,6 @@ public abstract class MainActivity extends BaseActivity<ActivityMainBinding, Bas
     @Override
     public void initView() {
         super.initView();
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        binding.drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
 
         binding.navView.setNavigationItemSelectedListener(this);
 
@@ -109,8 +105,11 @@ public abstract class MainActivity extends BaseActivity<ActivityMainBinding, Bas
         }
     }
 
-    public LoginEntity.UserBean getUserBean() {
-        return userBean;
+    @Override
+    public void onOpenDrawer() {
+        if (!binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.openDrawer(GravityCompat.START);
+        }
     }
 
 }

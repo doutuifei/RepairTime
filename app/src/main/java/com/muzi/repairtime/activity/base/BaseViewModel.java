@@ -58,7 +58,6 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, I
     }
 
     public void initView() {
-
     }
 
     public void initData() {

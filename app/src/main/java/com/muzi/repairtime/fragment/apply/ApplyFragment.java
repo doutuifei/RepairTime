@@ -35,4 +35,10 @@ public class ApplyFragment extends BaseFragment<FragmentApplyBinding, ApplyViewM
         return BR.viewModel;
     }
 
+    @Override
+    public void initView() {
+        super.initView();
+        binding.toolbar.setTitle("维修申请");
+        initToolbarNav(binding.toolbar);
+    }
 }
