@@ -48,7 +48,6 @@ public class ApplyViewModel extends BaseViewModel {
      */
     private List<String> itemList;
     private ListDialog itemDialog;
-    private List<ProjectItemEntity.PagesBean> itemBeanList;
 
     public ObservableField<String> itemField = new ObservableField<>("");
 
@@ -137,7 +136,6 @@ public class ApplyViewModel extends BaseViewModel {
                     itemField.set(projectList.get(position));
                     projectBean = projectBeanList.get(position);
                     itemList = null;
-                    itemBeanList = null;
                     item1Field.set("");
                 }
             };
@@ -149,12 +147,6 @@ public class ApplyViewModel extends BaseViewModel {
         if (itemList == null) {
             RxHttp.getApi(RepairApi.class)
                     .getProjectItemList(projectBean.getId())
-                    .doOnNext(new Consumer<ProjectItemEntity>() {
-                        @Override
-                        public void accept(ProjectItemEntity projectItemEntity) throws Exception {
-                            itemBeanList = projectItemEntity.getPages();
-                        }
-                    })
                     .flatMap(new Function<ProjectItemEntity, ObservableSource<ProjectItemEntity.PagesBean>>() {
                         @Override
                         public ObservableSource<ProjectItemEntity.PagesBean> apply(ProjectItemEntity projectItemEntity) throws Exception {

@@ -32,11 +32,11 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, I
         super(application);
     }
 
-    public void initContext(Context context) {
+    public final void initContext(Context context) {
         this.context = context;
     }
 
-    public void inLifecycleOwner(LifecycleOwner lifecycleOwner) {
+    public final void inLifecycleOwner(LifecycleOwner lifecycleOwner) {
         this.lifecycleOwner = lifecycleOwner;
     }
 
@@ -49,7 +49,7 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, I
      *
      * @param lifecycle
      */
-    public void injectLifecycleProvider(LifecycleProvider lifecycle) {
+    public final void injectLifecycleProvider(LifecycleProvider lifecycle) {
         this.lifecycle = lifecycle;
     }
 
@@ -57,6 +57,12 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, I
         return lifecycle;
     }
 
+    public void initView() {
+
+    }
+
+    public void initData() {
+    }
 
     @Override
     public void onAny(LifecycleOwner owner, Lifecycle.Event event) {

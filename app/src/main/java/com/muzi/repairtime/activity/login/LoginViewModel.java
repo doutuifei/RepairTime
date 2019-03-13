@@ -70,9 +70,10 @@ public class LoginViewModel extends BaseViewModel {
         }
     });
 
+
     @Override
-    public void onCreate() {
-        super.onCreate();
+    public void initData() {
+        super.initData();
         String phone = DataProxy.getInstance().getString(Constans.KEY_PHONE);
         String password = DataProxy.getInstance().getString(Constans.KEY_PSD);
         this.rememb.set(StringUtils.isNotEmpty(phone) &&

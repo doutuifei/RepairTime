@@ -46,9 +46,9 @@ public abstract class MainActivity extends BaseActivity<ActivityMainBinding, Bas
     }
 
     @Override
-    public void initParam() {
-        super.initParam();
-        userBean = getIntent().getExtras().getParcelable("user");
+    public void initParam(Bundle bundle) {
+        super.initParam(bundle);
+        userBean = bundle.getParcelable("user");
         fragments = getFragments();
         ids = getNavIds();
     }

@@ -1,7 +1,6 @@
 package com.muzi.repairtime.fragment.user;
 
 import android.app.Application;
-import android.content.Context;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
@@ -55,8 +54,8 @@ public class UserInfoViewModel extends BaseViewModel {
     }
 
     @Override
-    public void initContext(Context context) {
-        super.initContext(context);
+    public void initData() {
+        super.initData();
         RxHttp.getApi(UserApi.class)
                 .getUserInfo()
                 .compose(RxUtils.<UserEntity>scheduling())

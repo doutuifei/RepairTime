@@ -1,7 +1,7 @@
 package com.muzi.repairtime.activity.main;
 
 import com.muzi.repairtime.R;
-import com.muzi.repairtime.fragment.AppliedFragment;
+import com.muzi.repairtime.fragment.apply.AppliedFragment;
 import com.muzi.repairtime.fragment.apply.ApplyFragment;
 import com.muzi.repairtime.fragment.psd.ChangePsdFragment;
 import com.muzi.repairtime.fragment.user.UserInfoFragment;

@@ -68,16 +68,4 @@ public interface LoginApi {
                                     @Field("pass") String pass,
                                     @Field("group") String group);
 
-    /**
-     * 修改密码
-     *
-     * @param pass
-     * @param newPass
-     * @return
-     */
-    @FormUrlEncoded
-    @POST("user/changePass")
-    Observable<BaseEntity> changePass(@Field("pass") String pass,
-                                      @Field("newPass") String newPass);
-
 }

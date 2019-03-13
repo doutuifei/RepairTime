@@ -36,7 +36,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //页面接受的参数方法
-        initParam();
+        initParam(getIntent().getExtras());
         //私有的初始化Databinding和ViewModel方法
         initViewDataBinding(savedInstanceState);
         //私有的ViewModel与View的契约事件回调逻辑
@@ -64,7 +64,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     /**
      * 注入绑定
      */
-    private void initViewDataBinding(Bundle savedInstanceState) {
+    private final void initViewDataBinding(Bundle savedInstanceState) {
         //DataBindingUtil类需要在project的build中配置 dataBinding {enabled true }, 同步后会自动关联android.databinding包
         binding = DataBindingUtil.setContentView(this, initContentView(savedInstanceState));
         viewModelId = initVariableId();
@@ -91,7 +91,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     }
 
     //注册ViewModel与View的契约UI回调事件
-    private void registorUIChangeLiveDataCallBack() {
+    private final void registorUIChangeLiveDataCallBack() {
         //加载对话框显示
         viewModel.getUC().getShowDialogEvent().observe(this, new Observer<Void>() {
             @Override
@@ -197,7 +197,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     }
 
     @Override
-    public void initParam() {
+    public void initParam(Bundle bundle) {
 
     }
 

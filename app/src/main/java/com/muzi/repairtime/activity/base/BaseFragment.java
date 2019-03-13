@@ -37,7 +37,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initParam();
+        initParam(getArguments());
         viewModelId = initVariableId();
         viewModel = initViewModel();
         if (viewModel == null) {
@@ -87,13 +87,16 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         super.onViewCreated(view, savedInstanceState);
         //页面数据初始化方法
         initData();
+        viewModel.initData();
+        //页面ui
         initView();
+        viewModel.initView();
         //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
         initViewObservable();
     }
 
     //注册ViewModel与View的契约UI回调事件
-    private void registorUIChangeLiveDataCallBack() {
+    private final void registorUIChangeLiveDataCallBack() {
         //加载对话框显示
         viewModel.getUC().getShowDialogEvent().observe(this, new Observer<Void>() {
             @Override
@@ -208,7 +211,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     }
 
     @Override
-    public void initParam() {
+    public void initParam(Bundle bundle) {
 
     }
 
