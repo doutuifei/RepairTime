@@ -13,6 +13,10 @@
             android:icon="@mipmap/ic_launcher_round"
             android:title="个人信息" />
         <item
+            android:id="@+id/nav_notice"
+            android:icon="@mipmap/ic_launcher_round"
+            android:title="公告" />
+        <item
             android:id="@+id/nav_apply"
             android:icon="@mipmap/ic_launcher_round"
             android:title="维修申请" />
