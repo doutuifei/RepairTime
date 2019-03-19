@@ -54,12 +54,26 @@ public interface RepairApi {
      * 我的维修单
      *
      * @param currentPage
-     * @param status
+     * @param status      :全部
+     *                    1：未完成
+     *                    3：已完成
+     *                    4：未完成
+     *                    2：维修中
      * @return
      */
     @FormUrlEncoded
     @POST("order/myOrder")
     Observable<RepairEntity> getMyRepair(@Field("currentPage") int currentPage,
                                          @Field("status") String status);
+
+    /**
+     * 删除订单
+     *
+     * @param id
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("order/deleteOrder")
+    Observable<BaseEntity> deleteOrder(@Field("id") int id);
 
 }

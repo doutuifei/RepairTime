@@ -1,24 +1,29 @@
-package com.muzi.repairtime.fragment.apply;
+package com.muzi.repairtime.fragment.employee;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.activity.base.BaseViewModel;
-import com.muzi.repairtime.adapter.ApplyItemAdapter;
+import com.muzi.repairtime.adapter.ApplyUndoneAdapter;
 import com.muzi.repairtime.databinding.FragmentItemApplyBinding;
+import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.entity.RepairEntity;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.RepairApi;
 import com.muzi.repairtime.manager.ExLinearLayoutManger;
 import com.muzi.repairtime.observer.BaseObserver;
+import com.muzi.repairtime.observer.EntityObserver;
+import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.CustomLoadMoreView;
 
 import java.util.ArrayList;
@@ -31,18 +36,18 @@ import io.reactivex.functions.Function;
  * 作者: lipeng
  * 时间: 2019/3/13
  * 邮箱: lipeng@moyi365.com
- * 功能:
+ * 功能: 未完成
  */
-public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, BaseViewModel> {
+public class ApplyUndoneFragment extends BaseFragment<FragmentItemApplyBinding, BaseViewModel> {
 
     private String status;
     private int currentPage = 1;
     private int totalPage = 1;
-    private ApplyItemAdapter applyItemAdapter;
+    private ApplyUndoneAdapter applyItemAdapter;
     private List<RepairEntity.PagesBean.ListBean> listBeans = new ArrayList<>();
 
-    public static ApplyItemFragment getInstance(String status) {
-        ApplyItemFragment fragment = new ApplyItemFragment();
+    public static ApplyUndoneFragment getInstance(String status) {
+        ApplyUndoneFragment fragment = new ApplyUndoneFragment();
         Bundle bundle = new Bundle();
         bundle.putString("status", status);
         fragment.setArguments(bundle);
@@ -83,7 +88,17 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
             }
         });
         binding.recycelView.setLayoutManager(new ExLinearLayoutManger(getContext()));
-        applyItemAdapter = new ApplyItemAdapter(R.layout.layout_item_apply, listBeans);
+        binding.recycelView.addOnItemTouchListener(new OnItemChildClickListener() {
+            @Override
+            public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.btn_delete:
+                        delete(position);
+                        break;
+                }
+            }
+        });
+        applyItemAdapter = new ApplyUndoneAdapter(R.layout.layout_item_apply_undone, listBeans);
         applyItemAdapter.bindToRecyclerView(binding.recycelView);
         applyItemAdapter.setLoadMoreView(new CustomLoadMoreView());
         applyItemAdapter.setEmptyView(R.layout.layout_recyclerview_empty);
@@ -153,6 +168,27 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
                         if (binding.refreshLayout.isRefreshing()) {
                             binding.refreshLayout.setRefreshing(false);
                         }
+                    }
+                });
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param position
+     */
+    private void delete(final int position) {
+        int id = listBeans.get(position).getId();
+        RxHttp.getApi(RepairApi.class)
+                .deleteOrder(id)
+                .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(RxUtils.<BaseEntity>bindToLifecycle(this))
+                .subscribe(new EntityObserver<BaseEntity>(this) {
+                    @Override
+                    public void onSuccess(BaseEntity entity) {
+                        ToastUtils.showToast(entity.getMsg());
+                        listBeans.remove(position);
+                        applyItemAdapter.notifyDataSetChanged();
                     }
                 });
     }

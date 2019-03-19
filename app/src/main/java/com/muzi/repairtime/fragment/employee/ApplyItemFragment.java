@@ -1,4 +1,4 @@
-package com.muzi.repairtime.fragment.apply;
+package com.muzi.repairtime.fragment.employee;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -83,6 +83,7 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
             }
         });
         binding.recycelView.setLayoutManager(new ExLinearLayoutManger(getContext()));
+        switchStatus();
         applyItemAdapter = new ApplyItemAdapter(R.layout.layout_item_apply, listBeans);
         applyItemAdapter.bindToRecyclerView(binding.recycelView);
         applyItemAdapter.setLoadMoreView(new CustomLoadMoreView());
@@ -98,6 +99,10 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
                 }
             }
         }, binding.recycelView);
+
+    }
+
+    private void switchStatus() {
 
     }
 

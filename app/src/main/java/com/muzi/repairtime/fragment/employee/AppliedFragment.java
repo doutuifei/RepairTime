@@ -1,4 +1,4 @@
-package com.muzi.repairtime.fragment.apply;
+package com.muzi.repairtime.fragment.employee;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -51,7 +51,7 @@ public class AppliedFragment extends BaseFragment<FragmentAppliedBinding, BaseVi
         titles[4] = "维修中";
 
         fragments[0] = ApplyItemFragment.getInstance("");
-        fragments[1] = ApplyItemFragment.getInstance("1");
+        fragments[1] = ApplyUndoneFragment.getInstance("1");
         fragments[2] = ApplyItemFragment.getInstance("3");
         fragments[3] = ApplyItemFragment.getInstance("4");
         fragments[4] = ApplyItemFragment.getInstance("2");

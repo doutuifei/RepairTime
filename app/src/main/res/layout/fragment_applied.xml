@@ -5,9 +5,6 @@
 
     <data>
 
-        <variable
-            name="viewModel"
-            type="com.muzi.repairtime.fragment.apply.AppliedViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

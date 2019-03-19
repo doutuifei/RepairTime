@@ -4,10 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <variable
-            name="viewModel"
-            type="com.muzi.repairtime.fragment.apply.ApplyItemViewModel" />
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout
