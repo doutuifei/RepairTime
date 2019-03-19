@@ -98,7 +98,7 @@ public class ApplyListFragment extends BaseFragment<FragmentApplyListBinding, Ba
                 }
             }
         });
-        adapter = new ApplyTakeAdapter(R.layout.layout_item_apply_take, listBeans);
+        adapter = new ApplyTakeAdapter(listBeans);
         adapter.bindToRecyclerView(binding.recycelView);
         adapter.setLoadMoreView(new CustomLoadMoreView());
         adapter.setEmptyView(R.layout.layout_recyclerview_empty);
