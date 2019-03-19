@@ -2,8 +2,7 @@ package com.muzi.repairtime.activity.main;
 
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.fragment.NoticeFragment;
-import com.muzi.repairtime.fragment.apply.AppliedFragment;
-import com.muzi.repairtime.fragment.apply.ApplyFragment;
+import com.muzi.repairtime.fragment.maintenance.ApplyListFragment;
 import com.muzi.repairtime.fragment.psd.ChangePsdFragment;
 import com.muzi.repairtime.fragment.user.UserInfoFragment;
 
@@ -19,7 +18,7 @@ public class MaintenanceActivity extends MainActivity {
 
     @Override
     public int getMenuId() {
-        return R.menu.activity_main_drawer;
+        return R.menu.menu_maintenance;
     }
 
     @Override
@@ -27,8 +26,7 @@ public class MaintenanceActivity extends MainActivity {
         SupportFragment[] fragments = new SupportFragment[]{
                 UserInfoFragment.getInstance(),
                 NoticeFragment.getInstance(),
-                ApplyFragment.getInstance(),
-                AppliedFragment.getInstance(),
+                ApplyListFragment.getInstance(),
                 ChangePsdFragment.getInstance()
         };
         return fragments;
@@ -40,7 +38,6 @@ public class MaintenanceActivity extends MainActivity {
                 R.id.nav_info,
                 R.id.nav_notice,
                 R.id.nav_apply,
-                R.id.nav_applied,
                 R.id.nav_change_psd
         };
         return ids;

@@ -19,7 +19,7 @@ public class AdministratorActivity extends MainActivity {
 
     @Override
     public int getMenuId() {
-        return R.menu.activity_main_drawer;
+        return R.menu.menu_employee;
     }
 
     @Override

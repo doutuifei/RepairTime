@@ -1,24 +1,29 @@
-package com.muzi.repairtime.fragment.employee;
+package com.muzi.repairtime.fragment.maintenance;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.activity.base.BaseViewModel;
-import com.muzi.repairtime.adapter.ApplyItemAdapter;
-import com.muzi.repairtime.databinding.FragmentItemApplyBinding;
+import com.muzi.repairtime.adapter.ApplyTakeAdapter;
+import com.muzi.repairtime.databinding.FragmentApplyListBinding;
+import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.entity.RepairEntity;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.RepairApi;
 import com.muzi.repairtime.manager.ExLinearLayoutManger;
 import com.muzi.repairtime.observer.BaseObserver;
+import com.muzi.repairtime.observer.EntityObserver;
+import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.CustomLoadMoreView;
 
 import java.util.ArrayList;
@@ -29,29 +34,27 @@ import io.reactivex.functions.Function;
 
 /**
  * 作者: lipeng
- * 时间: 2019/3/13
+ * 时间: 2019/3/12
  * 邮箱: lipeng@moyi365.com
- * 功能:
+ * 功能: 申请列表
  */
-public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, BaseViewModel> {
+public class ApplyListFragment extends BaseFragment<FragmentApplyListBinding, BaseViewModel> {
 
-    private String status;
     private int currentPage = 1;
     private int totalPage = 1;
-    private ApplyItemAdapter applyItemAdapter;
+    private ApplyTakeAdapter adapter;
     private List<RepairEntity.PagesBean.ListBean> listBeans = new ArrayList<>();
 
-    public static ApplyItemFragment getInstance(String status) {
-        ApplyItemFragment fragment = new ApplyItemFragment();
+    public static ApplyListFragment getInstance() {
+        ApplyListFragment fragment = new ApplyListFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("status", status);
         fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return R.layout.fragment_item_apply;
+        return R.layout.fragment_apply_list;
     }
 
     @Override
@@ -60,14 +63,16 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
     }
 
     @Override
-    public void initParam(Bundle bundle) {
-        super.initParam(bundle);
-        status = bundle.getString("status");
+    public void initData() {
+        super.initData();
     }
 
     @Override
     public void initView() {
         super.initView();
+        binding.toolbar.setTitle("申请列表");
+        initToolbarNav(binding.toolbar);
+
         binding.refreshLayout.setProgressBackgroundColorSchemeColor(Color.WHITE);
         binding.refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         binding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -77,28 +82,37 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
                     currentPage = 1;
                     totalPage = 1;
                     listBeans.clear();
-                    applyItemAdapter.setNewData(listBeans);
+                    adapter.setNewData(listBeans);
                 }
                 getData();
             }
         });
         binding.recycelView.setLayoutManager(new ExLinearLayoutManger(getContext()));
-        applyItemAdapter = new ApplyItemAdapter(R.layout.layout_item_apply, listBeans);
-        applyItemAdapter.bindToRecyclerView(binding.recycelView);
-        applyItemAdapter.setLoadMoreView(new CustomLoadMoreView());
-        applyItemAdapter.setEmptyView(R.layout.layout_recyclerview_empty);
-        applyItemAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        binding.recycelView.addOnItemTouchListener(new OnItemChildClickListener() {
+            @Override
+            public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.btn_take:
+                        takeOrder(position);
+                        break;
+                }
+            }
+        });
+        adapter = new ApplyTakeAdapter(R.layout.layout_item_apply_take, listBeans);
+        adapter.bindToRecyclerView(binding.recycelView);
+        adapter.setLoadMoreView(new CustomLoadMoreView());
+        adapter.setEmptyView(R.layout.layout_recyclerview_empty);
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 if (currentPage < totalPage) {
                     currentPage++;
                     getData();
                 } else {
-                    applyItemAdapter.loadMoreEnd();
+                    adapter.loadMoreEnd();
                 }
             }
         }, binding.recycelView);
-
     }
 
     @Override
@@ -113,7 +127,7 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
      */
     private void getData() {
         RxHttp.getApi(RepairApi.class)
-                .getMyRepair(currentPage, status)
+                .repairerOrder(currentPage)
                 .doOnNext(new Consumer<RepairEntity>() {
                     @Override
                     public void accept(RepairEntity repairEntity) throws Exception {
@@ -133,17 +147,17 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
                     public void onNext(List<RepairEntity.PagesBean.ListBean> list) {
                         super.onNext(listBeans);
                         listBeans.addAll(list);
-                        applyItemAdapter.notifyDataSetChanged();
-                        if (applyItemAdapter.isLoading()) {
-                            applyItemAdapter.loadMoreComplete();
+                        adapter.notifyDataSetChanged();
+                        if (adapter.isLoading()) {
+                            adapter.loadMoreComplete();
                         }
                     }
 
                     @Override
                     public void onError(String msg) {
                         super.onError(msg);
-                        if (applyItemAdapter.isLoading()) {
-                            applyItemAdapter.loadMoreFail();
+                        if (adapter.isLoading()) {
+                            adapter.loadMoreFail();
                         }
                     }
 
@@ -153,6 +167,28 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
                         if (binding.refreshLayout.isRefreshing()) {
                             binding.refreshLayout.setRefreshing(false);
                         }
+                    }
+                });
+    }
+
+
+    /**
+     * 接单
+     *
+     * @param position
+     */
+    private void takeOrder(final int position) {
+        int id = listBeans.get(position).getId();
+        RxHttp.getApi(RepairApi.class)
+                .takeOrder(id)
+                .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(RxUtils.<BaseEntity>bindToLifecycle(this))
+                .subscribe(new EntityObserver<BaseEntity>(this) {
+                    @Override
+                    public void onSuccess(BaseEntity entity) {
+                        ToastUtils.showToast(entity.getMsg());
+                        listBeans.remove(position);
+                        adapter.notifyDataSetChanged();
                     }
                 });
     }

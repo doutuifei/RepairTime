@@ -76,4 +76,24 @@ public interface RepairApi {
     @POST("order/deleteOrder")
     Observable<BaseEntity> deleteOrder(@Field("id") int id);
 
+
+    /**
+     * 维修员查看申请列表
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("order/repairerOrder")
+    Observable<RepairEntity> repairerOrder(@Field("currentPage") int currentPage);
+
+    /**
+     * 维修员接单
+     *
+     * @param id
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("order/takeOrder")
+    Observable<BaseEntity> takeOrder(@Field("id") int id);
+
 }
