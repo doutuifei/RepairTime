@@ -1,5 +1,7 @@
 package com.muzi.repairtime.entity;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.util.List;
 
 /**
@@ -12,45 +14,45 @@ public class RepairEntity {
 
     /**
      * {
-     * 	"listName": "pages",
-     * 	"pages": {
-     * 		"list": [
-     *                        {
-     * 				"id": 83,
-     * 				"reportgroup": "心血管内科",
-     * 				"pic": null,
-     * 				"reporter": "AA",
-     * 				"reporterphone": "11111111111",
-     * 				"repair_fir": "硬件",
-     * 				"repair_sec": "计算机主机",
-     * 				"reporttime": 1552449602000,
-     * 				"problem": "测试一波",
-     * 				"acceptordertime": null,
-     * 				"repairer": null,
-     * 				"repairerphone": null,
-     * 				"orderstatus": "未接单",
-     * 				"status_id": 1,
-     * 				"finishtime": null,
-     * 				"consumersatisfaction": null,
-     * 				"cs_id": null
-     *            }
-     * 		],
-     * 		"totalRecord": 38,
-     * 		"pageSize": 8,
-     * 		"totalPage": 5,
-     * 		"currentPage": 1,
-     * 		"previousPage": 1,
-     * 		"nextPage": 2,
-     * 		"pageBar": [
-     * 			1,
-     * 			2,
-     * 			3,
-     * 			4,
-     * 			5
-     * 		],
-     * 		"startIndex": 0,
-     * 		"endIndex": 8
-     * 	}
+     * "listName": "pages",
+     * "pages": {
+     * "list": [
+     * {
+     * "id": 83,
+     * "reportgroup": "心血管内科",
+     * "pic": null,
+     * "reporter": "AA",
+     * "reporterphone": "11111111111",
+     * "repair_fir": "硬件",
+     * "repair_sec": "计算机主机",
+     * "reporttime": 1552449602000,
+     * "problem": "测试一波",
+     * "acceptordertime": null,
+     * "repairer": null,
+     * "repairerphone": null,
+     * "orderstatus": "未接单",
+     * "status_id": 1,
+     * "finishtime": null,
+     * "consumersatisfaction": null,
+     * "cs_id": null
+     * }
+     * ],
+     * "totalRecord": 38,
+     * "pageSize": 8,
+     * "totalPage": 5,
+     * "currentPage": 1,
+     * "previousPage": 1,
+     * "nextPage": 2,
+     * "pageBar": [
+     * 1,
+     * 2,
+     * 3,
+     * 4,
+     * 5
+     * ],
+     * "startIndex": 0,
+     * "endIndex": 8
+     * }
      * }
      */
 
@@ -106,7 +108,7 @@ public class RepairEntity {
             this.list = list;
         }
 
-        public static class ListBean {
+        public static class ListBean implements MultiItemEntity {
             /**
              * id : 83
              * reportgroup : 心血管内科
@@ -279,6 +281,21 @@ public class RepairEntity {
 
             public void setCs_id(int cs_id) {
                 this.cs_id = cs_id;
+            }
+
+            @Override
+            public int getItemType() {
+                switch (orderstatus) {
+                    case "未接单":
+                        return 1;
+                    case "已完成":
+                        return 3;
+                    case "未完成":
+                        return 4;
+                    case "维修中":
+                        return 2;
+                }
+                return 0;
             }
         }
     }

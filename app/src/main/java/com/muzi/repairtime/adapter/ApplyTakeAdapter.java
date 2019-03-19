@@ -13,7 +13,7 @@ import java.util.List;
  * 作者: lipeng
  * 时间: 2019/3/13
  * 邮箱: lipeng@moyi365.com
- * 功能: 未完成
+ * 功能: 维修员接单
  */
 public class ApplyTakeAdapter extends BaseQuickAdapter<RepairEntity.PagesBean.ListBean, BaseViewHolder> {
 

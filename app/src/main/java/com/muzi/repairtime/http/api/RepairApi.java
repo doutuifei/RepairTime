@@ -55,7 +55,7 @@ public interface RepairApi {
      *
      * @param currentPage
      * @param status      :全部
-     *                    1：未完成
+     *                    1：未接单
      *                    3：已完成
      *                    4：未完成
      *                    2：维修中

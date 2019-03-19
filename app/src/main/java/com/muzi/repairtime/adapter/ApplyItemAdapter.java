@@ -1,13 +1,14 @@
 package com.muzi.repairtime.adapter;
 
-import android.support.annotation.Nullable;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.entity.RepairEntity;
+import com.muzi.repairtime.utils.StringUtils;
 
 import java.util.List;
+
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
  * 作者: lipeng
@@ -15,16 +16,74 @@ import java.util.List;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public class ApplyItemAdapter extends BaseQuickAdapter<RepairEntity.PagesBean.ListBean, BaseViewHolder> {
+public class ApplyItemAdapter extends BaseMultiItemQuickAdapter<RepairEntity.PagesBean.ListBean, BaseViewHolder> {
 
-    public ApplyItemAdapter(int layoutResId, @Nullable List<RepairEntity.PagesBean.ListBean> data) {
-        super(layoutResId, data);
+    private onRatingBar onRatingBar;
+
+    public ApplyItemAdapter(List<RepairEntity.PagesBean.ListBean> data) {
+        super(data);
+        //未接单
+        addItemType(1, R.layout.layout_item_apply_untake);
+        //维修中
+        addItemType(2, R.layout.layout_item_apply_repairing);
+        //已完成
+        addItemType(3, R.layout.layout_item_apply_finished);
+        //未完成
+        addItemType(4, R.layout.layout_item_apply_unfinished);
+    }
+
+    public void setOnRatingBar(onRatingBar onRatingBar) {
+        this.onRatingBar = onRatingBar;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, RepairEntity.PagesBean.ListBean item) {
+    protected void convert(final BaseViewHolder helper, RepairEntity.PagesBean.ListBean item) {
         helper.setText(R.id.tv_project, item.getRepair_fir());
         helper.setText(R.id.tv_problem, item.getProblem());
+        switch (item.getItemType()) {
+            case 1:
+                //未接单
+                helper.addOnClickListener(R.id.btn_delete);
+                break;
+            case 2:
+                //维修中
+                helper.addOnClickListener(R.id.btn_finished);
+                helper.addOnClickListener(R.id.btn_unfinished);
+                break;
+            case 3:
+                //已完成
+                /**
+                 * 没有评价
+                 */
+                MaterialRatingBar ratingBar = helper.getView(R.id.ratingBar);
+                if (StringUtils.isEmpty(item.getConsumersatisfaction())) {
+                    ratingBar.setProgress(0);
+                    ratingBar.setEnabled(true);
+                    helper.setGone(R.id.tv_ratingBar, true);
+                    ratingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
+                        @Override
+                        public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
+                            if (onRatingBar != null) {
+                                onRatingBar.rating(helper.getLayoutPosition(), rating);
+                            }
+                        }
+                    });
+                } else {
+                    helper.setGone(R.id.tv_ratingBar, false);
+                    ratingBar.setProgress(item.getCs_id());
+                    ratingBar.setEnabled(false);
+                }
+                break;
+            case 4:
+                //未完成
+                break;
+        }
+    }
+
+    public interface onRatingBar {
+
+        void rating(int position, float rating);
+
     }
 
 }

@@ -11,6 +11,7 @@ import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.adapter.ViewPagerAdapter;
 import com.muzi.repairtime.databinding.FragmentAppliedBinding;
+import com.muzi.repairtime.fragment.employee.ApplyItemFragment;
 
 /**
  * 作者: lipeng
