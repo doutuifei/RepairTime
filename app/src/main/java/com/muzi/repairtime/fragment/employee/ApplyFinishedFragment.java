@@ -5,15 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.activity.base.BaseViewModel;
-import com.muzi.repairtime.adapter.ApplyRepairingAdapter;
+import com.muzi.repairtime.adapter.ApplyFinishedAdapter;
 import com.muzi.repairtime.databinding.FragmentItemApplyBinding;
 import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.entity.RepairEntity;
@@ -36,18 +34,18 @@ import io.reactivex.functions.Function;
  * 作者: lipeng
  * 时间: 2019/3/13
  * 邮箱: lipeng@moyi365.com
- * 功能: 维修中
+ * 功能: 已完成
  */
-public class ApplyRepairingFragment extends BaseFragment<FragmentItemApplyBinding, BaseViewModel> {
+public class ApplyFinishedFragment extends BaseFragment<FragmentItemApplyBinding, BaseViewModel> {
 
     private String status;
     private int currentPage = 1;
     private int totalPage = 1;
-    private ApplyRepairingAdapter adapter;
+    private ApplyFinishedAdapter adapter;
     private List<RepairEntity.PagesBean.ListBean> listBeans = new ArrayList<>();
 
-    public static ApplyRepairingFragment getInstance(String status) {
-        ApplyRepairingFragment fragment = new ApplyRepairingFragment();
+    public static ApplyFinishedFragment getInstance(String status) {
+        ApplyFinishedFragment fragment = new ApplyFinishedFragment();
         Bundle bundle = new Bundle();
         bundle.putString("status", status);
         fragment.setArguments(bundle);
@@ -88,20 +86,14 @@ public class ApplyRepairingFragment extends BaseFragment<FragmentItemApplyBindin
             }
         });
         binding.recycelView.setLayoutManager(new ExLinearLayoutManger(getContext()));
-        binding.recycelView.addOnItemTouchListener(new OnItemChildClickListener() {
+
+        adapter = new ApplyFinishedAdapter(R.layout.layout_item_apply_finished, listBeans);
+        adapter.setOnRatingBar(new ApplyFinishedAdapter.onRatingBar() {
             @Override
-            public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()) {
-                    case R.id.btn_finished:
-                        finishOrder(position, true);
-                        break;
-                    case R.id.btn_unfinished:
-                        finishOrder(position, false);
-                        break;
-                }
+            public void rating(int position, float rating) {
+                evaluateOrder(position, (int) rating);
             }
         });
-        adapter = new ApplyRepairingAdapter(R.layout.layout_item_apply_repairing, listBeans);
         adapter.bindToRecyclerView(binding.recycelView);
         adapter.setLoadMoreView(new CustomLoadMoreView());
         adapter.setEmptyView(R.layout.layout_recyclerview_empty);
@@ -176,21 +168,21 @@ public class ApplyRepairingFragment extends BaseFragment<FragmentItemApplyBindin
     }
 
     /**
-     * 删除订单
+     * 评价订单
      *
      * @param position
      */
-    private void finishOrder(final int position, boolean status) {
+    private void evaluateOrder(final int position, final int star) {
         int id = listBeans.get(position).getId();
         RxHttp.getApi(RepairApi.class)
-                .finishOrder(id, status)
+                .evaluateOrder(id, star)
                 .compose(RxUtils.<BaseEntity>scheduling())
                 .compose(RxUtils.<BaseEntity>bindToLifecycle(this))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {
+                        listBeans.get(position).setCs_id(star);
                         ToastUtils.showToast(entity.getMsg());
-                        listBeans.remove(position);
                         adapter.notifyDataSetChanged();
                     }
                 });

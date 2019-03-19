@@ -89,6 +89,17 @@ public interface RepairApi {
     Observable<BaseEntity> finishOrder(@Field("id") int id, @Field("egis") boolean egis);
 
     /**
+     * 用户评价订单
+     *
+     * @param id
+     * @param star
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("order/evaluateOrder")
+    Observable<BaseEntity> evaluateOrder(@Field("id") int id, @Field("repair_satisfactions_cs_id") int star);
+
+    /**
      * 维修员查看申请列表
      *
      * @return

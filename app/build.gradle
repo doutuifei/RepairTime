@@ -80,4 +80,6 @@ dependencies {
 
     //fragmentation
     implementation ext.dependencies['fragmentation']
+
+    implementation ext.dependencies['materialratingbar']
 }

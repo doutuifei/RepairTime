@@ -142,8 +142,8 @@ public class RepairEntity {
             private String orderstatus;
             private int status_id;
             private Object finishtime;
-            private Object consumersatisfaction;
-            private Object cs_id;
+            private String consumersatisfaction;
+            private int cs_id;
 
             public int getId() {
                 return id;
@@ -265,19 +265,19 @@ public class RepairEntity {
                 this.finishtime = finishtime;
             }
 
-            public Object getConsumersatisfaction() {
+            public String getConsumersatisfaction() {
                 return consumersatisfaction;
             }
 
-            public void setConsumersatisfaction(Object consumersatisfaction) {
+            public void setConsumersatisfaction(String consumersatisfaction) {
                 this.consumersatisfaction = consumersatisfaction;
             }
 
-            public Object getCs_id() {
+            public int getCs_id() {
                 return cs_id;
             }
 
-            public void setCs_id(Object cs_id) {
+            public void setCs_id(int cs_id) {
                 this.cs_id = cs_id;
             }
         }

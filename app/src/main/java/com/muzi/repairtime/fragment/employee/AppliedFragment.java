@@ -52,7 +52,7 @@ public class AppliedFragment extends BaseFragment<FragmentAppliedBinding, BaseVi
 
         fragments[0] = ApplyItemFragment.getInstance("");
         fragments[1] = ApplyUndoneFragment.getInstance("1");
-        fragments[2] = ApplyItemFragment.getInstance("3");
+        fragments[2] = ApplyFinishedFragment.getInstance("3");
         fragments[3] = ApplyItemFragment.getInstance("4");
         fragments[4] = ApplyRepairingFragment.getInstance("2");
     }
