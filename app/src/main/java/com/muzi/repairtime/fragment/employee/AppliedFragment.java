@@ -54,7 +54,7 @@ public class AppliedFragment extends BaseFragment<FragmentAppliedBinding, BaseVi
         fragments[1] = ApplyUndoneFragment.getInstance("1");
         fragments[2] = ApplyItemFragment.getInstance("3");
         fragments[3] = ApplyItemFragment.getInstance("4");
-        fragments[4] = ApplyItemFragment.getInstance("2");
+        fragments[4] = ApplyRepairingFragment.getInstance("2");
     }
 
     @Override

@@ -37,7 +37,7 @@ public interface RepairApi {
     Observable<ProjectItemEntity> getProjectItemList(@Field("repair_fir_id") int id);
 
     /**
-     * 提交申请
+     * 用户提交申请
      *
      * @param project
      * @param item
@@ -67,7 +67,7 @@ public interface RepairApi {
                                          @Field("status") String status);
 
     /**
-     * 删除订单
+     * 用户删除订单
      *
      * @param id
      * @return
@@ -76,6 +76,17 @@ public interface RepairApi {
     @POST("order/deleteOrder")
     Observable<BaseEntity> deleteOrder(@Field("id") int id);
 
+    /**
+     * 修改订单状态
+     *
+     * @param id
+     * @param egis true:完成
+     *             false:未完成
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("order/finishOrder")
+    Observable<BaseEntity> finishOrder(@Field("id") int id, @Field("egis") boolean egis);
 
     /**
      * 维修员查看申请列表
