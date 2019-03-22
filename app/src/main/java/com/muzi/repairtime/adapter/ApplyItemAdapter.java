@@ -4,7 +4,6 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.entity.RepairEntity;
-import com.muzi.repairtime.utils.StringUtils;
 
 import java.util.List;
 
@@ -56,21 +55,25 @@ public class ApplyItemAdapter extends BaseMultiItemQuickAdapter<RepairEntity.Pag
                  * 没有评价
                  */
                 MaterialRatingBar ratingBar = helper.getView(R.id.ratingBar);
-                if (StringUtils.isEmpty(item.getConsumersatisfaction())) {
+                if (item.getCs_id() == -1) {
                     ratingBar.setProgress(0);
+                    if (ratingBar.getOnRatingChangeListener() == null) {
+                        ratingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
+                            @Override
+                            public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
+                                int position = helper.getLayoutPosition();
+                                if (onRatingBar != null) {
+                                    onRatingBar.rating(position, rating);
+                                }
+                            }
+                        });
+                    }
                     ratingBar.setEnabled(true);
                     helper.setGone(R.id.tv_ratingBar, true);
-                    ratingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
-                        @Override
-                        public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
-                            if (onRatingBar != null) {
-                                onRatingBar.rating(helper.getLayoutPosition(), rating);
-                            }
-                        }
-                    });
                 } else {
-                    helper.setGone(R.id.tv_ratingBar, false);
+                    ratingBar.setOnRatingChangeListener(null);
                     ratingBar.setProgress(item.getCs_id());
+                    helper.setGone(R.id.tv_ratingBar, false);
                     ratingBar.setEnabled(false);
                 }
                 break;

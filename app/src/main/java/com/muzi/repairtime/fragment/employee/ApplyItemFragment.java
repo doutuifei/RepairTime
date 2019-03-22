@@ -112,7 +112,7 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
         });
         binding.recycelView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
-            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, final int position) {
                 switch (view.getId()) {
                     case R.id.btn_delete:
                         deleteOrder(position);

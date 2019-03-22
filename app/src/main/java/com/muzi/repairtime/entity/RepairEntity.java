@@ -145,7 +145,7 @@ public class RepairEntity {
             private int status_id;
             private Object finishtime;
             private String consumersatisfaction;
-            private int cs_id;
+            private int cs_id = -1;
 
             public int getId() {
                 return id;

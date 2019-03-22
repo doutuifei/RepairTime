@@ -27,59 +27,44 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation ext.dependencies['design']
+    implementation ext.dependencies['cardview']
     implementation ext.dependencies['appcompat']
     implementation ext.dependencies['constraintlayout']
-
     //retrofit2
     implementation ext.dependencies['retrofit']
     implementation ext.dependencies['converter-gson']
     implementation ext.dependencies['adapter-rxjava2']
-
     //gson
     implementation ext.dependencies['gson']
-
     //okhttp3
     implementation ext.dependencies['okhttp']
     implementation ext.dependencies['logging-interceptor']
-
     //Rxjava2
     implementation ext.dependencies['rxjava']
     implementation ext.dependencies['rxandroid']
-
     //Rxbinding
     implementation ext.dependencies['rxbinding']
-
     //RxLifecycle
     implementation ext.dependencies['rxlifecycle']
     implementation ext.dependencies['rxlifecycle-components']
-
     implementation ext.dependencies['lifecycle-extensions']
     annotationProcessor ext.dependencies['lifecycle-compiler']
-
     //Glide
     implementation ext.dependencies['glide']
     annotationProcessor ext.dependencies['glide-compiler']
-
     //circleimageview
     implementation ext.dependencies['circleimageview']
-
     //RvAdapterHelper
     implementation ext.dependencies['BaseRecyclerViewAdapterHelper']
-
     //MMKV
     implementation ext.dependencies['mmkv']
-
     //autosize
     implementation ext.dependencies['autosize']
-
     //PersistentCookieJar
     implementation ext.dependencies['persistentCookieJar']
-
     //fragmentation
     implementation ext.dependencies['fragmentation']
-
     implementation ext.dependencies['materialratingbar']
 }
