@@ -2,8 +2,8 @@ package com.muzi.repairtime.activity.main;
 
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.fragment.NoticeFragment;
-import com.muzi.repairtime.fragment.apply.AppliedFragment;
 import com.muzi.repairtime.fragment.apply.ApplyFragment;
+import com.muzi.repairtime.fragment.maintenance.AuditFragment;
 import com.muzi.repairtime.fragment.psd.ChangePsdFragment;
 import com.muzi.repairtime.fragment.user.UserInfoFragment;
 
@@ -19,16 +19,16 @@ public class AdministratorActivity extends MainActivity {
 
     @Override
     public int getMenuId() {
-        return R.menu.menu_employee;
+        return R.menu.menu_administrator;
     }
 
     @Override
     public SupportFragment[] getFragments() {
         SupportFragment[] fragments = new SupportFragment[]{
                 UserInfoFragment.getInstance(),
+                AuditFragment.getInstance(),
                 NoticeFragment.getInstance(),
                 ApplyFragment.getInstance(),
-                AppliedFragment.getInstance(),
                 ChangePsdFragment.getInstance()
         };
         return fragments;
@@ -38,14 +38,13 @@ public class AdministratorActivity extends MainActivity {
     public int[] getNavIds() {
         int[] ids = new int[]{
                 R.id.nav_info,
+                R.id.nav_audit,
                 R.id.nav_notice,
                 R.id.nav_apply,
-                R.id.nav_applied,
                 R.id.nav_change_psd
         };
         return ids;
     }
-
 
     @Override
     public int getFirst() {

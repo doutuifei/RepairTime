@@ -53,7 +53,7 @@ public class StringUtils {
      * @return
      */
     public static boolean isPhone(String phone) {
-        String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}$";
+        String regex = "^[1]([3-9])[0-9]{9}$";
         if (phone.length() != 11) {
             return false;
         } else {

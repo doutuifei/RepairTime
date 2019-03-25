@@ -83,7 +83,7 @@ public class AppliedFragment1 extends BaseFragment<FragmentApplied1Binding, Base
                 }
             });
         }
-        applyItemPop.showAsDropDown(binding.btnMore, -20, 20);
+        applyItemPop.showAsDropDown(binding.btnMore);
     }
 
 }

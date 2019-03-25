@@ -11,60 +11,61 @@
 
         <RadioGroup
             android:id="@+id/rg"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:orientation="vertical">
 
             <RadioButton
                 android:id="@+id/tb1"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:button="@null"
-                android:checked="true"
                 android:gravity="center"
+                android:paddingLeft="10dp"
+                android:checked="true"
                 android:text="全部"
-                android:textColor="#999999" />
+                android:textColor="#666666" />
 
             <RadioButton
                 android:id="@+id/tb2"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:button="@null"
                 android:gravity="center"
+                android:paddingLeft="10dp"
                 android:text="未接单"
-                android:textColor="#999999" />
+                android:textColor="#666666" />
 
             <RadioButton
                 android:id="@+id/tb3"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:button="@null"
                 android:gravity="center"
+                android:paddingLeft="10dp"
                 android:text="已完成"
-                android:textColor="#999999" />
+                android:textColor="#666666" />
 
             <RadioButton
                 android:id="@+id/tb4"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:button="@null"
                 android:gravity="center"
+                android:paddingLeft="10dp"
                 android:text="未完成"
-                android:textColor="#999999" />
+                android:textColor="#666666" />
 
             <RadioButton
                 android:id="@+id/tb5"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:button="@null"
                 android:gravity="center"
+                android:paddingLeft="10dp"
                 android:text="维修中"
-                android:textColor="#999999" />
+                android:textColor="#666666" />
 
         </RadioGroup>
 

@@ -156,6 +156,7 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
                     }
                 })
                 .compose(RxUtils.<List<RepairEntity.PagesBean.ListBean>>scheduling())
+                .compose(RxUtils.<List<RepairEntity.PagesBean.ListBean>>bindToLifecycle(this))
                 .subscribe(new BaseObserver<List<RepairEntity.PagesBean.ListBean>>() {
                     @Override
                     public void onNext(List<RepairEntity.PagesBean.ListBean> list) {

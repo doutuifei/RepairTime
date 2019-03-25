@@ -13,17 +13,17 @@
             android:icon="@mipmap/ic_launcher_round"
             android:title="基本信息" />
         <item
+            android:id="@+id/nav_audit"
+            android:icon="@mipmap/ic_launcher_round"
+            android:title="人员审核" />
+        <item
             android:id="@+id/nav_notice"
             android:icon="@mipmap/ic_launcher_round"
-            android:title="公告" />
+            android:title="公告发布" />
         <item
             android:id="@+id/nav_apply"
             android:icon="@mipmap/ic_launcher_round"
-            android:title="维修申请" />
-        <item
-            android:id="@+id/nav_applied"
-            android:icon="@mipmap/ic_launcher_round"
-            android:title="我的申请" />
+            android:title="维修统计" />
         <item
             android:id="@+id/nav_change_psd"
             android:icon="@mipmap/ic_launcher_round"
