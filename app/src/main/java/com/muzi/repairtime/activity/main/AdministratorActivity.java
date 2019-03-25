@@ -1,8 +1,8 @@
 package com.muzi.repairtime.activity.main;
 
 import com.muzi.repairtime.R;
-import com.muzi.repairtime.fragment.NoticeFragment;
-import com.muzi.repairtime.fragment.apply.ApplyFragment;
+import com.muzi.repairtime.fragment.admin.PubNoticeFragment;
+import com.muzi.repairtime.fragment.admin.StatisticApplyFragment;
 import com.muzi.repairtime.fragment.maintenance.AuditFragment;
 import com.muzi.repairtime.fragment.psd.ChangePsdFragment;
 import com.muzi.repairtime.fragment.user.UserInfoFragment;
@@ -27,8 +27,8 @@ public class AdministratorActivity extends MainActivity {
         SupportFragment[] fragments = new SupportFragment[]{
                 UserInfoFragment.getInstance(),
                 AuditFragment.getInstance(),
-                NoticeFragment.getInstance(),
-                ApplyFragment.getInstance(),
+                PubNoticeFragment.getInstance(),
+                StatisticApplyFragment.getInstance(),
                 ChangePsdFragment.getInstance()
         };
         return fragments;

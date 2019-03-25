@@ -2,7 +2,9 @@ package com.muzi.repairtime;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.multidex.MultiDex;
 
 import com.muzi.repairtime.data.DataProxy;
 import com.muzi.repairtime.data.MmkvModel;
@@ -18,6 +20,12 @@ import com.muzi.repairtime.manager.AppManager;
 public class App extends Application {
 
     private static App instance;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     @Override
     public void onCreate() {

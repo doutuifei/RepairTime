@@ -18,6 +18,8 @@ ext {
 
             "cardview"                     : 'com.android.support:cardview-v7:27.1.1',
 
+            "multidex"                     : 'com.android.support:multidex:1.0.1',
+
             //fragmentation
             "fragmentation"                : 'me.yokeyword:fragmentation:1.3.6',
 

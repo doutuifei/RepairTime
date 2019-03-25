@@ -260,7 +260,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     protected OnFragmentOpenDrawerListener mOpenDraweListener;
 
     protected void initToolbarNav(Toolbar toolbar) {
-        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_action_menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
