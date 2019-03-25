@@ -10,11 +10,12 @@
             type="com.muzi.repairtime.fragment.apply.ApplyViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">
@@ -27,13 +28,13 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:titleTextAppearance="@style/Toolbar_TextAppearance_White" />
 
-        </android.support.design.widget.AppBarLayout>
+        </LinearLayout>
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="20dp">
 
             <TextView
@@ -93,6 +94,6 @@
 
         </android.support.constraint.ConstraintLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
 
 </layout>
