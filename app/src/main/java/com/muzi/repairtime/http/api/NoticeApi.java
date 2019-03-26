@@ -3,6 +3,8 @@ package com.muzi.repairtime.http.api;
 import com.muzi.repairtime.entity.NoticeEntity;
 
 import io.reactivex.Observable;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 /**
@@ -18,7 +20,8 @@ public interface NoticeApi {
      *
      * @return
      */
+    @FormUrlEncoded
     @POST("announcement/getAnnouncements")
-    Observable<NoticeEntity> getAnnouncements();
+    Observable<NoticeEntity> getAnnouncements(@Field("currentPage") int currentPage);
 
 }

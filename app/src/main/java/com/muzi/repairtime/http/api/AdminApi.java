@@ -38,4 +38,27 @@ public interface AdminApi {
     Observable<BaseEntity> checkUser(@Field("id") int id,
                                      @Field("egis") boolean egis);
 
+    /**
+     * 发布新公告
+     *
+     * @param title
+     * @param content
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("announcement/addAnnouncement")
+    Observable<BaseEntity> pubNotice(@Field("title") String title,
+                                     @Field("content") String content);
+
+
+    /**
+     * 删除公告
+     *
+     * @param id
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("announcement/deleteAnnouncement")
+    Observable<BaseEntity> delNotice(@Field("id") int id);
+
 }

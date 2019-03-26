@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.activity.base.BaseViewModel;
+import com.muzi.repairtime.activity.detail.NoticeDetailActivity;
 import com.muzi.repairtime.adapter.NoticeAdapter;
 import com.muzi.repairtime.databinding.FragmentNoticeBinding;
 import com.muzi.repairtime.entity.NoticeEntity;
@@ -93,6 +96,15 @@ public class NoticeFragment extends BaseFragment<FragmentNoticeBinding, BaseView
             }
         }, binding.recycelView);
 
+        //查看详情
+        binding.recycelView.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+                NoticeEntity.PagesBean.ListBean listBean = listBeans.get(position);
+                NoticeDetailActivity.startActivity(getContext(), listBean.getTitle(), listBean.getContent());
+            }
+        });
+
     }
 
     @Override
@@ -104,7 +116,7 @@ public class NoticeFragment extends BaseFragment<FragmentNoticeBinding, BaseView
 
     private void getData() {
         RxHttp.getApi(NoticeApi.class)
-                .getAnnouncements()
+                .getAnnouncements(currentPage)
                 .doOnNext(new Consumer<NoticeEntity>() {
                     @Override
                     public void accept(NoticeEntity noticeEntity) throws Exception {

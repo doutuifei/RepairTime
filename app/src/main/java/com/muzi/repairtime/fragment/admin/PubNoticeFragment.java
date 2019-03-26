@@ -1,5 +1,7 @@
 package com.muzi.repairtime.fragment.admin;
 
+import android.app.Dialog;
+import android.arch.lifecycle.Observer;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,19 +13,26 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.muzi.repairtime.R;
-import com.muzi.repairtime.activity.detail.NoticeDetailActivity;
+import com.muzi.repairtime.activity.CreateNoticeActivity;
 import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.activity.base.BaseViewModel;
-import com.muzi.repairtime.adapter.NoticeAdapter;
+import com.muzi.repairtime.activity.detail.NoticeDetailActivity;
+import com.muzi.repairtime.adapter.NoticeAdminAdapter;
 import com.muzi.repairtime.databinding.FragmentPubNoticeBinding;
+import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.entity.NoticeEntity;
+import com.muzi.repairtime.event.EventConstan;
+import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
+import com.muzi.repairtime.http.api.AdminApi;
 import com.muzi.repairtime.http.api.NoticeApi;
+import com.muzi.repairtime.interfaces.onSwipeListener;
 import com.muzi.repairtime.manager.ExLinearLayoutManger;
 import com.muzi.repairtime.observer.BaseObserver;
-import com.muzi.repairtime.utils.ToastUtils;
+import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.widget.CustomLoadMoreView;
+import com.muzi.repairtime.widget.dialog.CommonDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +50,9 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
 
     private int currentPage = 1;
     private int totalPage = 1;
-    private NoticeAdapter adapter;
+    private NoticeAdminAdapter adapter;
     private List<NoticeEntity.PagesBean.ListBean> listBeans = new ArrayList<>();
+    private CommonDialog deleteDialog;
 
     public static PubNoticeFragment getInstance() {
         PubNoticeFragment fragment = new PubNoticeFragment();
@@ -62,6 +72,19 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
     }
 
     @Override
+    public void initViewObservable() {
+        super.initViewObservable();
+        LiveEventBus.get()
+                .with(EventConstan.REFRESH_NOTICE, Object.class)
+                .observe(this, new Observer<Object>() {
+                    @Override
+                    public void onChanged(@Nullable Object o) {
+                        refresh();
+                    }
+                });
+    }
+
+    @Override
     public void initView() {
         super.initView();
         binding.toolbar.setTitle("公告发布");
@@ -71,17 +94,11 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
         binding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!listBeans.isEmpty()) {
-                    currentPage = 1;
-                    totalPage = 1;
-                    listBeans.clear();
-                    adapter.setNewData(listBeans);
-                }
-                getData();
+                refresh();
             }
         });
         binding.recycelView.setLayoutManager(new ExLinearLayoutManger(getContext()));
-        adapter = new NoticeAdapter(R.layout.layout_item_notice, listBeans);
+        adapter = new NoticeAdminAdapter(R.layout.layout_item_admin_notice, listBeans);
         adapter.bindToRecyclerView(binding.recycelView);
         adapter.setLoadMoreView(new CustomLoadMoreView());
         adapter.setEmptyView(R.layout.layout_recyclerview_empty);
@@ -105,7 +122,7 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showToast("新建公告");
+                CreateNoticeActivity.startActivity(getContext());
             }
         });
 
@@ -117,8 +134,15 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
                 NoticeDetailActivity.startActivity(getContext(), listBean.getTitle(), listBean.getContent());
             }
         });
-    }
 
+        //删除公告
+        adapter.setOnDelListener(new onSwipeListener() {
+            @Override
+            public void onDelete(int position) {
+                deleteNoticeDialog(position);
+            }
+        });
+    }
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
@@ -127,9 +151,25 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
         getData();
     }
 
+    /**
+     * 刷新数据
+     */
+    private void refresh() {
+        if (!listBeans.isEmpty()) {
+            currentPage = 1;
+            totalPage = 1;
+            listBeans.clear();
+            adapter.setNewData(listBeans);
+        }
+        getData();
+    }
+
+    /**
+     * 获取公告信息
+     */
     private void getData() {
         RxHttp.getApi(NoticeApi.class)
-                .getAnnouncements()
+                .getAnnouncements(currentPage)
                 .doOnNext(new Consumer<NoticeEntity>() {
                     @Override
                     public void accept(NoticeEntity noticeEntity) throws Exception {
@@ -170,6 +210,50 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
                         if (binding.refreshLayout.isRefreshing()) {
                             binding.refreshLayout.setRefreshing(false);
                         }
+                    }
+                });
+    }
+
+    /**
+     * 删除公告确认弹窗
+     *
+     * @param position
+     */
+    private void deleteNoticeDialog(final int position) {
+        if (deleteDialog == null) {
+            deleteDialog = new CommonDialog.Builder(getContext())
+                    .setTitle("提示")
+                    .setContent("确定要删除这条公告吗？")
+                    .build(new CommonDialog.OnDialogClickListener() {
+                        @Override
+                        public void onCancelClick(View v, Dialog dialog) {
+
+                        }
+
+                        @Override
+                        public void onConfirmClick(View v, Dialog dialog) {
+                            delNotice(position);
+                        }
+                    });
+        }
+        deleteDialog.show();
+    }
+
+    /**
+     * 删除公告
+     *
+     * @param position
+     */
+    private void delNotice(final int position) {
+        RxHttp.getApi(AdminApi.class)
+                .delNotice(listBeans.get(position).getId())
+                .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(RxUtils.<BaseEntity>bindToLifecycle(this))
+                .subscribe(new EntityObserver<BaseEntity>(this) {
+                    @Override
+                    public void onSuccess(BaseEntity entity) {
+                        listBeans.remove(position);
+                        adapter.notifyItemRemoved(position);
                     }
                 });
     }

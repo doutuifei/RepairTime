@@ -194,12 +194,6 @@ public class AuditFragment extends BaseFragment<FragmentAuditBinding, BaseViewMo
                     }
 
                     @Override
-                    public void onError(String msg) {
-                        super.onError(msg);
-                        ToastUtils.showToast(msg);
-                    }
-
-                    @Override
                     public void onComplete() {
                         super.onComplete();
                         refresh();

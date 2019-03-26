@@ -28,17 +28,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- 注册 -->
-        <activity android:name=".activity.register.RegisterActivity" />
-        <!-- 普通员 -->
-        <activity android:name=".activity.main.EmployeeActivity" />
-        <!-- 管理员 -->
-        <activity android:name=".activity.main.AdministratorActivity" />
-        <!-- 维修员 -->
-        <activity android:name=".activity.main.MaintenanceActivity" />
-        <!-- 公告详情 -->
+        </activity> <!-- 注册 -->
+        <activity android:name=".activity.register.RegisterActivity" /> <!-- 普通员 -->
+        <activity android:name=".activity.main.EmployeeActivity" /> <!-- 管理员 -->
+        <activity android:name=".activity.main.AdministratorActivity" /> <!-- 维修员 -->
+        <activity android:name=".activity.main.MaintenanceActivity" /> <!-- 公告详情 -->
         <activity android:name=".activity.detail.NoticeDetailActivity" />
+        <activity
+            android:name=".activity.CreateNoticeActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 
 </manifest>

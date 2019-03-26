@@ -5,9 +5,6 @@
 
     <data>
 
-        <variable
-            name="viewModel"
-            type="com.muzi.repairtime.activity.detail.NoticeDetailViewModel" />
     </data>
 
     <LinearLayout
@@ -29,29 +26,25 @@
                 android:background="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:navigationIcon="@drawable/ic_action_back"
-                app:navigationOnClick="@{viewModel.backCommand}"
                 app:title="公告"
                 app:titleTextAppearance="@style/Toolbar_TextAppearance_White" />
 
         </RelativeLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="@{viewModel.title}"
-            android:textColor="@android:color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            tools:text="标题" />
-
-        <WebView
-            android:id="@+id/webView"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            app:loadHtml="@{viewModel.content}"></WebView>
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@android:color/black" />
+
+        </ScrollView>
 
     </LinearLayout>
 </layout>

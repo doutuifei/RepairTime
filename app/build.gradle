@@ -72,4 +72,9 @@ dependencies {
     //fragmentation
     implementation ext.dependencies['fragmentation']
     implementation ext.dependencies['materialratingbar']
+
+    implementation 'com.lzy.widget:imagepicker:0.5.5'
+    implementation 'com.zzhoujay:html:1.0.1'
+    implementation 'com.zzhoujay.richtext:richtext:3.0.8'
+    implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
 }

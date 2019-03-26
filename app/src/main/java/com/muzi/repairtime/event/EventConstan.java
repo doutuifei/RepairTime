@@ -13,5 +13,10 @@ public class EventConstan {
      */
     public static final String ACCOUNT = "account";
 
+    /**
+     * 刷新公告
+     */
+    public static final String REFRESH_NOTICE = "refresh_notice";
+
 
 }
