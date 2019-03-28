@@ -32,7 +32,8 @@ public interface LoginApi {
     @FormUrlEncoded
     @POST("user/login")
     Observable<LoginEntity> login(@Field("phone") String phone,
-                                  @Field("pass") String psd);
+                                  @Field("pass") String psd,
+                                  @Field("phoneId") String phoneId);
 
     /**
      * 获取科室信息

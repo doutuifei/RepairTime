@@ -23,7 +23,18 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
+                app:navigationIcon="@drawable/ic_action_menu"
+                app:title="维修统计"
                 app:titleTextAppearance="@style/Toolbar_TextAppearance_White" />
+
+            <ImageView
+                android:id="@+id/iv_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:src="@drawable/ic_action_filter" />
 
         </FrameLayout>
 

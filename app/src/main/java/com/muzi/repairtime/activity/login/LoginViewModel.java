@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.activity.main.AdministratorActivity;
@@ -103,7 +104,7 @@ public class LoginViewModel extends BaseViewModel {
             return;
         }
         RxHttp.getApi(LoginApi.class)
-                .login(phone.get(), password.get())
+                .login(phone.get(), password.get(), PushServiceFactory.getCloudPushService().getDeviceId())
                 .compose(RxUtils.<LoginEntity>scheduling())
                 .compose(RxUtils.<LoginEntity>bindToLifecycle(getLifecycleProvider()))
                 .subscribe(new EntityObserver<LoginEntity>(this) {
