@@ -5,6 +5,7 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.muzi.repairtime.App;
 import com.muzi.repairtime.BuildConfig;
+import com.muzi.repairtime.http.interceptor.HeaderInterceptor;
 import com.muzi.repairtime.http.interceptor.NetworkInterceptor;
 import com.muzi.repairtime.http.interceptor.RetryIntercepter;
 
@@ -51,6 +52,7 @@ public class RxHttp {
                 .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 //检查网络状态
                 .addInterceptor(new NetworkInterceptor())
+                .addInterceptor(new HeaderInterceptor())
                 //打印参数
                 .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                     @Override
