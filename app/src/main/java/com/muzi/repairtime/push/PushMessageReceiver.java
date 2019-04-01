@@ -20,7 +20,6 @@ public class PushMessageReceiver extends MessageReceiver {
     public void onNotification(Context context, String title, String summary, Map<String, String> extraMap) {
         super.onNotification(context, title, summary, extraMap);
         Log.e("MyMessageReceiver", "Receive notification, title: " + title + ", summary: " + summary + ", extraMap: " + extraMap);
-
     }
 
     @Override
