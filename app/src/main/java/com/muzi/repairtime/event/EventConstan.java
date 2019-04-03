@@ -18,5 +18,7 @@ public class EventConstan {
      */
     public static final String REFRESH_NOTICE = "refresh_notice";
 
+    public static final String REFRESH_APPLY = "refresh_apply";
+
 
 }

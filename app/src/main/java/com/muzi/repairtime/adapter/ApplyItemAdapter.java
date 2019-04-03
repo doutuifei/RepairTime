@@ -17,7 +17,6 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
  */
 public class ApplyItemAdapter extends BaseMultiItemQuickAdapter<RepairEntity.PagesBean.ListBean, BaseViewHolder> {
 
-    private onRatingBar onRatingBar;
 
     public ApplyItemAdapter(List<RepairEntity.PagesBean.ListBean> data) {
         super(data);
@@ -29,10 +28,6 @@ public class ApplyItemAdapter extends BaseMultiItemQuickAdapter<RepairEntity.Pag
         addItemType(3, R.layout.layout_item_apply_finished);
         //未完成
         addItemType(4, R.layout.layout_item_apply_unfinished);
-    }
-
-    public void setOnRatingBar(onRatingBar onRatingBar) {
-        this.onRatingBar = onRatingBar;
     }
 
     @Override
@@ -61,10 +56,7 @@ public class ApplyItemAdapter extends BaseMultiItemQuickAdapter<RepairEntity.Pag
                         ratingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
                             @Override
                             public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
-                                int position = helper.getLayoutPosition();
-                                if (onRatingBar != null) {
-                                    onRatingBar.rating(position, rating);
-                                }
+
                             }
                         });
                     }
@@ -81,12 +73,6 @@ public class ApplyItemAdapter extends BaseMultiItemQuickAdapter<RepairEntity.Pag
                 //未完成
                 break;
         }
-    }
-
-    public interface onRatingBar {
-
-        void rating(int position, float rating);
-
     }
 
 }
