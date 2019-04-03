@@ -10,23 +10,23 @@
         <item
             android:id="@+id/nav_info"
             android:checked="true"
-            android:icon="@mipmap/ic_launcher_round"
+            android:icon="@mipmap/ic_launcher"
             android:title="基本信息" />
         <item
             android:id="@+id/nav_audit"
-            android:icon="@mipmap/ic_launcher_round"
+            android:icon="@mipmap/ic_launcher"
             android:title="人员审核" />
         <item
             android:id="@+id/nav_notice"
-            android:icon="@mipmap/ic_launcher_round"
+            android:icon="@mipmap/ic_launcher"
             android:title="公告发布" />
         <item
             android:id="@+id/nav_apply"
-            android:icon="@mipmap/ic_launcher_round"
+            android:icon="@mipmap/ic_launcher"
             android:title="维修统计" />
         <item
             android:id="@+id/nav_change_psd"
-            android:icon="@mipmap/ic_launcher_round"
+            android:icon="@mipmap/ic_launcher"
             android:title="修改密码" />
 
     </group>
