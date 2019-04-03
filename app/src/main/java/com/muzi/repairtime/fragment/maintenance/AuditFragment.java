@@ -1,5 +1,6 @@
 package com.muzi.repairtime.fragment.maintenance;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,6 +26,7 @@ import com.muzi.repairtime.observer.BaseObserver;
 import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.CustomLoadMoreView;
+import com.muzi.repairtime.widget.dialog.CommonDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,13 +98,39 @@ public class AuditFragment extends BaseFragment<FragmentAuditBinding, BaseViewMo
         binding.recycelView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                AuditEntity.PagesBean.ListBean listBean = list.get(position);
+                final AuditEntity.PagesBean.ListBean listBean = list.get(position);
                 switch (view.getId()) {
                     case R.id.btn_pass:
-                        checkUser(listBean.getId(), true);
+                        new CommonDialog.Builder(getContext())
+                                .setTitle("提示")
+                                .setContent("确认通过对" + listBean.getName() + "的审核吗?")
+                                .build(new CommonDialog.OnDialogClickListener() {
+                                    @Override
+                                    public void onCancelClick(View v, Dialog dialog) {
+
+                                    }
+
+                                    @Override
+                                    public void onConfirmClick(View v, Dialog dialog) {
+                                        checkUser(listBean.getId(), true);
+                                    }
+                                }).show();
                         break;
                     case R.id.btn_nopass:
-                        checkUser(listBean.getId(), false);
+                        new CommonDialog.Builder(getContext())
+                                .setTitle("提示")
+                                .setContent("确认不通过对" + listBean.getName() + "的审核吗?")
+                                .build(new CommonDialog.OnDialogClickListener() {
+                                    @Override
+                                    public void onCancelClick(View v, Dialog dialog) {
+
+                                    }
+
+                                    @Override
+                                    public void onConfirmClick(View v, Dialog dialog) {
+                                        checkUser(listBean.getId(), false);
+                                    }
+                                }).show();
                         break;
                 }
             }

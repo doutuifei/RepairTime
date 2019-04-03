@@ -2,7 +2,6 @@ package com.muzi.repairtime.activity.main;
 
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.fragment.admin.PubNoticeFragment;
-import com.muzi.repairtime.fragment.admin.StatisticApplyFragment;
 import com.muzi.repairtime.fragment.maintenance.AuditFragment;
 import com.muzi.repairtime.fragment.psd.ChangePsdFragment;
 import com.muzi.repairtime.fragment.user.UserInfoFragment;
@@ -28,7 +27,6 @@ public class AdministratorActivity extends MainActivity {
                 UserInfoFragment.getInstance(),
                 AuditFragment.getInstance(),
                 PubNoticeFragment.getInstance(),
-                StatisticApplyFragment.getInstance(),
                 ChangePsdFragment.getInstance()
         };
         return fragments;
@@ -40,7 +38,6 @@ public class AdministratorActivity extends MainActivity {
                 R.id.nav_info,
                 R.id.nav_audit,
                 R.id.nav_notice,
-                R.id.nav_apply,
                 R.id.nav_change_psd
         };
         return ids;

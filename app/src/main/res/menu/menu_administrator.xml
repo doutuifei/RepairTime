@@ -21,10 +21,6 @@
             android:icon="@mipmap/ic_launcher"
             android:title="公告发布" />
         <item
-            android:id="@+id/nav_apply"
-            android:icon="@mipmap/ic_launcher"
-            android:title="维修统计" />
-        <item
             android:id="@+id/nav_change_psd"
             android:icon="@mipmap/ic_launcher"
             android:title="修改密码" />
