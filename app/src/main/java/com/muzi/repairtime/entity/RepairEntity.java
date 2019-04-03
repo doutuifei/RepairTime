@@ -1,5 +1,8 @@
 package com.muzi.repairtime.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 import java.util.List;
@@ -108,7 +111,7 @@ public class RepairEntity {
             this.list = list;
         }
 
-        public static class ListBean implements MultiItemEntity {
+        public static class ListBean implements MultiItemEntity, Parcelable {
             /**
              * id : 83
              * reportgroup : 心血管内科
@@ -131,19 +134,19 @@ public class RepairEntity {
 
             private int id;
             private String reportgroup;
-            private Object pic;
+            private String pic;
             private String reporter;
             private String reporterphone;
             private String repair_fir;
             private String repair_sec;
             private long reporttime;
             private String problem;
-            private Object acceptordertime;
-            private Object repairer;
-            private Object repairerphone;
+            private long acceptordertime;
+            private String repairer;
+            private String repairerphone;
             private String orderstatus;
             private int status_id;
-            private Object finishtime;
+            private long finishtime;
             private String consumersatisfaction;
             private int cs_id = -1;
 
@@ -163,11 +166,11 @@ public class RepairEntity {
                 this.reportgroup = reportgroup;
             }
 
-            public Object getPic() {
+            public String getPic() {
                 return pic;
             }
 
-            public void setPic(Object pic) {
+            public void setPic(String pic) {
                 this.pic = pic;
             }
 
@@ -219,27 +222,27 @@ public class RepairEntity {
                 this.problem = problem;
             }
 
-            public Object getAcceptordertime() {
+            public long getAcceptordertime() {
                 return acceptordertime;
             }
 
-            public void setAcceptordertime(Object acceptordertime) {
+            public void setAcceptordertime(long acceptordertime) {
                 this.acceptordertime = acceptordertime;
             }
 
-            public Object getRepairer() {
+            public String getRepairer() {
                 return repairer;
             }
 
-            public void setRepairer(Object repairer) {
+            public void setRepairer(String repairer) {
                 this.repairer = repairer;
             }
 
-            public Object getRepairerphone() {
+            public String getRepairerphone() {
                 return repairerphone;
             }
 
-            public void setRepairerphone(Object repairerphone) {
+            public void setRepairerphone(String repairerphone) {
                 this.repairerphone = repairerphone;
             }
 
@@ -259,11 +262,11 @@ public class RepairEntity {
                 this.status_id = status_id;
             }
 
-            public Object getFinishtime() {
+            public long getFinishtime() {
                 return finishtime;
             }
 
-            public void setFinishtime(Object finishtime) {
+            public void setFinishtime(long finishtime) {
                 this.finishtime = finishtime;
             }
 
@@ -297,6 +300,67 @@ public class RepairEntity {
                 }
                 return 0;
             }
+
+            public ListBean() {
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(this.id);
+                dest.writeString(this.reportgroup);
+                dest.writeString(this.pic);
+                dest.writeString(this.reporter);
+                dest.writeString(this.reporterphone);
+                dest.writeString(this.repair_fir);
+                dest.writeString(this.repair_sec);
+                dest.writeLong(this.reporttime);
+                dest.writeString(this.problem);
+                dest.writeLong(this.acceptordertime);
+                dest.writeString(this.repairer);
+                dest.writeString(this.repairerphone);
+                dest.writeString(this.orderstatus);
+                dest.writeInt(this.status_id);
+                dest.writeLong(this.finishtime);
+                dest.writeString(this.consumersatisfaction);
+                dest.writeInt(this.cs_id);
+            }
+
+            protected ListBean(Parcel in) {
+                this.id = in.readInt();
+                this.reportgroup = in.readString();
+                this.pic = in.readString();
+                this.reporter = in.readString();
+                this.reporterphone = in.readString();
+                this.repair_fir = in.readString();
+                this.repair_sec = in.readString();
+                this.reporttime = in.readLong();
+                this.problem = in.readString();
+                this.acceptordertime = in.readLong();
+                this.repairer = in.readString();
+                this.repairerphone = in.readString();
+                this.orderstatus = in.readString();
+                this.status_id = in.readInt();
+                this.finishtime = in.readLong();
+                this.consumersatisfaction = in.readString();
+                this.cs_id = in.readInt();
+            }
+
+            public static final Creator<ListBean> CREATOR = new Creator<ListBean>() {
+                @Override
+                public ListBean createFromParcel(Parcel source) {
+                    return new ListBean(source);
+                }
+
+                @Override
+                public ListBean[] newArray(int size) {
+                    return new ListBean[size];
+                }
+            };
         }
     }
 }

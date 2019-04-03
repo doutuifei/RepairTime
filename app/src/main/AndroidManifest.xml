@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.muzi.repairtime">
-
     <!-- 阿里云推送相关权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
@@ -27,22 +26,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".activity.applydetail.ApplyDetailActivity"></activity>
         <!-- 屏幕适配基准 -->
         <meta-data
             android:name="design_width_in_dp"
             android:value="360" />
         <meta-data
             android:name="design_height_in_dp"
-            android:value="640" />
-
-        <!--阿里推送-->
+            android:value="640" /> <!-- 阿里推送 -->
         <meta-data
             android:name="com.alibaba.app.appkey"
             android:value="25905270" />
         <meta-data
             android:name="com.alibaba.app.appsecret"
-            android:value="038a6ec7900c0312ac14f241bfc1059a" />
-        <!-- 登录 -->
+            android:value="038a6ec7900c0312ac14f241bfc1059a" /> <!-- 登录 -->
         <activity
             android:name=".activity.login.LoginActivity"
             android:label="@string/app_name">
@@ -51,23 +48,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- 注册 -->
-        <activity android:name=".activity.register.RegisterActivity" />
-        <!-- 普通员 -->
-        <activity android:name=".activity.main.EmployeeActivity" />
-        <!-- 管理员 -->
-        <activity android:name=".activity.main.AdministratorActivity" />
-        <!-- 维修员 -->
-        <activity android:name=".activity.main.MaintenanceActivity" />
-        <!-- 公告详情 -->
-        <activity android:name=".activity.detail.NoticeDetailActivity" />
-        <!--新建公告-->
+        </activity> <!-- 注册 -->
+        <activity android:name=".activity.register.RegisterActivity" /> <!-- 普通员 -->
+        <activity android:name=".activity.main.EmployeeActivity" /> <!-- 管理员 -->
+        <activity android:name=".activity.main.AdministratorActivity" /> <!-- 维修员 -->
+        <activity android:name=".activity.main.MaintenanceActivity" /> <!-- 公告详情 -->
+        <activity android:name=".activity.detail.NoticeDetailActivity" /> <!-- 新建公告 -->
         <activity
             android:name=".activity.CreateNoticeActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-
-        <!-- Push SDK 相关组件，required-->
+            android:windowSoftInputMode="stateHidden|adjustPan" /> <!-- Push SDK 相关组件，required -->
         <!-- 消息接收服务 -->
         <service
             android:name="com.alibaba.sdk.android.push.MsgService"
@@ -94,7 +83,7 @@
         <service
             android:name="com.taobao.accs.ChannelService$KernelService"
             android:exported="false"
-            android:process=":channel"></service>
+            android:process=":channel" />
         <service
             android:name="com.taobao.accs.data.MsgDistributeService"
             android:exported="true">
@@ -114,6 +103,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
                 <data android:scheme="package" />
             </intent-filter>
             <intent-filter>
@@ -155,9 +145,11 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
+
         <service
             android:name="com.alibaba.sdk.android.push.channel.TaobaoRecvService"
             android:exported="true"
@@ -165,17 +157,16 @@
             <intent-filter>
                 <action android:name="org.android.agoo.client.MessageReceiverService" />
             </intent-filter>
-        </service>
-        <!-- V3.0.12及以上版本需配置 -->
+        </service> <!-- V3.0.12及以上版本需配置 -->
         <service
             android:name="com.taobao.accs.internal.AccsJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process=":channel" />
-        <!-- V3.0.7及以上版本需配置 -->
+            android:process=":channel" /> <!-- V3.0.7及以上版本需配置 -->
         <service
             android:name="com.alibaba.sdk.android.push.channel.KeepChannelService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:process=":channel" />
+
         <receiver
             android:name="com.alibaba.sdk.android.push.SystemEventReceiver"
             android:process=":channel">
@@ -184,8 +175,7 @@
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
-        </receiver>
-        <!-- V3.0.9及以上版本需配置 -->
+        </receiver> <!-- V3.0.9及以上版本需配置 -->
         <activity
             android:name="com.alibaba.sdk.android.push.keeplive.PushExtActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|navigation|keyboard"
@@ -194,9 +184,7 @@
             android:finishOnTaskLaunch="false"
             android:launchMode="singleInstance"
             android:process=":channel"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"></activity>
-
-        <!-- 消息接收监听器  -->
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" /> <!-- 消息接收监听器 -->
         <receiver
             android:name=".push.PushMessageReceiver"
             android:exported="false"> <!-- 为保证receiver安全，建议设置不可导出，如需对其他应用开放可通过android：permission进行限制 -->
@@ -210,7 +198,6 @@
                 <action android:name="com.alibaba.sdk.android.push.RECEIVE" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

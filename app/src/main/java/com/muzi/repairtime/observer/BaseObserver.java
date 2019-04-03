@@ -49,12 +49,11 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onNext(T t) {
-        hideProgress();
+
     }
 
     @Override
     public void onError(Throwable e) {
-        hideProgress();
         onError(ErrorHandle.dispatchException(e));
     }
 
@@ -64,6 +63,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onComplete() {
+        hideProgress();
     }
 
     private void showProgress() {
