@@ -138,7 +138,7 @@ public class RegisterViewModel extends BaseViewModel {
                 .compose(RxUtils.<BaseEntity>scheduling())
                 .compose(RxUtils.exceptionTransformer())
                 .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new EntityObserver<BaseEntity>() {
+                .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {
                         ToastUtils.showToast(entity.getMsg());
@@ -174,7 +174,7 @@ public class RegisterViewModel extends BaseViewModel {
                     .compose(RxUtils.<List<String>>scheduling())
                     .compose(RxUtils.exceptionTransformer())
                     .compose(getLifecycleProvider().<List<String>>bindUntilEvent(ActivityEvent.DESTROY))
-                    .subscribe(new BaseObserver<List<String>>() {
+                    .subscribe(new BaseObserver<List<String>>(this) {
                         @Override
                         public void onNext(List<String> list) {
                             super.onNext(list);
