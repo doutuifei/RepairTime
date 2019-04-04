@@ -50,9 +50,9 @@ public class ErrorHandle {
      * @param throwable
      * @return
      */
-    public static String dispatchException(Throwable throwable) {
+    public static Throwable dispatchException(Throwable throwable) {
         if (throwable == null) {
-            return ERROR_UNTREATED;
+            return new BaseException(ERROR_UNTREATED);
         }
         Log.e("ErrorHandle", "Throwable->" + throwable.getClass().getSimpleName());
 
@@ -75,8 +75,8 @@ public class ErrorHandle {
      * @param throwable
      * @return
      */
-    public static String handleCustomException(Throwable throwable) {
-        return throwable.getMessage();
+    public static Throwable handleCustomException(Throwable throwable) {
+        return throwable;
     }
 
     /**
@@ -85,7 +85,7 @@ public class ErrorHandle {
      * @param throwable
      * @return
      */
-    public static String handleSystemThrowable(Throwable throwable) {
+    public static Throwable handleSystemThrowable(Throwable throwable) {
 
         /**
          * 数据转换/Json解析发生异常
@@ -96,13 +96,13 @@ public class ErrorHandle {
                 || throwable instanceof JsonSyntaxException
                 || throwable instanceof ParseException
                 || throwable instanceof ClassCastException) {
-            return ERROR_JSON;
+            return new BaseException(ERROR_JSON);
         }
         /**
          * https请求配置代理
          */
         else if (throwable instanceof SSLException) {
-            return ERROR_SSL;
+            return new BaseException(ERROR_SSL);
         }
         /**
          * 连接超时
@@ -110,7 +110,7 @@ public class ErrorHandle {
         else if (throwable instanceof InterruptedIOException
                 || throwable instanceof TimeoutException
                 || throwable instanceof SocketTimeoutException) {
-            return ERROR_TIMEOUT;
+            return new BaseException(ERROR_TIMEOUT);
         }
         /**
          * 网络发生错误
@@ -122,7 +122,7 @@ public class ErrorHandle {
                 || throwable instanceof UnknownHostException
                 || throwable instanceof NetworkErrorException
                 || throwable instanceof retrofit2.HttpException) {
-            return ERROR_CONNECT;
+            return new BaseException(ERROR_CONNECT);
         }
         /**
          * rxjava多次onError异常
@@ -133,10 +133,10 @@ public class ErrorHandle {
                 || throwable instanceof CompositeException
                 || throwable instanceof ProtocolViolationException
                 || throwable instanceof MissingBackpressureException) {
-            return ERROR_DEFAULT;
+            return new BaseException(ERROR_DEFAULT);
         } else {
             throwable.printStackTrace();
-            return ERROR_UNTREATED;
+            return new BaseException(ERROR_UNTREATED);
         }
 
     }

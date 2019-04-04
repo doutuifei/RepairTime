@@ -136,6 +136,7 @@ public class RegisterViewModel extends BaseViewModel {
                     }
                 })
                 .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>() {
                     @Override
@@ -171,6 +172,7 @@ public class RegisterViewModel extends BaseViewModel {
                     .toList()
                     .toObservable()
                     .compose(RxUtils.<List<String>>scheduling())
+                    .compose(RxUtils.exceptionTransformer())
                     .compose(getLifecycleProvider().<List<String>>bindUntilEvent(ActivityEvent.DESTROY))
                     .subscribe(new BaseObserver<List<String>>() {
                         @Override
@@ -178,12 +180,6 @@ public class RegisterViewModel extends BaseViewModel {
                             super.onNext(list);
                             groupList = list;
                             showGroupDialog();
-                        }
-
-                        @Override
-                        public void onError(String msg) {
-                            super.onError(msg);
-                            ToastUtils.showToast(msg);
                         }
                     });
         } else {

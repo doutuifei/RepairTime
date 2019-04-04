@@ -109,6 +109,7 @@ public class ApplyViewModel extends BaseViewModel {
                     .toList()
                     .toObservable()
                     .compose(RxUtils.<List<String>>scheduling())
+                    .compose(RxUtils.exceptionTransformer())
                     .compose(getLifecycleProvider().<List<String>>bindUntilEvent(FragmentEvent.DESTROY))
                     .subscribe(new BaseObserver<List<String>>() {
                         @Override
@@ -116,12 +117,6 @@ public class ApplyViewModel extends BaseViewModel {
                             super.onNext(list);
                             projectList = list;
                             showProgectDialog();
-                        }
-
-                        @Override
-                        public void onError(String msg) {
-                            super.onError(msg);
-                            ToastUtils.showToast(msg);
                         }
                     });
         } else {
@@ -163,6 +158,7 @@ public class ApplyViewModel extends BaseViewModel {
                     .toList()
                     .toObservable()
                     .compose(RxUtils.<List<String>>scheduling())
+                    .compose(RxUtils.exceptionTransformer())
                     .compose(getLifecycleProvider().<List<String>>bindUntilEvent(FragmentEvent.DESTROY))
                     .subscribe(new BaseObserver<List<String>>(this) {
                         @Override
@@ -170,12 +166,6 @@ public class ApplyViewModel extends BaseViewModel {
                             super.onNext(list);
                             itemList = list;
                             showItemDialog();
-                        }
-
-                        @Override
-                        public void onError(String msg) {
-                            super.onError(msg);
-                            ToastUtils.showToast(msg);
                         }
                     });
         } else {
@@ -218,6 +208,7 @@ public class ApplyViewModel extends BaseViewModel {
                         item1Field.get(),
                         describeField.get())
                 .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override

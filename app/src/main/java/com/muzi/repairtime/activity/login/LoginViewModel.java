@@ -107,6 +107,7 @@ public class LoginViewModel extends BaseViewModel {
         RxHttp.getApi(LoginApi.class)
                 .login(phone.get(), password.get(), PushServiceFactory.getCloudPushService().getDeviceId())
                 .compose(RxUtils.<LoginEntity>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(getLifecycleProvider().<LoginEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new EntityObserver<LoginEntity>(this) {
                     @Override

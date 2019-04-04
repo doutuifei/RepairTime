@@ -1,7 +1,7 @@
 package com.muzi.repairtime.observer;
 
 import com.muzi.repairtime.activity.base.IBaseView;
-import com.muzi.repairtime.http.ErrorHandle;
+import com.muzi.repairtime.utils.ToastUtils;
 
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
@@ -54,10 +54,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
-        onError(ErrorHandle.dispatchException(e));
-    }
-
-    public void onError(String msg) {
+        ToastUtils.showToast(e.getMessage());
         onComplete();
     }
 

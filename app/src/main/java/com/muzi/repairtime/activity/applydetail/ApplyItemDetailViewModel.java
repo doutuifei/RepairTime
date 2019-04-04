@@ -168,6 +168,7 @@ public class ApplyItemDetailViewModel extends BaseViewModel {
         RxHttp.getApi(RepairApi.class)
                 .deleteOrder(listBean.getId())
                 .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
@@ -190,6 +191,7 @@ public class ApplyItemDetailViewModel extends BaseViewModel {
         RxHttp.getApi(RepairApi.class)
                 .finishOrder(listBean.getId(), complete)
                 .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(RxUtils.<BaseEntity>bindToLifecycle(getLifecycleProvider()))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override

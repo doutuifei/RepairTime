@@ -174,6 +174,7 @@ public class AuditFragment extends BaseFragment<FragmentAuditBinding, BaseViewMo
                     }
                 })
                 .compose(RxUtils.<List<AuditEntity.PagesBean.ListBean>>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(this.<List<AuditEntity.PagesBean.ListBean>>bindUntilEvent())
                 .subscribe(new BaseObserver<List<AuditEntity.PagesBean.ListBean>>() {
                     @Override
@@ -187,8 +188,8 @@ public class AuditFragment extends BaseFragment<FragmentAuditBinding, BaseViewMo
                     }
 
                     @Override
-                    public void onError(String msg) {
-                        super.onError(msg);
+                    public void onError(Throwable throwable) {
+                        super.onError(throwable);
                         if (adapter.isLoading()) {
                             adapter.loadMoreFail();
                         }
@@ -214,6 +215,7 @@ public class AuditFragment extends BaseFragment<FragmentAuditBinding, BaseViewMo
         RxHttp.getApi(AdminApi.class)
                 .checkUser(id, egis)
                 .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(this.<BaseEntity>bindUntilEvent())
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override

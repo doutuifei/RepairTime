@@ -184,6 +184,7 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
                     }
                 })
                 .compose(RxUtils.<List<NoticeEntity.PagesBean.ListBean>>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(this.<List<NoticeEntity.PagesBean.ListBean>>bindUntilEvent())
                 .subscribe(new BaseObserver<List<NoticeEntity.PagesBean.ListBean>>() {
                     @Override
@@ -197,8 +198,8 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
                     }
 
                     @Override
-                    public void onError(String msg) {
-                        super.onError(msg);
+                    public void onError(Throwable e) {
+                        super.onError(e);
                         if (adapter.isLoading()) {
                             adapter.loadMoreFail();
                         }
@@ -248,6 +249,7 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
         RxHttp.getApi(AdminApi.class)
                 .delNotice(listBeans.get(position).getId())
                 .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(this.<BaseEntity>bindUntilEvent())
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override

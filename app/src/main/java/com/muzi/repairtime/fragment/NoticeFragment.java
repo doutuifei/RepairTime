@@ -131,6 +131,7 @@ public class NoticeFragment extends BaseFragment<FragmentNoticeBinding, BaseView
                     }
                 })
                 .compose(RxUtils.<List<NoticeEntity.PagesBean.ListBean>>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(this.<List<NoticeEntity.PagesBean.ListBean>>bindUntilEvent())
                 .subscribe(new BaseObserver<List<NoticeEntity.PagesBean.ListBean>>() {
                     @Override
@@ -144,8 +145,8 @@ public class NoticeFragment extends BaseFragment<FragmentNoticeBinding, BaseView
                     }
 
                     @Override
-                    public void onError(String msg) {
-                        super.onError(msg);
+                    public void onError(Throwable throwable) {
+                        super.onError(throwable);
                         if (adapter.isLoading()) {
                             adapter.loadMoreFail();
                         }

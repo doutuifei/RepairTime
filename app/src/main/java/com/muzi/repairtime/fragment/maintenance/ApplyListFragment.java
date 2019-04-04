@@ -136,6 +136,7 @@ public class ApplyListFragment extends BaseFragment<FragmentApplyListBinding, Ba
                     }
                 })
                 .compose(RxUtils.<List<RepairEntity.PagesBean.ListBean>>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(this.<List<RepairEntity.PagesBean.ListBean>>bindUntilEvent())
                 .subscribe(new BaseObserver<List<RepairEntity.PagesBean.ListBean>>() {
                     @Override
@@ -149,8 +150,8 @@ public class ApplyListFragment extends BaseFragment<FragmentApplyListBinding, Ba
                     }
 
                     @Override
-                    public void onError(String msg) {
-                        super.onError(msg);
+                    public void onError(Throwable throwable) {
+                        super.onError(throwable);
                         if (adapter.isLoading()) {
                             adapter.loadMoreFail();
                         }

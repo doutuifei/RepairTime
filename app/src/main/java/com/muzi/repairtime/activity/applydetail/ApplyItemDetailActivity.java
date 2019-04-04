@@ -98,6 +98,7 @@ public class ApplyItemDetailActivity extends BaseActivity<ActivityApplyItemDetai
                 .evaluateOrder(listBean.getId(), star)
                 .compose(RxUtils.<BaseEntity>scheduling())
                 .compose(this.<BaseEntity>bindUntilEvent())
+                .compose(RxUtils.exceptionTransformer())
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {

@@ -3,7 +3,7 @@ package com.muzi.repairtime.observer;
 
 import com.muzi.repairtime.activity.base.IBaseView;
 import com.muzi.repairtime.entity.BaseEntity;
-import com.muzi.repairtime.utils.ToastUtils;
+import com.muzi.repairtime.exception.BaseException;
 
 /**
  * 作者: lipeng
@@ -28,17 +28,11 @@ public abstract class EntityObserver<T extends BaseEntity> extends BaseObserver<
                 onSuccess(entity);
                 break;
             default:
-                onError(entity.getMsg());
+                onError(new BaseException(entity.getMsg()));
                 break;
         }
     }
 
     public abstract void onSuccess(T t);
-
-    @Override
-    public void onError(String msg) {
-        super.onError(msg);
-        ToastUtils.showToast(msg);
-    }
 
 }

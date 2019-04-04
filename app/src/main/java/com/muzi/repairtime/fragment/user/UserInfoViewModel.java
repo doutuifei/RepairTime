@@ -60,6 +60,7 @@ public class UserInfoViewModel extends BaseViewModel {
         RxHttp.getApi(UserApi.class)
                 .getUserInfo()
                 .compose(RxUtils.<UserEntity>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(getLifecycleProvider().<UserEntity>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new BaseObserver<UserEntity>(this) {
                     @Override

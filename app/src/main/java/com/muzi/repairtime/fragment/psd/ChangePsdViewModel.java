@@ -65,6 +65,7 @@ public class ChangePsdViewModel extends BaseViewModel {
         RxHttp.getApi(UserApi.class)
                 .changePsd(oldPsdField.get(), newPsdField.get())
                 .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(RxUtils.exceptionTransformer())
                 .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
