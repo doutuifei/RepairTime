@@ -53,7 +53,7 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, I
         this.lifecycle = lifecycle;
     }
 
-    public LifecycleProvider getLifecycleProvider() {
+    public <E> LifecycleProvider<E> getLifecycleProvider() {
         return lifecycle;
     }
 

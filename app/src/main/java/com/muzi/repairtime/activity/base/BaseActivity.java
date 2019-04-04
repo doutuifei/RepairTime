@@ -12,8 +12,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
-import com.muzi.repairtime.widget.dialog.LoadingDialog;
 import com.muzi.repairtime.widget.SingleDialogHelper;
+import com.muzi.repairtime.widget.dialog.LoadingDialog;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

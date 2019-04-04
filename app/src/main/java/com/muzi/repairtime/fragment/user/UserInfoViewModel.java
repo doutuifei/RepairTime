@@ -10,6 +10,7 @@ import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.UserApi;
 import com.muzi.repairtime.observer.BaseObserver;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 
 /**
  * 作者: lipeng
@@ -59,7 +60,7 @@ public class UserInfoViewModel extends BaseViewModel {
         RxHttp.getApi(UserApi.class)
                 .getUserInfo()
                 .compose(RxUtils.<UserEntity>scheduling())
-                .compose(RxUtils.<UserEntity>bindToLifecycle(getLifecycleProvider()))
+                .compose(getLifecycleProvider().<UserEntity>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new BaseObserver<UserEntity>(this) {
                     @Override
                     public void onNext(UserEntity entity) {

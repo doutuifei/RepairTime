@@ -97,7 +97,7 @@ public class ApplyItemDetailActivity extends BaseActivity<ActivityApplyItemDetai
         RxHttp.getApi(RepairApi.class)
                 .evaluateOrder(listBean.getId(), star)
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.<BaseEntity>bindToLifecycle(this))
+                .compose(this.<BaseEntity>bindUntilEvent())
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {

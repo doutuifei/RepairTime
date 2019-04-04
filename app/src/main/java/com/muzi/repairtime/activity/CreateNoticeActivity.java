@@ -538,7 +538,7 @@ public class CreateNoticeActivity extends BaseActivity<ActivityCreateNoticeBindi
         RxHttp.getApi(AdminApi.class)
                 .pubNotice(title, content)
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.<BaseEntity>bindToLifecycle(this))
+                .compose(this.<BaseEntity>bindUntilEvent())
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {

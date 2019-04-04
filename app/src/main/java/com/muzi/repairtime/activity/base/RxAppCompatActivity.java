@@ -40,6 +40,10 @@ public class RxAppCompatActivity extends SupportActivity implements LifecyclePro
         return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 
+    public <T> LifecycleTransformer<T> bindUntilEvent(){
+        return bindUntilEvent(ActivityEvent.DESTROY);
+    }
+
     @Override
     @NonNull
     @CheckResult

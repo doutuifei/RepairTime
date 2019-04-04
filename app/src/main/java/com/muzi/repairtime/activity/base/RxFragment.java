@@ -40,6 +40,10 @@ public class RxFragment extends SupportFragment implements LifecycleProvider<Fra
         return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 
+    public <T> LifecycleTransformer<T> bindUntilEvent(){
+        return bindUntilEvent(FragmentEvent.DESTROY);
+    }
+
     @Override
     @NonNull
     @CheckResult

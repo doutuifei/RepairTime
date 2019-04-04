@@ -184,7 +184,7 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
                     }
                 })
                 .compose(RxUtils.<List<NoticeEntity.PagesBean.ListBean>>scheduling())
-                .compose(RxUtils.<List<NoticeEntity.PagesBean.ListBean>>bindToLifecycle(this))
+                .compose(this.<List<NoticeEntity.PagesBean.ListBean>>bindUntilEvent())
                 .subscribe(new BaseObserver<List<NoticeEntity.PagesBean.ListBean>>() {
                     @Override
                     public void onNext(List<NoticeEntity.PagesBean.ListBean> list) {
@@ -248,7 +248,7 @@ public class PubNoticeFragment extends BaseFragment<FragmentPubNoticeBinding, Ba
         RxHttp.getApi(AdminApi.class)
                 .delNotice(listBeans.get(position).getId())
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.<BaseEntity>bindToLifecycle(this))
+                .compose(this.<BaseEntity>bindUntilEvent())
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {

@@ -20,6 +20,7 @@ import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.DateUtils;
 import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.dialog.CommonDialog;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 
 /**
  * 作者: lipeng
@@ -126,7 +127,7 @@ public class ApplyDetailViewModel extends BaseViewModel {
         RxHttp.getApi(RepairApi.class)
                 .takeOrder(listBean.getId())
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.<BaseEntity>bindToLifecycle(getLifecycleProvider()))
+                .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {

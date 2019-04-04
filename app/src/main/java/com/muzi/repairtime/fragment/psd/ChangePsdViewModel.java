@@ -15,6 +15,7 @@ import com.muzi.repairtime.http.api.UserApi;
 import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.StringUtils;
 import com.muzi.repairtime.utils.ToastUtils;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 
 /**
  * 作者: lipeng
@@ -64,7 +65,7 @@ public class ChangePsdViewModel extends BaseViewModel {
         RxHttp.getApi(UserApi.class)
                 .changePsd(oldPsdField.get(), newPsdField.get())
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.<BaseEntity>bindToLifecycle(getLifecycleProvider()))
+                .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {

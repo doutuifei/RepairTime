@@ -131,7 +131,7 @@ public class NoticeFragment extends BaseFragment<FragmentNoticeBinding, BaseView
                     }
                 })
                 .compose(RxUtils.<List<NoticeEntity.PagesBean.ListBean>>scheduling())
-                .compose(RxUtils.<List<NoticeEntity.PagesBean.ListBean>>bindToLifecycle(this))
+                .compose(this.<List<NoticeEntity.PagesBean.ListBean>>bindUntilEvent())
                 .subscribe(new BaseObserver<List<NoticeEntity.PagesBean.ListBean>>() {
                     @Override
                     public void onNext(List<NoticeEntity.PagesBean.ListBean> list) {

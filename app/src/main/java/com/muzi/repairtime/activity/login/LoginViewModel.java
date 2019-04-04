@@ -29,6 +29,7 @@ import com.muzi.repairtime.http.api.LoginApi;
 import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.StringUtils;
 import com.muzi.repairtime.utils.ToastUtils;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 
 /**
  * 作者: lipeng
@@ -106,7 +107,7 @@ public class LoginViewModel extends BaseViewModel {
         RxHttp.getApi(LoginApi.class)
                 .login(phone.get(), password.get(), PushServiceFactory.getCloudPushService().getDeviceId())
                 .compose(RxUtils.<LoginEntity>scheduling())
-                .compose(RxUtils.<LoginEntity>bindToLifecycle(getLifecycleProvider()))
+                .compose(getLifecycleProvider().<LoginEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new EntityObserver<LoginEntity>(this) {
                     @Override
                     public void onSuccess(LoginEntity entity) {

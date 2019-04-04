@@ -174,7 +174,7 @@ public class AuditFragment extends BaseFragment<FragmentAuditBinding, BaseViewMo
                     }
                 })
                 .compose(RxUtils.<List<AuditEntity.PagesBean.ListBean>>scheduling())
-                .compose(RxUtils.<List<AuditEntity.PagesBean.ListBean>>bindToLifecycle(this))
+                .compose(this.<List<AuditEntity.PagesBean.ListBean>>bindUntilEvent())
                 .subscribe(new BaseObserver<List<AuditEntity.PagesBean.ListBean>>() {
                     @Override
                     public void onNext(List<AuditEntity.PagesBean.ListBean> listBeans) {
@@ -214,7 +214,7 @@ public class AuditFragment extends BaseFragment<FragmentAuditBinding, BaseViewMo
         RxHttp.getApi(AdminApi.class)
                 .checkUser(id, egis)
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.<BaseEntity>bindToLifecycle(this))
+                .compose(this.<BaseEntity>bindUntilEvent())
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {

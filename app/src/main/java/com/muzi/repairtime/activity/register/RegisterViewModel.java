@@ -21,6 +21,7 @@ import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.StringUtils;
 import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.dialog.ListDialog;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.util.List;
 
@@ -135,7 +136,7 @@ public class RegisterViewModel extends BaseViewModel {
                     }
                 })
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.<BaseEntity>bindToLifecycle(getLifecycleProvider()))
+                .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>() {
                     @Override
                     public void onSuccess(BaseEntity entity) {
@@ -170,7 +171,7 @@ public class RegisterViewModel extends BaseViewModel {
                     .toList()
                     .toObservable()
                     .compose(RxUtils.<List<String>>scheduling())
-                    .compose(RxUtils.<List<String>>bindToLifecycle(getLifecycleProvider()))
+                    .compose(getLifecycleProvider().<List<String>>bindUntilEvent(ActivityEvent.DESTROY))
                     .subscribe(new BaseObserver<List<String>>() {
                         @Override
                         public void onNext(List<String> list) {

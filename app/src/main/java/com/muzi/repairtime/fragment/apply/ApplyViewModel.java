@@ -19,6 +19,7 @@ import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.StringUtils;
 import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.dialog.ListDialog;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import java.util.List;
 
@@ -108,7 +109,7 @@ public class ApplyViewModel extends BaseViewModel {
                     .toList()
                     .toObservable()
                     .compose(RxUtils.<List<String>>scheduling())
-                    .compose(RxUtils.<List<String>>bindToLifecycle(getLifecycleProvider()))
+                    .compose(getLifecycleProvider().<List<String>>bindUntilEvent(FragmentEvent.DESTROY))
                     .subscribe(new BaseObserver<List<String>>() {
                         @Override
                         public void onNext(List<String> list) {
@@ -162,7 +163,7 @@ public class ApplyViewModel extends BaseViewModel {
                     .toList()
                     .toObservable()
                     .compose(RxUtils.<List<String>>scheduling())
-                    .compose(RxUtils.<List<String>>bindToLifecycle(getLifecycleProvider()))
+                    .compose(getLifecycleProvider().<List<String>>bindUntilEvent(FragmentEvent.DESTROY))
                     .subscribe(new BaseObserver<List<String>>(this) {
                         @Override
                         public void onNext(List<String> list) {
@@ -217,7 +218,7 @@ public class ApplyViewModel extends BaseViewModel {
                         item1Field.get(),
                         describeField.get())
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.<BaseEntity>bindToLifecycle(getLifecycleProvider()))
+                .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {

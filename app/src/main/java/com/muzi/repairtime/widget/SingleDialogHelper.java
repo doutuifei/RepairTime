@@ -28,9 +28,6 @@ public abstract class SingleDialogHelper {
                 }
             }
         }
-        if (dialog == null) {
-            check();
-        }
         synchronized (SingleDialogHelper.this) {
             if (showNum == 0) {
                 dialog.show();
