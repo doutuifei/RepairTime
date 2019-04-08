@@ -547,6 +547,7 @@ public class CreateNoticeActivity extends BaseActivity<ActivityCreateNoticeBindi
                         LiveEventBus.get()
                                 .with(EventConstan.REFRESH_NOTICE)
                                 .postValue(null);
+                        finish();
                     }
                 });
     }

@@ -83,7 +83,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bg_button"
                 android:gravity="center"
-                android:text="注册"
+                android:text="提交"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/et_confirm_psd"

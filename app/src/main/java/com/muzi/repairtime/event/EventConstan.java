@@ -20,5 +20,6 @@ public class EventConstan {
 
     public static final String REFRESH_APPLY = "refresh_apply";
 
+    public static final String CHECK_ITEM = "check_item";
 
 }

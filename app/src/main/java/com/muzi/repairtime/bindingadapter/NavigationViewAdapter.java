@@ -29,7 +29,6 @@ public class NavigationViewAdapter {
         binding.setUser(userBean);
         binding.executePendingBindings();
         view.addHeaderView(binding.getRoot());
-
     }
 
 }

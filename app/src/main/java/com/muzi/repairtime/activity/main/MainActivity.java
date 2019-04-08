@@ -1,9 +1,13 @@
 package com.muzi.repairtime.activity.main;
 
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 
 import com.muzi.repairtime.R;
@@ -12,6 +16,9 @@ import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.databinding.ActivityMainBinding;
 import com.muzi.repairtime.entity.LoginEntity;
+import com.muzi.repairtime.event.EventConstan;
+import com.muzi.repairtime.event.LiveEventBus;
+import com.muzi.repairtime.utils.ToastUtils;
 
 import me.yokeyword.fragmentation.SupportFragment;
 
@@ -70,6 +77,24 @@ public abstract class MainActivity extends BaseActivity<ActivityMainBinding, Bas
         binding.setUser(userBean);
     }
 
+    @Override
+    public void initViewObservable() {
+        super.initViewObservable();
+        LiveEventBus.get()
+                .with(EventConstan.CHECK_ITEM, Integer.class)
+                .observe(this, new Observer<Integer>() {
+                    @Override
+                    public void onChanged(@Nullable Integer integer) {
+                        Log.e("MainActivity", "integer:" + integer);
+                        if (integer > ids.length) {
+                            return;
+                        }
+                        int id = ids[integer];
+                        binding.navView.setCheckedItem(id);
+                    }
+                });
+    }
+
     private void initFragment() {
         SupportFragment firstFragment = findFragment(fragments[currePosition].getClass());
         if (firstFragment == null) {
@@ -92,17 +117,10 @@ public abstract class MainActivity extends BaseActivity<ActivityMainBinding, Bas
                 break;
             }
         }
-        binding.drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    public void onBackPressedSupport() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressedSupport();
         }
+        return true;
     }
 
     @Override
@@ -110,6 +128,26 @@ public abstract class MainActivity extends BaseActivity<ActivityMainBinding, Bas
         if (!binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.openDrawer(GravityCompat.START);
         }
+    }
+
+    private long mExitTime;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                ToastUtils.showToast("再按一次退出程序");
+                mExitTime = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }
