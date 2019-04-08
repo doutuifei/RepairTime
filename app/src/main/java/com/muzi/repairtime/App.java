@@ -131,4 +131,5 @@ public class App extends Application {
             mNotificationManager.createNotificationChannel(mChannel);
         }
     }
+
 }

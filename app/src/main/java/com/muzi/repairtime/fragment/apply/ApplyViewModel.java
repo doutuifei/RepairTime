@@ -8,6 +8,7 @@ import android.view.View;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.command.BindingCommand;
 import com.muzi.repairtime.command.BindingConsumerAction;
+import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.entity.ProjectItemEntity;
 import com.muzi.repairtime.entity.ProjectListEntity;
 import com.muzi.repairtime.event.EventConstan;
@@ -16,6 +17,9 @@ import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.RepairApi;
 import com.muzi.repairtime.observer.BaseObserver;
+import com.muzi.repairtime.observer.EntityObserver;
+import com.muzi.repairtime.utils.StringUtils;
+import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.dialog.ListDialog;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
@@ -189,33 +193,32 @@ public class ApplyViewModel extends BaseViewModel {
      * 提交
      */
     private void commit() {
-//        if (StringUtils.isEmpty(itemField.get())) {
-//            ToastUtils.showToast("请选择维修项目");
-//            return;
-//        }
-//        if (StringUtils.isEmpty(item1Field.get())) {
-//            ToastUtils.showToast("请选择维修细项");
-//            return;
-//        }
-//        if (StringUtils.isEmpty(describeField.get())) {
-//            ToastUtils.showToast("请输入对问题的描述");
-//            return;
-//        }
-//        RxHttp.getApi(RepairApi.class)
-//                .commitRepair(itemField.get(),
-//                        item1Field.get(),
-//                        describeField.get())
-//                .compose(RxUtils.<BaseEntity>scheduling())
-//                .compose(RxUtils.exceptionTransformer())
-//                .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(FragmentEvent.DESTROY))
-//                .subscribe(new EntityObserver<BaseEntity>(this) {
-//                    @Override
-//                    public void onSuccess(BaseEntity entity) {
-//                        ToastUtils.showToast(entity.getMsg());
-//                        LiveEventBus.get().with(EventConstan.CHECK_ITEM).postValue(3);
-//                    }
-//                });
-        LiveEventBus.get().with(EventConstan.CHECK_ITEM).postValue(3);
+        if (StringUtils.isEmpty(itemField.get())) {
+            ToastUtils.showToast("请选择维修项目");
+            return;
+        }
+        if (StringUtils.isEmpty(item1Field.get())) {
+            ToastUtils.showToast("请选择维修细项");
+            return;
+        }
+        if (StringUtils.isEmpty(describeField.get())) {
+            ToastUtils.showToast("请输入对问题的描述");
+            return;
+        }
+        RxHttp.getApi(RepairApi.class)
+                .commitRepair(itemField.get(),
+                        item1Field.get(),
+                        describeField.get())
+                .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(RxUtils.exceptionTransformer())
+                .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(FragmentEvent.DESTROY))
+                .subscribe(new EntityObserver<BaseEntity>(this) {
+                    @Override
+                    public void onSuccess(BaseEntity entity) {
+                        ToastUtils.showToast(entity.getMsg());
+                        LiveEventBus.get().with(EventConstan.CHECK_ITEM).postValue(3);
+                    }
+                });
     }
 
 }

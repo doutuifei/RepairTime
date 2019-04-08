@@ -69,4 +69,12 @@ public interface LoginApi {
                                     @Field("pass") String pass,
                                     @Field("group") String group);
 
+    /**
+     * 退出登录
+     *
+     * @return
+     */
+    @POST("user/logout")
+    Observable<BaseEntity> logout();
+
 }

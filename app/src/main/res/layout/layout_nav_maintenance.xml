@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:id="@+id/ll_head"
+            android:layout_width="match_parent"
+            android:layout_height="176dp"
+            android:background="@drawable/side_nav_bar"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_head"
+            android:layout_centerHorizontal="true">
+
+            <RadioButton
+                android:id="@+id/item_persion"
+                style="@style/radiobutton_item"
+                android:checked="true"
+                android:drawableLeft="@drawable/item_persion"
+                android:text="基本信息"
+                android:textColor="@drawable/item_persion_text" />
+
+            <RadioButton
+                android:id="@+id/item_notice"
+                style="@style/radiobutton_item"
+                android:drawableLeft="@drawable/item_notice"
+                android:text="公告"
+                android:textColor="@drawable/item_persion_text" />
+
+            <RadioButton
+                android:id="@+id/item_apply"
+                style="@style/radiobutton_item"
+                android:drawableLeft="@drawable/item_applying"
+                android:text="申请列表"
+                android:textColor="@drawable/item_persion_text" />
+
+            <RadioButton
+                android:id="@+id/item_psd"
+                style="@style/radiobutton_item"
+                android:drawableLeft="@drawable/item_psd"
+                android:text="修改密码"
+                android:textColor="@drawable/item_persion_text" />
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@null"
+            android:drawableLeft="@drawable/item_logout"
+            android:drawablePadding="20dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="退出登录"
+            android:textColor="@drawable/item_logout_text" />
+
+    </RelativeLayout>
+
+</layout>
