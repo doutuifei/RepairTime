@@ -25,6 +25,7 @@
             tools:text="标题" />
 
         <LinearLayout
+            android:id="@+id/ll_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_content"
@@ -46,6 +47,16 @@
                 android:layout_marginLeft="8dp"
                 android:textSize="13sp"
                 tools:text="李鹏" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_group"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"

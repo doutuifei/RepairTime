@@ -13,6 +13,8 @@ import com.muzi.repairtime.command.BindingCommand;
 import com.muzi.repairtime.command.BindingConsumerAction;
 import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.entity.RepairEntity;
+import com.muzi.repairtime.event.EventConstan;
+import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.RepairApi;
@@ -133,8 +135,11 @@ public class ApplyDetailViewModel extends BaseViewModel {
                     @Override
                     public void onSuccess(BaseEntity entity) {
                         ToastUtils.showToast(entity.getMsg());
-                        status.set("已接单");
+                        status.set("维修中");
                         untake.set(false);
+                        LiveEventBus.get()
+                                .with(EventConstan.REFRESH_APPLY)
+                                .postValue(null);
                     }
                 });
     }

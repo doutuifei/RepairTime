@@ -40,19 +40,10 @@ public class ApplyItemDetailViewModel extends BaseViewModel {
     public ObservableField<String> room = new ObservableField<>("");
 
     /**
-     * 负责人
-     */
-    public ObservableField<String> principal = new ObservableField<>("");
-
-    /**
-     * 报修人
-     */
-    public ObservableField<String> repoter = new ObservableField<>("");
-
-    /**
      * 维修项目
      */
     public ObservableField<String> repair = new ObservableField<>("");
+    public ObservableField<String> repairSec = new ObservableField<>("");
 
     /**
      * 报修时间
@@ -151,9 +142,8 @@ public class ApplyItemDetailViewModel extends BaseViewModel {
         super.initParam(bundle);
         listBean = bundle.getParcelable("bean");
         room.set(listBean.getReportgroup());
-        principal.set(listBean.getPic());
-        repoter.set(listBean.getReporter());
-        repair.set(listBean.getRepair_sec());
+        repair.set(listBean.getRepairer());
+        repairSec.set(listBean.getRepair_sec());
         time.set(DateUtils.long2String(listBean.getReporttime()));
         desc.set(listBean.getProblem());
         evaluate.set(listBean.getCs_id());
@@ -198,7 +188,7 @@ public class ApplyItemDetailViewModel extends BaseViewModel {
                     public void onSuccess(BaseEntity entity) {
                         ToastUtils.showToast(entity.getMsg());
                         status.set(complete ? "已完成" : "未完成");
-                        statusId.set(0);
+                        statusId.set(complete ? 3 : 0);
                         LiveEventBus.get()
                                 .with(EventConstan.REFRESH_APPLY)
                                 .postValue(null);

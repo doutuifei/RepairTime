@@ -67,44 +67,22 @@
             android:layout_height="40dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility='@{viewModel.statusId.get()==1?View.GONE:View.VISIBLE}'>
 
             <TextView
                 style="@style/text_user_info"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="负责人" />
+                android:text="维修人" />
 
             <TextView
                 style="@style/text_user_info"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@{viewModel.principal}" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="报修人" />
-
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@{viewModel.repoter}" />
+                android:text="@{viewModel.repair}" />
 
         </LinearLayout>
 
@@ -127,7 +105,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@{viewModel.repair}" />
+                android:text="@{viewModel.repairSec}" />
 
         </LinearLayout>
 
@@ -207,8 +185,8 @@
                     android:layout_weight="1"
                     android:text="点击完成评价"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <me.zhanghai.android.materialratingbar.MaterialRatingBar
                     android:id="@+id/ratingBar"
@@ -217,10 +195,10 @@
                     android:maxHeight="16dp"
                     android:minHeight="16dp"
                     android:stepSize="1"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_evaluate"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_evaluate" />
 
             </android.support.constraint.ConstraintLayout>
 

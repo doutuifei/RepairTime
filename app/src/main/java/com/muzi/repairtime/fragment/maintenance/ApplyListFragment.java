@@ -1,5 +1,6 @@
 package com.muzi.repairtime.fragment.maintenance;
 
+import android.arch.lifecycle.Observer;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,8 @@ import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.adapter.ApplyTakeAdapter;
 import com.muzi.repairtime.databinding.FragmentApplyListBinding;
 import com.muzi.repairtime.entity.RepairEntity;
+import com.muzi.repairtime.event.EventConstan;
+import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.RepairApi;
@@ -76,13 +79,7 @@ public class ApplyListFragment extends BaseFragment<FragmentApplyListBinding, Ba
         binding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!listBeans.isEmpty()) {
-                    currentPage = 1;
-                    totalPage = 1;
-                    listBeans.clear();
-                    adapter.setNewData(listBeans);
-                }
-                getData();
+                refresh();
             }
         });
         binding.recycelView.setLayoutManager(new ExLinearLayoutManger(getContext()));
@@ -107,6 +104,29 @@ public class ApplyListFragment extends BaseFragment<FragmentApplyListBinding, Ba
                 }
             }
         }, binding.recycelView);
+    }
+
+    @Override
+    public void initViewObservable() {
+        super.initViewObservable();
+        LiveEventBus.get()
+                .with(EventConstan.REFRESH_APPLY, Void.class)
+                .observe(this, new Observer<Void>() {
+                    @Override
+                    public void onChanged(@Nullable Void aVoid) {
+                        refresh();
+                    }
+                });
+    }
+
+    private void refresh() {
+        if (!listBeans.isEmpty()) {
+            currentPage = 1;
+            totalPage = 1;
+            listBeans.clear();
+            adapter.setNewData(listBeans);
+        }
+        getData();
     }
 
     @Override
