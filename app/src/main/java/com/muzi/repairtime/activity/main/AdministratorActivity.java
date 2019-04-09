@@ -10,13 +10,14 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RadioGroup;
 
+import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseActivity;
 import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.activity.login.LoginActivity;
+import com.muzi.repairtime.data.DataProxy;
 import com.muzi.repairtime.databinding.ActivityAdministratorBinding;
-import com.muzi.repairtime.entity.LoginEntity;
 import com.muzi.repairtime.event.EventConstan;
 import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.fragment.admin.PubNoticeFragment;
@@ -39,7 +40,6 @@ public class AdministratorActivity extends BaseActivity<ActivityAdministratorBin
     private SupportFragment[] fragments;
     private int[] ids;
     private int nextPosition, currePosition;
-    private LoginEntity.UserBean userBean;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -52,15 +52,9 @@ public class AdministratorActivity extends BaseActivity<ActivityAdministratorBin
     }
 
     @Override
-    public void initParam(Bundle bundle) {
-        super.initParam(bundle);
-        userBean = bundle.getParcelable("user");
-    }
-
-    @Override
     public void initData() {
         super.initData();
-        binding.navEmployee.tvName.setText(userBean.getName());
+        binding.navEmployee.tvName.setText(DataProxy.getInstance().getString(Constans.KEY_USER));
     }
 
     @Override

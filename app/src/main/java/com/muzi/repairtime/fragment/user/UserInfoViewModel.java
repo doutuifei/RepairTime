@@ -9,7 +9,7 @@ import com.muzi.repairtime.entity.UserEntity;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.UserApi;
-import com.muzi.repairtime.observer.BaseObserver;
+import com.muzi.repairtime.observer.EntityObserver;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
 /**
@@ -60,12 +60,11 @@ public class UserInfoViewModel extends BaseViewModel {
         RxHttp.getApi(UserApi.class)
                 .getUserInfo()
                 .compose(RxUtils.<UserEntity>scheduling())
-                .compose(RxUtils.exceptionTransformer())
+                .compose(RxUtils.<UserEntity>exceptionTransformer())
                 .compose(getLifecycleProvider().<UserEntity>bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(new BaseObserver<UserEntity>(this) {
+                .subscribe(new EntityObserver<UserEntity>(this) {
                     @Override
-                    public void onNext(UserEntity entity) {
-                        super.onNext(entity);
+                    public void onSuccess(UserEntity entity) {
                         nameField.set(entity.getPages().getName());
                         groupField.set(entity.getPages().getGroup());
                         phoneField.set(entity.getPages().getPhone());

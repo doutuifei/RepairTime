@@ -129,7 +129,7 @@ public class ApplyDetailViewModel extends BaseViewModel {
         RxHttp.getApi(RepairApi.class)
                 .takeOrder(listBean.getId())
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.exceptionTransformer())
+                .compose(RxUtils.<BaseEntity>exceptionTransformer())
                 .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override

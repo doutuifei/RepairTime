@@ -136,7 +136,7 @@ public class RegisterViewModel extends BaseViewModel {
                     }
                 })
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.exceptionTransformer())
+                .compose(RxUtils.<BaseEntity>exceptionTransformer())
                 .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
@@ -172,7 +172,7 @@ public class RegisterViewModel extends BaseViewModel {
                     .toList()
                     .toObservable()
                     .compose(RxUtils.<List<String>>scheduling())
-                    .compose(RxUtils.exceptionTransformer())
+                    .compose(RxUtils.<List<String>>exceptionTransformer())
                     .compose(getLifecycleProvider().<List<String>>bindUntilEvent(ActivityEvent.DESTROY))
                     .subscribe(new BaseObserver<List<String>>(this) {
                         @Override

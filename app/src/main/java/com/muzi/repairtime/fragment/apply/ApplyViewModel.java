@@ -3,6 +3,7 @@ package com.muzi.repairtime.fragment.apply;
 import android.app.Application;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 
 import com.muzi.repairtime.activity.base.BaseViewModel;
@@ -16,7 +17,6 @@ import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.RepairApi;
-import com.muzi.repairtime.observer.BaseObserver;
 import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.StringUtils;
 import com.muzi.repairtime.utils.ToastUtils;
@@ -90,35 +90,36 @@ public class ApplyViewModel extends BaseViewModel {
         if (projectList == null) {
             RxHttp.getApi(RepairApi.class)
                     .getProjectList()
-                    .doOnNext(new Consumer<ProjectListEntity>() {
+                    .compose(RxUtils.<ProjectListEntity>scheduling())
+                    .compose(RxUtils.<ProjectListEntity>exceptionTransformer())
+                    .compose(getLifecycleProvider().<ProjectListEntity>bindUntilEvent(FragmentEvent.DESTROY))
+                    .subscribe(new EntityObserver<ProjectListEntity>() {
+
                         @Override
-                        public void accept(ProjectListEntity projectListEntity) throws Exception {
+                        public void onSuccess(ProjectListEntity projectListEntity) {
                             projectBeanList = projectListEntity.getPages();
-                        }
-                    })
-                    .flatMap(new Function<ProjectListEntity, ObservableSource<ProjectListEntity.PagesBean>>() {
-                        @Override
-                        public ObservableSource<ProjectListEntity.PagesBean> apply(ProjectListEntity projectListEntity) throws Exception {
-                            return Observable.fromIterable(projectListEntity.getPages());
-                        }
-                    })
-                    .map(new Function<ProjectListEntity.PagesBean, String>() {
-                        @Override
-                        public String apply(ProjectListEntity.PagesBean pagesBean) throws Exception {
-                            return pagesBean.getRepair_fir();
-                        }
-                    })
-                    .toList()
-                    .toObservable()
-                    .compose(RxUtils.<List<String>>scheduling())
-                    .compose(RxUtils.exceptionTransformer())
-                    .compose(getLifecycleProvider().<List<String>>bindUntilEvent(FragmentEvent.DESTROY))
-                    .subscribe(new BaseObserver<List<String>>() {
-                        @Override
-                        public void onNext(List<String> list) {
-                            super.onNext(list);
-                            projectList = list;
-                            showProgectDialog();
+                            Observable.just(projectListEntity)
+                                    .flatMap(new Function<ProjectListEntity, ObservableSource<ProjectListEntity.PagesBean>>() {
+                                        @Override
+                                        public ObservableSource<ProjectListEntity.PagesBean> apply(ProjectListEntity projectListEntity) throws Exception {
+                                            return Observable.fromIterable(projectListEntity.getPages());
+                                        }
+                                    })
+                                    .map(new Function<ProjectListEntity.PagesBean, String>() {
+                                        @Override
+                                        public String apply(ProjectListEntity.PagesBean pagesBean) throws Exception {
+                                            return pagesBean.getRepair_fir();
+                                        }
+                                    })
+                                    .toList()
+                                    .toObservable()
+                                    .subscribe(new Consumer<List<String>>() {
+                                        @Override
+                                        public void accept(List<String> list) throws Exception {
+                                            projectList = list;
+                                            showProgectDialog();
+                                        }
+                                    });
                         }
                     });
         } else {
@@ -142,32 +143,41 @@ public class ApplyViewModel extends BaseViewModel {
     }
 
     private void getItemList() {
+        if (projectBean == null) {
+            ToastUtils.showToast("请先选择维修项目");
+            return;
+        }
         if (itemList == null) {
             RxHttp.getApi(RepairApi.class)
                     .getProjectItemList(projectBean.getId())
-                    .flatMap(new Function<ProjectItemEntity, ObservableSource<ProjectItemEntity.PagesBean>>() {
+                    .compose(RxUtils.<ProjectItemEntity>scheduling())
+                    .compose(RxUtils.<ProjectItemEntity>exceptionTransformer())
+                    .compose(getLifecycleProvider().<ProjectItemEntity>bindUntilEvent(FragmentEvent.DESTROY))
+                    .subscribe(new EntityObserver<ProjectItemEntity>(this) {
                         @Override
-                        public ObservableSource<ProjectItemEntity.PagesBean> apply(ProjectItemEntity projectItemEntity) throws Exception {
-                            return Observable.fromIterable(projectItemEntity.getPages());
-                        }
-                    })
-                    .map(new Function<ProjectItemEntity.PagesBean, String>() {
-                        @Override
-                        public String apply(ProjectItemEntity.PagesBean pagesBean) throws Exception {
-                            return pagesBean.getRepair_sec();
-                        }
-                    })
-                    .toList()
-                    .toObservable()
-                    .compose(RxUtils.<List<String>>scheduling())
-                    .compose(RxUtils.exceptionTransformer())
-                    .compose(getLifecycleProvider().<List<String>>bindUntilEvent(FragmentEvent.DESTROY))
-                    .subscribe(new BaseObserver<List<String>>(this) {
-                        @Override
-                        public void onNext(List<String> list) {
-                            super.onNext(list);
-                            itemList = list;
-                            showItemDialog();
+                        public void onSuccess(ProjectItemEntity projectItemEntity) {
+                            Observable.just(projectItemEntity)
+                                    .flatMap(new Function<ProjectItemEntity, ObservableSource<ProjectItemEntity.PagesBean>>() {
+                                        @Override
+                                        public ObservableSource<ProjectItemEntity.PagesBean> apply(ProjectItemEntity projectItemEntity) throws Exception {
+                                            return Observable.fromIterable(projectItemEntity.getPages());
+                                        }
+                                    })
+                                    .map(new Function<ProjectItemEntity.PagesBean, String>() {
+                                        @Override
+                                        public String apply(ProjectItemEntity.PagesBean pagesBean) throws Exception {
+                                            return pagesBean.getRepair_sec();
+                                        }
+                                    })
+                                    .toList()
+                                    .toObservable()
+                                    .subscribe(new Consumer<List<String>>() {
+                                        @Override
+                                        public void accept(List<String> list) throws Exception {
+                                            itemList = list;
+                                            showItemDialog();
+                                        }
+                                    });
                         }
                     });
         } else {
@@ -210,7 +220,7 @@ public class ApplyViewModel extends BaseViewModel {
                         item1Field.get(),
                         describeField.get())
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.exceptionTransformer())
+                .compose(RxUtils.<BaseEntity>exceptionTransformer())
                 .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override

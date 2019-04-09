@@ -154,7 +154,7 @@ public class StatisticApplyFragment extends BaseFragment<FragmentStatisticApplyB
                     }
                 })
                 .compose(RxUtils.<List<RepairEntity.PagesBean.ListBean>>scheduling())
-                .compose(RxUtils.exceptionTransformer())
+                .compose(RxUtils.<List<RepairEntity.PagesBean.ListBean>>exceptionTransformer())
                 .compose(this.<List<RepairEntity.PagesBean.ListBean>>bindUntilEvent())
                 .subscribe(new BaseObserver<List<RepairEntity.PagesBean.ListBean>>() {
                     @Override

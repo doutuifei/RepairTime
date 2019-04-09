@@ -107,7 +107,7 @@ public class LoginViewModel extends BaseViewModel {
         RxHttp.getApi(LoginApi.class)
                 .login(phone.get(), password.get(), PushServiceFactory.getCloudPushService().getDeviceId())
                 .compose(RxUtils.<LoginEntity>scheduling())
-                .compose(RxUtils.exceptionTransformer())
+                .compose(RxUtils.<LoginEntity>exceptionTransformer())
                 .compose(getLifecycleProvider().<LoginEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new EntityObserver<LoginEntity>(this) {
                     @Override
@@ -118,19 +118,23 @@ public class LoginViewModel extends BaseViewModel {
                         } else {
                             DataProxy.getInstance().remove(Constans.KEY_PHONE, Constans.KEY_PSD);
                         }
+                        LoginEntity.UserBean userBean = entity.getUser();
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable("user", entity.getUser());
-                        switch (entity.getUser().getType()) {
+                        bundle.putParcelable("user", userBean);
+                        String type = userBean.getType();
+                        DataProxy.getInstance().set(Constans.KEY_TYPE, type);
+                        DataProxy.getInstance().set(Constans.KEY_USER, userBean.getName());
+                        switch (type) {
                             case "普通用户":
-                                startActivity(EmployeeActivity.class, bundle);
+                                startActivity(EmployeeActivity.class);
                                 finish();
                                 break;
                             case "维修员":
-                                startActivity(MaintenanceActivity.class, bundle);
+                                startActivity(MaintenanceActivity.class);
                                 finish();
                                 break;
                             case "管理员":
-                                startActivity(AdministratorActivity.class, bundle);
+                                startActivity(AdministratorActivity.class);
                                 finish();
                                 break;
                         }

@@ -12,6 +12,12 @@ import java.util.concurrent.TimeUnit;
  */
 public interface IData {
 
+    void set(String key, Object o);
+
+    void set(String key, Object o, long life, TimeUnit unit);
+
+    <T> T get(String key, Class<T> tClass);
+
     <T> void set(String key, List<T> list);
 
     <T> void set(String key, List<T> list, long life, TimeUnit unit);

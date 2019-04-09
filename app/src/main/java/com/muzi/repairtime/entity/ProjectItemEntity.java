@@ -8,7 +8,7 @@ import java.util.List;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public class ProjectItemEntity {
+public class ProjectItemEntity extends BaseEntity{
 
     /**
      * listName : pages

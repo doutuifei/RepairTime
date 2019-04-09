@@ -39,28 +39,53 @@
             android:value="25905270" />
         <meta-data
             android:name="com.alibaba.app.appsecret"
-            android:value="038a6ec7900c0312ac14f241bfc1059a" /> <!-- 登录 -->
+            android:value="038a6ec7900c0312ac14f241bfc1059a" />
+        <!--闪屏页-->
         <activity
-            android:name=".activity.login.LoginActivity"
-            android:label="@string/app_name">
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- 注册 -->
-        <activity android:name=".activity.register.RegisterActivity" /> <!-- 普通员 -->
-        <activity android:name=".activity.main.EmployeeActivity" /> <!-- 管理员 -->
-        <activity android:name=".activity.main.AdministratorActivity" /> <!-- 维修员 -->
-        <activity android:name=".activity.main.MaintenanceActivity" /> <!-- 公告详情 -->
-        <activity android:name=".activity.detail.NoticeDetailActivity" /> <!-- 新建公告 -->
-        <!--维修员订单详情-->
-        <activity android:name=".activity.applydetail.ApplyDetailActivity" />
-        <!--订单详情-->
-        <activity android:name=".activity.applydetail.ApplyItemDetailActivity" />
-
+        </activity>
+        <!-- 登录 -->
+        <activity
+            android:name=".activity.login.LoginActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 注册 -->
+        <activity
+            android:name=".activity.register.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <!-- 普通员 -->
+        <activity
+            android:name=".activity.main.EmployeeActivity"
+            android:screenOrientation="portrait" />
+        <!-- 管理员 -->
+        <activity
+            android:name=".activity.main.AdministratorActivity"
+            android:screenOrientation="portrait" />
+        <!-- 维修员 -->
+        <activity
+            android:name=".activity.main.MaintenanceActivity"
+            android:screenOrientation="portrait" />
+        <!-- 公告详情 -->
+        <activity
+            android:name=".activity.detail.NoticeDetailActivity"
+            android:screenOrientation="portrait" />
+        <!-- 维修员订单详情 -->
+        <activity
+            android:name=".activity.applydetail.ApplyDetailActivity"
+            android:screenOrientation="portrait" />
+        <!-- 订单详情 -->
+        <activity
+            android:name=".activity.applydetail.ApplyItemDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--新建公告-->
         <activity
             android:name=".activity.CreateNoticeActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" /> <!-- Push SDK 相关组件，required -->
         <!-- 消息接收服务 -->
         <service

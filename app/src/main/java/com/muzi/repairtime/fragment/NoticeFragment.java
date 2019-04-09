@@ -21,14 +21,11 @@ import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.NoticeApi;
 import com.muzi.repairtime.manager.ExLinearLayoutManger;
-import com.muzi.repairtime.observer.BaseObserver;
+import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.widget.CustomLoadMoreView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 /**
  * 作者: lipeng
@@ -117,27 +114,15 @@ public class NoticeFragment extends BaseFragment<FragmentNoticeBinding, BaseView
     private void getData() {
         RxHttp.getApi(NoticeApi.class)
                 .getAnnouncements(currentPage)
-                .doOnNext(new Consumer<NoticeEntity>() {
+                .compose(RxUtils.<NoticeEntity>scheduling())
+                .compose(RxUtils.<NoticeEntity>exceptionTransformer())
+                .compose(this.<NoticeEntity>bindUntilEvent())
+                .subscribe(new EntityObserver<NoticeEntity>(this) {
                     @Override
-                    public void accept(NoticeEntity noticeEntity) throws Exception {
+                    public void onSuccess(NoticeEntity noticeEntity) {
                         totalPage = noticeEntity.getPages().getTotalPage();
                         currentPage = noticeEntity.getPages().getCurrentPage();
-                    }
-                })
-                .map(new Function<NoticeEntity, List<NoticeEntity.PagesBean.ListBean>>() {
-                    @Override
-                    public List<NoticeEntity.PagesBean.ListBean> apply(NoticeEntity noticeEntity) throws Exception {
-                        return noticeEntity.getPages().getList();
-                    }
-                })
-                .compose(RxUtils.<List<NoticeEntity.PagesBean.ListBean>>scheduling())
-                .compose(RxUtils.exceptionTransformer())
-                .compose(this.<List<NoticeEntity.PagesBean.ListBean>>bindUntilEvent())
-                .subscribe(new BaseObserver<List<NoticeEntity.PagesBean.ListBean>>() {
-                    @Override
-                    public void onNext(List<NoticeEntity.PagesBean.ListBean> list) {
-                        super.onNext(listBeans);
-                        listBeans.addAll(list);
+                        listBeans.addAll(noticeEntity.getPages().getList());
                         adapter.notifyDataSetChanged();
                         if (adapter.isLoading()) {
                             adapter.loadMoreComplete();

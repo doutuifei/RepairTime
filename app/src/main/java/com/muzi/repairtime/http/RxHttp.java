@@ -1,5 +1,6 @@
 package com.muzi.repairtime.http;
 
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
@@ -44,6 +45,8 @@ public class RxHttp {
     }
 
     public RxHttp() {
+        ClearableCookieJar cookieJar =
+                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(App.getInstance()));
         //创建一个OkHttpClient
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
                 //超时时间
@@ -64,7 +67,7 @@ public class RxHttp {
                 .retryOnConnectionFailure(true)
                 .addInterceptor(new RetryIntercepter(MAX_RETRY))
                 //session
-                .cookieJar(new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(App.getInstance())));
+                .cookieJar(cookieJar);
 
 
         //构建Retrofit

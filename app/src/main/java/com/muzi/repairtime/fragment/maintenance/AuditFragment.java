@@ -22,7 +22,6 @@ import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.AdminApi;
 import com.muzi.repairtime.manager.ExLinearLayoutManger;
-import com.muzi.repairtime.observer.BaseObserver;
 import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.CustomLoadMoreView;
@@ -30,9 +29,6 @@ import com.muzi.repairtime.widget.dialog.CommonDialog;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 /**
  * 作者: lipeng
@@ -160,27 +156,15 @@ public class AuditFragment extends BaseFragment<FragmentAuditBinding, BaseViewMo
     private void getData() {
         RxHttp.getApi(AdminApi.class)
                 .audit(currentPage)
-                .doOnNext(new Consumer<AuditEntity>() {
+                .compose(RxUtils.<AuditEntity>exceptionTransformer())
+                .compose(RxUtils.<AuditEntity>scheduling())
+                .compose(this.<AuditEntity>bindUntilEvent())
+                .subscribe(new EntityObserver<AuditEntity>(this) {
                     @Override
-                    public void accept(AuditEntity auditEntity) throws Exception {
+                    public void onSuccess(AuditEntity auditEntity) {
                         totalPage = auditEntity.getPages().getTotalPage();
                         currentPage = auditEntity.getPages().getCurrentPage();
-                    }
-                })
-                .map(new Function<AuditEntity, List<AuditEntity.PagesBean.ListBean>>() {
-                    @Override
-                    public List<AuditEntity.PagesBean.ListBean> apply(AuditEntity auditEntity) throws Exception {
-                        return auditEntity.getPages().getList();
-                    }
-                })
-                .compose(RxUtils.<List<AuditEntity.PagesBean.ListBean>>scheduling())
-                .compose(RxUtils.exceptionTransformer())
-                .compose(this.<List<AuditEntity.PagesBean.ListBean>>bindUntilEvent())
-                .subscribe(new BaseObserver<List<AuditEntity.PagesBean.ListBean>>() {
-                    @Override
-                    public void onNext(List<AuditEntity.PagesBean.ListBean> listBeans) {
-                        super.onNext(listBeans);
-                        list.addAll(listBeans);
+                        list.addAll(auditEntity.getPages().getList());
                         adapter.notifyDataSetChanged();
                         if (adapter.isLoading()) {
                             adapter.loadMoreComplete();
@@ -215,7 +199,7 @@ public class AuditFragment extends BaseFragment<FragmentAuditBinding, BaseViewMo
         RxHttp.getApi(AdminApi.class)
                 .checkUser(id, egis)
                 .compose(RxUtils.<BaseEntity>scheduling())
-                .compose(RxUtils.exceptionTransformer())
+                .compose(RxUtils.<BaseEntity>exceptionTransformer())
                 .compose(this.<BaseEntity>bindUntilEvent())
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override

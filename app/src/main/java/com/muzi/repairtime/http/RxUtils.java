@@ -47,11 +47,11 @@ public class RxUtils {
      *
      * @return
      */
-    public static ObservableTransformer exceptionTransformer() {
+    public static <T> ObservableTransformer<T,T> exceptionTransformer() {
 
-        return new ObservableTransformer() {
+        return new ObservableTransformer<T,T>() {
             @Override
-            public ObservableSource apply(Observable observable) {
+            public ObservableSource<T> apply(Observable<T> observable) {
                 return observable.onErrorResumeNext(new HttpResponseFunc());
             }
         };

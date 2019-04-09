@@ -12,4 +12,7 @@ public class Constans {
 
     public static final String KEY_PSD = "psd";
 
+    public static final String KEY_TYPE = "type";
+    public static final String KEY_USER = "user";
+
 }

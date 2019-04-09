@@ -8,7 +8,7 @@ import java.util.List;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public class NoticeEntity {
+public class NoticeEntity extends BaseEntity {
 
     /**
      * listName : pages
@@ -122,5 +122,12 @@ public class NoticeEntity {
                 this.username = username;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "NoticeEntity{" +
+                "pages=" + pages +
+                '}'+super.toString();
     }
 }

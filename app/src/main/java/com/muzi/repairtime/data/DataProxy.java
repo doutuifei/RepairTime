@@ -47,6 +47,25 @@ public class DataProxy implements IData {
     }
 
     @Override
+    public void set(String key, Object o) {
+        checkNotNull();
+        iData.set(key, o);
+    }
+
+    @Override
+    public void set(String key, Object o, long life, TimeUnit unit) {
+        checkNotNull();
+        iData.set(key, o, life, unit);
+    }
+
+    @Override
+    public <T> T get(String key, Class<T> tClass) {
+        checkNotNull();
+        return iData.get(key, tClass);
+    }
+
+
+    @Override
     public <T> void set(String key, List<T> list) {
         checkNotNull();
         iData.set(key, list);

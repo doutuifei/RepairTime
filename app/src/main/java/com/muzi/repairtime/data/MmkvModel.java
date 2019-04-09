@@ -23,6 +23,21 @@ public class MmkvModel implements IData {
     }
 
     @Override
+    public void set(String key, Object o) {
+        MmkvLifeUtils.set(key, GsonUtils.toJsonString(o));
+    }
+
+    @Override
+    public void set(String key, Object o, long life, TimeUnit unit) {
+        MmkvLifeUtils.set(key, GsonUtils.toJsonString(o), life, unit);
+    }
+
+    @Override
+    public <T> T get(String key, Class<T> tClass) {
+        return GsonUtils.toObject(MmkvLifeUtils.getString(key), tClass);
+    }
+
+    @Override
     public <T> void set(String key, List<T> list) {
         MmkvLifeUtils.set(key, GsonUtils.toJsonString(list));
     }

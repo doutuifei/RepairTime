@@ -8,7 +8,7 @@ import java.util.List;
  * 邮箱: lipeng@moyi365.com
  * 功能: 科室
  */
-public class GroupEntity {
+public class GroupEntity extends BaseEntity{
 
     /**
      * listName : groups

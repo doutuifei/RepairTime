@@ -4,6 +4,8 @@ package com.muzi.repairtime.observer;
 import com.muzi.repairtime.activity.base.IBaseView;
 import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.exception.BaseException;
+import com.muzi.repairtime.manager.AppManager;
+import com.muzi.repairtime.utils.StringUtils;
 
 /**
  * 作者: lipeng
@@ -23,13 +25,19 @@ public abstract class EntityObserver<T extends BaseEntity> extends BaseObserver<
     @Override
     public void onNext(T entity) {
         super.onNext(entity);
-        switch (entity.getErrInfo()) {
-            case "0":
-                onSuccess(entity);
-                break;
-            default:
-                onError(new BaseException(entity.getMsg()));
-                break;
+        if (StringUtils.isNotEmpty(entity.getErrInfo())) {
+            switch (entity.getErrInfo()) {
+                case "0":
+                    onSuccess(entity);
+                    break;
+                case "-1":
+                    AppManager.getAppManager().requestLogin();
+                default:
+                    onError(new BaseException(entity.getMsg()));
+                    break;
+            }
+        } else {
+            onSuccess(entity);
         }
     }
 

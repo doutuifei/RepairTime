@@ -24,14 +24,11 @@ import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.RepairApi;
 import com.muzi.repairtime.manager.ExLinearLayoutManger;
-import com.muzi.repairtime.observer.BaseObserver;
+import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.widget.CustomLoadMoreView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 /**
  * 作者: lipeng
@@ -142,27 +139,15 @@ public class ApplyListFragment extends BaseFragment<FragmentApplyListBinding, Ba
     private void getData() {
         RxHttp.getApi(RepairApi.class)
                 .repairerOrder(currentPage)
-                .doOnNext(new Consumer<RepairEntity>() {
+                .compose(RxUtils.<RepairEntity>scheduling())
+                .compose(RxUtils.<RepairEntity>exceptionTransformer())
+                .compose(this.<RepairEntity>bindUntilEvent())
+                .subscribe(new EntityObserver<RepairEntity>(this) {
                     @Override
-                    public void accept(RepairEntity repairEntity) throws Exception {
+                    public void onSuccess(RepairEntity repairEntity) {
                         totalPage = repairEntity.getPages().getTotalPage();
                         currentPage = repairEntity.getPages().getCurrentPage();
-                    }
-                })
-                .map(new Function<RepairEntity, List<RepairEntity.PagesBean.ListBean>>() {
-                    @Override
-                    public List<RepairEntity.PagesBean.ListBean> apply(RepairEntity repairEntity) throws Exception {
-                        return repairEntity.getPages().getList();
-                    }
-                })
-                .compose(RxUtils.<List<RepairEntity.PagesBean.ListBean>>scheduling())
-                .compose(RxUtils.exceptionTransformer())
-                .compose(this.<List<RepairEntity.PagesBean.ListBean>>bindUntilEvent())
-                .subscribe(new BaseObserver<List<RepairEntity.PagesBean.ListBean>>() {
-                    @Override
-                    public void onNext(List<RepairEntity.PagesBean.ListBean> list) {
-                        super.onNext(listBeans);
-                        listBeans.addAll(list);
+                        listBeans.addAll(repairEntity.getPages().getList());
                         adapter.notifyDataSetChanged();
                         if (adapter.isLoading()) {
                             adapter.loadMoreComplete();

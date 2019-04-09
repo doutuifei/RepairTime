@@ -6,7 +6,7 @@ package com.muzi.repairtime.entity;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public class UserEntity {
+public class UserEntity extends BaseEntity{
 
     /**
      * listName : baseinfo

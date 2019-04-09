@@ -13,7 +13,7 @@ import java.util.List;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public class RepairEntity {
+public class RepairEntity extends BaseEntity{
 
     /**
      * {
