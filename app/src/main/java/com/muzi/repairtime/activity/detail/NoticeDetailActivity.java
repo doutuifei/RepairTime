@@ -19,16 +19,12 @@ import com.zzhoujay.richtext.RichText;
  */
 public class NoticeDetailActivity extends BaseActivity<ActivityNoticeDetailBinding, BaseViewModel> {
 
-    public static void startActivity(Context context, String title, String content) {
+    public static void startActivity(Context context, String title, String summary) {
         Intent intent = new Intent(context, NoticeDetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("title", title);
-        bundle.putString("content", content);
-        intent.putExtras(bundle);
+        intent.putExtra("title", title);
+        intent.putExtra("summary", summary);
         context.startActivity(intent);
     }
-
-    private String title, content;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -41,15 +37,14 @@ public class NoticeDetailActivity extends BaseActivity<ActivityNoticeDetailBindi
     }
 
     @Override
-    public void initParam(Bundle bundle) {
-        super.initParam(bundle);
-        title = bundle.getString("title");
-        content = bundle.getString("content");
-    }
-
-    @Override
     public void initView() {
         super.initView();
+        Intent intent = getIntent();
+        // 通知标题
+        String title = intent.getStringExtra("title");
+        // 通知内容
+        String summary = intent.getStringExtra("summary");
+
         RichText.initCacheDir(this);
         binding.toolbar.setTitle(title);
         binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -58,7 +53,7 @@ public class NoticeDetailActivity extends BaseActivity<ActivityNoticeDetailBindi
                 finish();
             }
         });
-        RichText.from(content).into(binding.content);
+        RichText.from(summary).into(binding.content);
     }
 
 }
