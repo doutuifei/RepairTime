@@ -74,7 +74,7 @@ public interface LoginApi {
      *
      * @return
      */
-    @POST("user/logout")
+    @POST("user/androidLogout")
     Observable<BaseEntity> logout();
 
 }

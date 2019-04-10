@@ -1,10 +1,7 @@
 package com.muzi.repairtime.manager;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
-
-import com.muzi.repairtime.activity.login.LoginActivity;
 
 import java.util.Stack;
 
@@ -85,15 +82,6 @@ public class AppManager {
      */
     public void finishActivity() {
         Activity activity = activityStack.lastElement();
-        finishActivity(activity);
-    }
-
-    /**
-     * 跳转登录
-     */
-    public void requestLogin() {
-        Activity activity = activityStack.lastElement();
-        activity.startActivity(new Intent(activity, LoginActivity.class));
         finishActivity(activity);
     }
 

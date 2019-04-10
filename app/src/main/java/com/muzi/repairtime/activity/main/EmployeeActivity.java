@@ -18,6 +18,7 @@ import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.activity.login.LoginActivity;
 import com.muzi.repairtime.data.DataProxy;
 import com.muzi.repairtime.databinding.ActivityEmployeeBinding;
+import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.event.EventConstan;
 import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.fragment.NoticeFragment;
@@ -25,8 +26,13 @@ import com.muzi.repairtime.fragment.apply.ApplyFragment;
 import com.muzi.repairtime.fragment.employee.AppliedFragment;
 import com.muzi.repairtime.fragment.psd.ChangePsdFragment;
 import com.muzi.repairtime.fragment.user.UserInfoFragment;
+import com.muzi.repairtime.http.RxHttp;
+import com.muzi.repairtime.http.RxUtils;
+import com.muzi.repairtime.http.api.LoginApi;
+import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.dialog.CommonDialog;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import me.yokeyword.fragmentation.SupportFragment;
 
@@ -97,8 +103,7 @@ public class EmployeeActivity extends BaseActivity<ActivityEmployeeBinding, Base
 
                             @Override
                             public void onConfirmClick(View v, Dialog dialog) {
-                                finish();
-                                startActivity(new Intent(EmployeeActivity.this, LoginActivity.class));
+                                logout();
                             }
                         }).show();
             }
@@ -180,6 +185,25 @@ public class EmployeeActivity extends BaseActivity<ActivityEmployeeBinding, Base
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 退出登录
+     */
+    private void logout() {
+        RxHttp.getApi(LoginApi.class)
+                .logout()
+                .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new EntityObserver() {
+                    @Override
+                    public void onSuccess(BaseEntity entity) {
+                        DataProxy.getInstance().remove(Constans.KEY_TYPE, Constans.KEY_USER);
+                        startActivity(new Intent(EmployeeActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                });
     }
 
 }
