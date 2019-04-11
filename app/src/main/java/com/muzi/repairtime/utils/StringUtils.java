@@ -63,4 +63,23 @@ public class StringUtils {
         }
     }
 
+    /**
+     * @param text
+     * @param length
+     * @return
+     */
+    public static String maxString(String text, int length) {
+        if (isEmpty(text)) {
+            return text;
+        }
+        if (length < 1) {
+            return text;
+        }
+        if (text.length() <= length) {
+            return text;
+        }
+        String target = text.substring(0, length) + "...";
+        return target;
+    }
+
 }

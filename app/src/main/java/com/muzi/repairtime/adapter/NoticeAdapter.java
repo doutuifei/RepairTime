@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.entity.NoticeEntity;
 import com.muzi.repairtime.utils.DateUtils;
+import com.muzi.repairtime.utils.StringUtils;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class NoticeAdapter extends BaseQuickAdapter<NoticeEntity.PagesBean.ListB
 
     @Override
     protected void convert(BaseViewHolder helper, NoticeEntity.PagesBean.ListBean item) {
-        helper.setText(R.id.tv_content, item.getTitle());
+        helper.setText(R.id.tv_content, StringUtils.maxString(item.getTitle(), 10));
         helper.setText(R.id.tv_author, item.getUsername());
         helper.setText(R.id.tv_time, DateUtils.long2String(item.getPublishtime()));
     }

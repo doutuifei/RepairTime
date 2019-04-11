@@ -3,7 +3,6 @@ package com.muzi.repairtime.fragment.apply;
 import android.app.Application;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 
 import com.muzi.repairtime.activity.base.BaseViewModel;
@@ -230,5 +229,4 @@ public class ApplyViewModel extends BaseViewModel {
                     }
                 });
     }
-
 }

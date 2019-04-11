@@ -8,6 +8,7 @@ import com.muzi.repairtime.App;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.entity.RepairEntity;
 import com.muzi.repairtime.utils.DateUtils;
+import com.muzi.repairtime.utils.StringUtils;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class ApplyTakeAdapter extends BaseQuickAdapter<RepairEntity.PagesBean.Li
         } else {
             helper.setTextColor(R.id.tv_content, App.getInstance().getResources().getColor(R.color.blue));
         }
-        helper.setText(R.id.tv_content, item.getProblem());
+        helper.setText(R.id.tv_content, StringUtils.maxString(item.getProblem(), 10));
         helper.setText(R.id.tv_author, item.getRepair_sec());
         helper.setText(R.id.tv_time, DateUtils.long2String(item.getReporttime()));
     }
