@@ -6,7 +6,7 @@ package com.muzi.repairtime.entity;
  * 邮箱: lipeng@moyi365.com
  * 功能:
  */
-public class UserEntity extends BaseEntity{
+public class UserEntity extends BaseEntity {
 
     /**
      * listName : baseinfo
@@ -48,6 +48,7 @@ public class UserEntity extends BaseEntity{
         private String ipAddress;
         private String type;
         private String pic;
+        private String picPhone;
 
         public String getName() {
             return name;
@@ -95,6 +96,14 @@ public class UserEntity extends BaseEntity{
 
         public void setPic(String pic) {
             this.pic = pic;
+        }
+
+        public String getPicPhone() {
+            return picPhone;
+        }
+
+        public void setPicPhone(String picPhone) {
+            this.picPhone = picPhone;
         }
     }
 

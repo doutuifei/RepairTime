@@ -50,6 +50,11 @@ public class UserInfoViewModel extends BaseViewModel {
      */
     public ObservableField<String> principalField = new ObservableField<>();
 
+    /**
+     * 负责人手机号
+     */
+    public ObservableField<String> principalPhoneField = new ObservableField<>();
+
     public UserInfoViewModel(@NonNull Application application) {
         super(application);
     }
@@ -71,6 +76,7 @@ public class UserInfoViewModel extends BaseViewModel {
                         ipField.set(entity.getPages().getIpAddress());
                         typeField.set(entity.getPages().getType());
                         principalField.set(entity.getPages().getPic());
+                        principalPhoneField.set(entity.getPages().getPicPhone());
                     }
                 });
     }

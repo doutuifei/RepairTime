@@ -22,7 +22,7 @@ import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.event.EventConstan;
 import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.fragment.admin.PubNoticeFragment;
-import com.muzi.repairtime.fragment.maintenance.AuditFragment;
+import com.muzi.repairtime.fragment.admin.AuditFragment;
 import com.muzi.repairtime.fragment.psd.ChangePsdFragment;
 import com.muzi.repairtime.fragment.user.UserInfoFragment;
 import com.muzi.repairtime.http.RxHttp;

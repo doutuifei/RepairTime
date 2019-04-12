@@ -24,10 +24,10 @@ public class AuditAdapter extends BaseMultiItemQuickAdapter<AuditEntity.PagesBea
 
     @Override
     protected void convert(BaseViewHolder helper, AuditEntity.PagesBean.ListBean item) {
-        helper.setText(R.id.tv_name, item.getName() + "");
-        helper.setText(R.id.tv_phone, item.getPhone() + "");
-        helper.setText(R.id.tv_type, item.getGroup() + "");
-        helper.setText(R.id.tv_role, item.getType() + "");
+        helper.setText(R.id.tv_name, item.getName());
+        helper.setText(R.id.tv_phone, item.getPhone());
+        helper.setText(R.id.tv_type, item.getGroup());
+        helper.setText(R.id.tv_role, item.getType());
 
         switch (item.getItemType()) {
             case 0:

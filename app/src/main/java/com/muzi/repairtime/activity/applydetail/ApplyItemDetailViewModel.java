@@ -71,6 +71,16 @@ public class ApplyItemDetailViewModel extends BaseViewModel {
     public ObservableInt statusId = new ObservableInt();
 
     /**
+     * 接单时间
+     */
+    public ObservableField<String> takeTime = new ObservableField<>();
+
+    /**
+     * 完成时间
+     */
+    public ObservableField<String> finishTime = new ObservableField<>();
+
+    /**
      * 删除
      */
     public BindingCommand<View> delete = new BindingCommand<>(new BindingConsumerAction<View>() {
@@ -149,6 +159,8 @@ public class ApplyItemDetailViewModel extends BaseViewModel {
         evaluate.set(listBean.getCs_id());
         status.set(listBean.getOrderstatus());
         statusId.set(listBean.getStatus_id());
+        takeTime.set(DateUtils.long2String(listBean.getAcceptordertime()));
+        finishTime.set(DateUtils.long2String(listBean.getFinishtime()));
     }
 
     /**
