@@ -34,6 +34,8 @@ import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.dialog.CommonDialog;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
+import org.json.JSONObject;
+
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
@@ -46,7 +48,7 @@ public class EmployeeActivity extends BaseActivity<ActivityEmployeeBinding, Base
 
     private SupportFragment[] fragments;
     private int[] ids;
-    private int nextPosition, currePosition;
+    private int nextPosition, currePosition = 0;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -62,6 +64,13 @@ public class EmployeeActivity extends BaseActivity<ActivityEmployeeBinding, Base
     public void initData() {
         super.initData();
         binding.navEmployee.tvName.setText(DataProxy.getInstance().getString(Constans.KEY_USER));
+        String extraMap = getIntent().getStringExtra("extraMap");
+        try {
+            JSONObject jsonObject = new JSONObject(extraMap);
+            currePosition = Integer.parseInt(jsonObject.optString("position", "0"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -71,17 +80,23 @@ public class EmployeeActivity extends BaseActivity<ActivityEmployeeBinding, Base
                 .with(EventConstan.CHECK_ITEM, Integer.class)
                 .observe(this, new Observer<Integer>() {
                     @Override
-                    public void onChanged(@Nullable Integer integer) {
-                        if (integer >= ids.length) {
-                            return;
-                        }
-                        int id = ids[integer];
-                        binding.navEmployee.radiogroup.check(id);
-                        nextPosition = integer;
-                        showHideFragment(fragments[nextPosition], fragments[currePosition]);
-                        currePosition = nextPosition;
+                    public void onChanged(@Nullable Integer position) {
+                        checkFragment(position);
                     }
                 });
+    }
+
+    /**
+     * 切换fragment
+     *
+     * @param position
+     */
+    private void checkFragment(int position) {
+        if (position >= ids.length) {
+            return;
+        }
+        int id = ids[position];
+        binding.navEmployee.radiogroup.check(id);
     }
 
     @Override
@@ -126,6 +141,8 @@ public class EmployeeActivity extends BaseActivity<ActivityEmployeeBinding, Base
                 R.id.item_applied,
                 R.id.item_psd
         };
+
+        checkFragment(currePosition);
 
         SupportFragment firstFragment = findFragment(fragments[currePosition].getClass());
         if (firstFragment == null) {

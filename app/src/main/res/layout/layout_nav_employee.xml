@@ -7,6 +7,7 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white">
@@ -49,10 +50,10 @@
             <RadioButton
                 android:id="@+id/item_persion"
                 style="@style/radiobutton_item"
-                android:checked="true"
                 android:drawableLeft="@drawable/item_persion"
                 android:text="基本信息"
-                android:textColor="@drawable/item_persion_text" />
+                android:textColor="@drawable/item_persion_text"
+                tools:checked="true" />
 
             <RadioButton
                 android:id="@+id/item_notice"

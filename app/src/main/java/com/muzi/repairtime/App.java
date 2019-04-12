@@ -1,5 +1,6 @@
 package com.muzi.repairtime;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationChannel;
@@ -18,6 +19,11 @@ import com.muzi.repairtime.data.DataProxy;
 import com.muzi.repairtime.data.MmkvModel;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.manager.AppManager;
+import com.muzi.repairtime.utils.FileUtils;
+import com.yanzhenjie.permission.AndPermission;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 作者: lipeng
@@ -28,6 +34,7 @@ import com.muzi.repairtime.manager.AppManager;
 public class App extends Application {
 
     private static App instance;
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -43,6 +50,9 @@ public class App extends Application {
         initRegisterActivityLifecycle();
         DataProxy.getInstance().init(new MmkvModel(this));
         initCloudChannel(this);
+        if (AndPermission.hasPermissions(instance, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            copyRing();
+        }
     }
 
     public static App getInstance() {
@@ -94,6 +104,7 @@ public class App extends Application {
 
         PushServiceFactory.init(applicationContext);
         final CloudPushService pushService = PushServiceFactory.getCloudPushService();
+        pushService.setNotificationSoundFilePath(Constans.RING);
         pushService.register(applicationContext, new CommonCallback() {
             @Override
             public void onSuccess(String response) {
@@ -129,6 +140,23 @@ public class App extends Application {
             mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
             //最后在notificationmanager中创建该通知渠道
             mNotificationManager.createNotificationChannel(mChannel);
+        }
+    }
+
+
+    public void copyRing() {
+        final File ringFile = new File(Constans.RING);
+        if (!ringFile.exists()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        FileUtils.copy(instance.getApplicationContext(), "ring.mp3", Constans.RING);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
     }
 

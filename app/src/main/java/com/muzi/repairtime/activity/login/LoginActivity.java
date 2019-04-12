@@ -1,18 +1,23 @@
 package com.muzi.repairtime.activity.login;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import com.muzi.repairtime.App;
 import com.muzi.repairtime.BR;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseActivity;
 import com.muzi.repairtime.databinding.ActivityLoginBinding;
 import com.muzi.repairtime.widget.dialog.CommonDialog;
+import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
+
+import java.util.List;
 
 /**
  * 登录activity
@@ -32,6 +37,17 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     @Override
     public void initView() {
         super.initView();
+        AndPermission.with(this)
+                .runtime()
+                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .onGranted(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+                        App.getInstance().copyRing();
+                    }
+                })
+                .start();
+
         AndPermission.with(this)
                 .notification()
                 .permission()
