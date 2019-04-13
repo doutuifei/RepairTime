@@ -48,9 +48,11 @@ import me.yokeyword.fragmentation.SupportFragment;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewModel> implements BaseFragment.OnFragmentOpenDrawerListener {
 
+
     private SupportFragment[] fragments;
     private int[] ids;
     private String type;
+    private String item = Constans.ITEM_INFO;
     private int nextPosition, currePosition = 0;
 
     private TextView tvName;
@@ -74,7 +76,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         String extraMap = getIntent().getStringExtra("extraMap");
         try {
             JSONObject jsonObject = new JSONObject(extraMap);
-            currePosition = Integer.parseInt(jsonObject.optString("position", "0"));
+            item = jsonObject.optString("position", Constans.ITEM_INFO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -116,7 +118,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         View viewStub = binding.viewStub.getViewStub().inflate();
         tvName = viewStub.findViewById(R.id.tv_name);
         radioGroup = viewStub.findViewById(R.id.radiogroup);
-        btnLogout=viewStub.findViewById(R.id.btn_logout);
+        btnLogout = viewStub.findViewById(R.id.btn_logout);
 
         tvName.setText(DataProxy.getInstance().getString(Constans.KEY_USER));
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +173,23 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
                         R.id.item_applied,
                         R.id.item_psd
                 };
+                switch (item) {
+                    case Constans.ITEM_INFO:
+                        currePosition = 0;
+                        break;
+                    case Constans.ITEM_NOTICE:
+                        currePosition = 1;
+                        break;
+                    case Constans.ITEM_APPLYING:
+                        currePosition = 2;
+                        break;
+                    case Constans.ITEM_APPLIED:
+                        currePosition = 3;
+                        break;
+                    case Constans.ITEM_PSD:
+                        currePosition = 4;
+                        break;
+                }
                 break;
             case "维修员":
                 fragments = new SupportFragment[]{
@@ -186,6 +205,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
                         R.id.item_apply,
                         R.id.item_psd
                 };
+                switch (item) {
+                    case Constans.ITEM_INFO:
+                        currePosition = 0;
+                        break;
+                    case Constans.ITEM_NOTICE:
+                        currePosition = 1;
+                        break;
+                    case Constans.ITEM_APPLYING:
+                        currePosition = 2;
+                        break;
+                    case Constans.ITEM_PSD:
+                        currePosition = 3;
+                        break;
+                }
                 break;
             case "管理员":
                 fragments = new SupportFragment[]{
@@ -201,6 +234,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
                         R.id.item_notice,
                         R.id.item_psd
                 };
+                switch (item) {
+                    case Constans.ITEM_INFO:
+                        currePosition = 0;
+                        break;
+                    case Constans.ITEM_AUDIT:
+                        currePosition = 1;
+                        break;
+                    case Constans.ITEM_NOTICE:
+                        currePosition = 2;
+                        break;
+                    case Constans.ITEM_PSD:
+                        currePosition = 3;
+                        break;
+                }
                 break;
         }
 

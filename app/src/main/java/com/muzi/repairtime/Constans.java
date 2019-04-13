@@ -18,6 +18,19 @@ public class Constans {
     public static final String KEY_TYPE = "type";
     public static final String KEY_USER = "user";
 
+    //基本信息
+    public static final String ITEM_INFO = "info";
+    //公告
+    public static final String ITEM_NOTICE = "notice";
+    //普通用户：维修申请、维修员：维修列表
+    public static final String ITEM_APPLYING = "applying";
+    //普通用户：我的申请
+    public static final String ITEM_APPLIED = "applied";
+    //人员审核
+    public static final String ITEM_AUDIT = "audit";
+    //修改密码
+    public static final String ITEM_PSD = "psd";
+
     /**
      * 推送声音
      */

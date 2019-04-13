@@ -154,13 +154,19 @@ public class ApplyItemDetailViewModel extends BaseViewModel {
         room.set(listBean.getReportgroup());
         repair.set(listBean.getRepairer());
         repairSec.set(listBean.getRepair_sec());
-        time.set(DateUtils.long2String(listBean.getReporttime()));
+        if (listBean.getReporttime() > 0) {
+            time.set(DateUtils.long2String(listBean.getReporttime()));
+        }
         desc.set(listBean.getProblem());
         evaluate.set(listBean.getCs_id());
         status.set(listBean.getOrderstatus());
         statusId.set(listBean.getStatus_id());
-        takeTime.set(DateUtils.long2String(listBean.getAcceptordertime()));
-        finishTime.set(DateUtils.long2String(listBean.getFinishtime()));
+        if (listBean.getAcceptordertime() > 0) {
+            takeTime.set(DateUtils.long2String(listBean.getAcceptordertime()));
+        }
+        if (listBean.getFinishtime() > 0) {
+            finishTime.set(DateUtils.long2String(listBean.getFinishtime()));
+        }
     }
 
     /**
