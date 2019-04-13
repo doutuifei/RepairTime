@@ -16,13 +16,13 @@
 
         <include layout="@layout/content_main" />
 
-        <include
-            android:id="@+id/nav_employee"
-            layout="@layout/layout_nav_administrator"
+        <ViewStub
+            android:id="@+id/view_stub"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:fitsSystemWindows="true" />
+            android:fitsSystemWindows="true"
+            tools:layout="@layout/layout_nav_employee" />
 
     </android.support.v4.widget.DrawerLayout>
 

@@ -4,18 +4,17 @@ import android.app.Application;
 import android.arch.lifecycle.Observer;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.activity.base.BaseViewModel;
-import com.muzi.repairtime.activity.main.AdministratorActivity;
-import com.muzi.repairtime.activity.main.EmployeeActivity;
-import com.muzi.repairtime.activity.main.MaintenanceActivity;
+import com.muzi.repairtime.activity.main.MainActivity;
 import com.muzi.repairtime.activity.register.RegisterActivity;
 import com.muzi.repairtime.command.BindingCommand;
 import com.muzi.repairtime.command.BindingConsumerAction;
@@ -119,25 +118,23 @@ public class LoginViewModel extends BaseViewModel {
                             DataProxy.getInstance().remove(Constans.KEY_PHONE, Constans.KEY_PSD);
                         }
                         LoginEntity.UserBean userBean = entity.getUser();
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable("user", userBean);
                         String type = userBean.getType();
                         DataProxy.getInstance().set(Constans.KEY_TYPE, type);
                         DataProxy.getInstance().set(Constans.KEY_USER, userBean.getName());
-                        switch (type) {
-                            case "普通用户":
-                                startActivity(EmployeeActivity.class);
-                                finish();
-                                break;
-                            case "维修员":
-                                startActivity(MaintenanceActivity.class);
-                                finish();
-                                break;
-                            case "管理员":
-                                startActivity(AdministratorActivity.class);
-                                finish();
-                                break;
-                        }
+                        CloudPushService cloudPushService = PushServiceFactory.getCloudPushService();
+                        cloudPushService.bindAccount(phone.get(), new CommonCallback() {
+                            @Override
+                            public void onSuccess(String s) {
+
+                            }
+
+                            @Override
+                            public void onFailed(String s, String s1) {
+
+                            }
+                        });
+                        startActivity(MainActivity.class);
+                        finish();
                     }
                 });
     }

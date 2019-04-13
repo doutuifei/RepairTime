@@ -8,8 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseActivity;
@@ -17,12 +22,16 @@ import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.activity.login.LoginActivity;
 import com.muzi.repairtime.data.DataProxy;
-import com.muzi.repairtime.databinding.ActivityAdministratorBinding;
+import com.muzi.repairtime.databinding.ActivityMainBinding;
 import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.event.EventConstan;
 import com.muzi.repairtime.event.LiveEventBus;
-import com.muzi.repairtime.fragment.admin.PubNoticeFragment;
+import com.muzi.repairtime.fragment.NoticeFragment;
 import com.muzi.repairtime.fragment.admin.AuditFragment;
+import com.muzi.repairtime.fragment.admin.PubNoticeFragment;
+import com.muzi.repairtime.fragment.apply.ApplyFragment;
+import com.muzi.repairtime.fragment.employee.AppliedFragment;
+import com.muzi.repairtime.fragment.maintenance.ApplyListFragment;
 import com.muzi.repairtime.fragment.psd.ChangePsdFragment;
 import com.muzi.repairtime.fragment.user.UserInfoFragment;
 import com.muzi.repairtime.http.RxHttp;
@@ -37,21 +46,21 @@ import org.json.JSONObject;
 
 import me.yokeyword.fragmentation.SupportFragment;
 
-/**
- * 作者: lipeng
- * 时间: 2019/3/12
- * 邮箱: lipeng@moyi365.com
- * 功能: 管理员
- */
-public class AdministratorActivity extends BaseActivity<ActivityAdministratorBinding, BaseViewModel> implements BaseFragment.OnFragmentOpenDrawerListener {
+public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewModel> implements BaseFragment.OnFragmentOpenDrawerListener {
 
     private SupportFragment[] fragments;
     private int[] ids;
+    private String type;
     private int nextPosition, currePosition = 0;
+
+    private TextView tvName;
+    private RadioGroup radioGroup;
+    private Button btnLogout;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
-        return R.layout.activity_administrator;
+        type = DataProxy.getInstance().getString(Constans.KEY_TYPE, "");
+        return R.layout.activity_main;
     }
 
     @Override
@@ -62,7 +71,6 @@ public class AdministratorActivity extends BaseActivity<ActivityAdministratorBin
     @Override
     public void initData() {
         super.initData();
-        binding.navEmployee.tvName.setText(DataProxy.getInstance().getString(Constans.KEY_USER));
         String extraMap = getIntent().getStringExtra("extraMap");
         try {
             JSONObject jsonObject = new JSONObject(extraMap);
@@ -85,25 +93,33 @@ public class AdministratorActivity extends BaseActivity<ActivityAdministratorBin
                 });
     }
 
-    /**
-     * 切换fragment
-     *
-     * @param position
-     */
-    private void checkFragment(int position) {
-        if (position >= ids.length) {
-            return;
-        }
-        int id = ids[position];
-        binding.navEmployee.radiogroup.check(id);
-    }
-
     @Override
     public void initView() {
         super.initView();
+        initViewStub();
         initFragment();
         initRadioGroup();
-        binding.navEmployee.btnLogout.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void initViewStub() {
+        switch (type) {
+            case "普通用户":
+                binding.viewStub.getViewStub().setLayoutResource(R.layout.layout_nav_employee);
+                break;
+            case "维修员":
+                binding.viewStub.getViewStub().setLayoutResource(R.layout.layout_nav_maintenance);
+                break;
+            case "管理员":
+                binding.viewStub.getViewStub().setLayoutResource(R.layout.layout_nav_administrator);
+                break;
+        }
+        View viewStub = binding.viewStub.getViewStub().inflate();
+        tvName = viewStub.findViewById(R.id.tv_name);
+        radioGroup = viewStub.findViewById(R.id.radiogroup);
+        btnLogout=viewStub.findViewById(R.id.btn_logout);
+
+        tvName.setText(DataProxy.getInstance().getString(Constans.KEY_USER));
+        btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new CommonDialog.Builder(getContext())
@@ -124,20 +140,70 @@ public class AdministratorActivity extends BaseActivity<ActivityAdministratorBin
         });
     }
 
-    private void initFragment() {
-        fragments = new SupportFragment[]{
-                UserInfoFragment.getInstance(),
-                AuditFragment.getInstance(),
-                PubNoticeFragment.getInstance(),
-                ChangePsdFragment.getInstance()
-        };
+    /**
+     * 切换fragment
+     *
+     * @param position
+     */
+    private void checkFragment(int position) {
+        if (position >= ids.length) {
+            return;
+        }
+        int id = ids[position];
+        radioGroup.check(id);
+    }
 
-        ids = new int[]{
-                R.id.item_persion,
-                R.id.item_audit,
-                R.id.item_notice,
-                R.id.item_psd
-        };
+    private void initFragment() {
+        switch (type) {
+            case "普通用户":
+                fragments = new SupportFragment[]{
+                        UserInfoFragment.getInstance(),
+                        NoticeFragment.getInstance(),
+                        ApplyFragment.getInstance(),
+                        AppliedFragment.getInstance(),
+                        ChangePsdFragment.getInstance()
+                };
+
+                ids = new int[]{
+                        R.id.item_persion,
+                        R.id.item_notice,
+                        R.id.item_applying,
+                        R.id.item_applied,
+                        R.id.item_psd
+                };
+                break;
+            case "维修员":
+                fragments = new SupportFragment[]{
+                        UserInfoFragment.getInstance(),
+                        NoticeFragment.getInstance(),
+                        ApplyListFragment.getInstance(),
+                        ChangePsdFragment.getInstance()
+                };
+
+                ids = new int[]{
+                        R.id.item_persion,
+                        R.id.item_notice,
+                        R.id.item_apply,
+                        R.id.item_psd
+                };
+                break;
+            case "管理员":
+                fragments = new SupportFragment[]{
+                        UserInfoFragment.getInstance(),
+                        AuditFragment.getInstance(),
+                        PubNoticeFragment.getInstance(),
+                        ChangePsdFragment.getInstance()
+                };
+
+                ids = new int[]{
+                        R.id.item_persion,
+                        R.id.item_audit,
+                        R.id.item_notice,
+                        R.id.item_psd
+                };
+                break;
+        }
+
 
         checkFragment(currePosition);
 
@@ -152,7 +218,7 @@ public class AdministratorActivity extends BaseActivity<ActivityAdministratorBin
     }
 
     private void initRadioGroup() {
-        binding.navEmployee.radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 for (int i = 0; i < ids.length; i++) {
@@ -213,11 +279,22 @@ public class AdministratorActivity extends BaseActivity<ActivityAdministratorBin
                 .subscribe(new EntityObserver() {
                     @Override
                     public void onSuccess(BaseEntity entity) {
+                        CloudPushService cloudPushService = PushServiceFactory.getCloudPushService();
+                        cloudPushService.unbindAccount(new CommonCallback() {
+                            @Override
+                            public void onSuccess(String s) {
+
+                            }
+
+                            @Override
+                            public void onFailed(String s, String s1) {
+
+                            }
+                        });
                         DataProxy.getInstance().remove(Constans.KEY_TYPE, Constans.KEY_USER);
-                        startActivity(new Intent(AdministratorActivity.this, LoginActivity.class));
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                         finish();
                     }
                 });
     }
-
 }

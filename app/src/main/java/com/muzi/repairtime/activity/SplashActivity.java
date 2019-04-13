@@ -7,10 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.login.LoginActivity;
-import com.muzi.repairtime.activity.main.AdministratorActivity;
-import com.muzi.repairtime.activity.main.EmployeeActivity;
-import com.muzi.repairtime.activity.main.MaintenanceActivity;
+import com.muzi.repairtime.activity.main.MainActivity;
 import com.muzi.repairtime.data.DataProxy;
+import com.muzi.repairtime.utils.StringUtils;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -20,19 +19,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         String type = DataProxy.getInstance().getString(Constans.KEY_TYPE, "");
         Intent intent = new Intent();
-        switch (type) {
-            case "普通用户":
-                intent.setClass(SplashActivity.this, EmployeeActivity.class);
-                break;
-            case "维修员":
-                intent.setClass(SplashActivity.this, MaintenanceActivity.class);
-                break;
-            case "管理员":
-                intent.setClass(SplashActivity.this, AdministratorActivity.class);
-                break;
-            default:
-                intent.setClass(SplashActivity.this, LoginActivity.class);
-                break;
+        if (StringUtils.isEmpty(type)) {
+            intent.setClass(SplashActivity.this, LoginActivity.class);
+        } else {
+            intent.setClass(SplashActivity.this, MainActivity.class);
         }
         startActivity(intent);
         finish();

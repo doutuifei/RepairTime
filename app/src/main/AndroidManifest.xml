@@ -26,8 +26,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".activity.PushActivity"></activity>
-        <!-- 屏幕适配基准 -->
+        <activity android:name=".activity.main.MainActivity"></activity>
+        <activity android:name=".activity.PushActivity" /> <!-- 屏幕适配基准 -->
         <meta-data
             android:name="design_width_in_dp"
             android:value="360" />
@@ -55,15 +55,9 @@
         <activity
             android:name=".activity.register.RegisterActivity"
             android:screenOrientation="portrait" /> <!-- 普通员 -->
-        <activity
-            android:name=".activity.main.EmployeeActivity"
-            android:screenOrientation="portrait" /> <!-- 管理员 -->
-        <activity
-            android:name=".activity.main.AdministratorActivity"
-            android:screenOrientation="portrait" /> <!-- 维修员 -->
-        <activity
-            android:name=".activity.main.MaintenanceActivity"
-            android:screenOrientation="portrait" /> <!-- 公告详情 -->
+        <!-- 管理员 -->
+        <!-- 维修员 -->
+        <!-- 公告详情 -->
         <activity
             android:name=".activity.detail.NoticeDetailActivity"
             android:screenOrientation="portrait" /> <!-- 维修员订单详情 -->
