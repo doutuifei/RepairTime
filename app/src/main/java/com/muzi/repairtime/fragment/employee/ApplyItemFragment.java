@@ -34,7 +34,7 @@ import java.util.List;
  * 作者: lipeng
  * 时间: 2019/3/13
  * 邮箱: lipeng@moyi365.com
- * 功能:
+ * 功能: 我的申请Item
  */
 public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, BaseViewModel> {
 

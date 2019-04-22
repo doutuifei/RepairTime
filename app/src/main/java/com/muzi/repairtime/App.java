@@ -151,6 +151,8 @@ public class App extends Application {
                 @Override
                 public void run() {
                     try {
+                        FileUtils.createRootDir(Constans.PATH_ROOT);
+                        FileUtils.createRootDir(Constans.PATH_IMAGE);
                         FileUtils.copy(instance.getApplicationContext(), "ring.mp3", Constans.RING);
                     } catch (IOException e) {
                         e.printStackTrace();

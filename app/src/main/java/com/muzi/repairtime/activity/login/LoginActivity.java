@@ -39,7 +39,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         super.initView();
         AndPermission.with(this)
                 .runtime()
-                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .onGranted(new Action<List<String>>() {
                     @Override
                     public void onAction(List<String> data) {

@@ -77,13 +77,17 @@ dependencies {
     //fragmentation
     implementation ext.dependencies['fragmentation']
     implementation ext.dependencies['materialratingbar']
-
-    implementation 'com.lzy.widget:imagepicker:0.5.5'
+    //富文本
     implementation 'com.zzhoujay:html:1.0.1'
     implementation 'com.zzhoujay.richtext:richtext:3.0.8'
+    //滑动删除
     implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
-
+    //阿里云推送
     implementation 'com.aliyun.ams:alicloud-android-push:3.1.4'
+    //permission
     implementation 'com.yanzhenjie.permission:support:2.0.1'
+    //图片压缩
+    implementation 'top.zibin:Luban:1.1.8'
+    implementation project(path: ':imagepicker')
 }

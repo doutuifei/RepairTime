@@ -11,9 +11,9 @@
     </data>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,12 +30,13 @@
 
         </LinearLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp">
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/et_item"
@@ -47,7 +48,6 @@
                 android:paddingLeft="15dp"
                 android:text="@={viewModel.itemField}"
                 android:textSize="13sp"
-                app:layout_constraintTop_toTopOf="parent"
                 app:onClickCommand="@{viewModel.itemClickCommand}" />
 
             <TextView
@@ -61,7 +61,6 @@
                 android:paddingLeft="15dp"
                 android:text="@={viewModel.item1Field}"
                 android:textSize="13sp"
-                app:layout_constraintTop_toBottomOf="@id/et_item"
                 app:onClickCommand="@{viewModel.item1ClickCommand}" />
 
             <EditText
@@ -76,8 +75,21 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="@={viewModel.describeField}"
-                android:textSize="13sp"
-                app:layout_constraintTop_toBottomOf="@id/et_item1" />
+                android:textSize="13sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:choiceMode="singleChoice"
+                android:divider="@null"
+                android:fadingEdge="none"
+                android:listSelector="@android:color/transparent"
+                android:scrollbarStyle="outsideOverlay"
+                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                app:spanCount="4"
+                tools:listitem="@layout/list_item_image" />
 
             <Button
                 android:id="@+id/btn_commit"
@@ -89,10 +101,9 @@
                 android:text="提交"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/et_describe"
                 app:onClickCommand="@{viewModel.commitClickCommand}" />
 
-        </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

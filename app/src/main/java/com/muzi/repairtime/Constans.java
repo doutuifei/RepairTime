@@ -31,10 +31,20 @@ public class Constans {
     //修改密码
     public static final String ITEM_PSD = "psd";
 
+
+    public static final String PATH_ROOT = Environment.getExternalStorageDirectory().getPath() + "/RepairTime";
+
+    public static final String PATH_RING = PATH_ROOT + "/ring";
+
+    /**
+     * 拍照
+     */
+    public static final String PATH_IMAGE = PATH_ROOT + "/image";
+
     /**
      * 推送声音
      */
-    public static final String RING = Environment.getExternalStorageDirectory().getPath() + "/Ring/ring.mp3";
+    public static final String RING = PATH_RING + "/ring.mp3";
 
 
 }

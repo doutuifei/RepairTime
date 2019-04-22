@@ -22,7 +22,11 @@ public class GlideImageLoader implements ImageLoader {
     }
 
     @Override
-    public void clearMemoryCache() {
+    public void displayImagePreview(Activity activity, String path, ImageView imageView, int width, int height) {
+        Glide.with(activity).load(Uri.fromFile(new File(path))).into(imageView);
+    }
 
+    @Override
+    public void clearMemoryCache() {
     }
 }

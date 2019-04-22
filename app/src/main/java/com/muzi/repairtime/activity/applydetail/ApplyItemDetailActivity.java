@@ -50,6 +50,7 @@ public class ApplyItemDetailActivity extends BaseActivity<ActivityApplyItemDetai
         super.initParam(bundle);
         listBean = bundle.getParcelable("bean");
         evaluate = listBean.getCs_id();
+        getImages(listBean.getId());
     }
 
     @Override
@@ -112,6 +113,15 @@ public class ApplyItemDetailActivity extends BaseActivity<ActivityApplyItemDetai
                                 .postValue(null);
                     }
                 });
+    }
+
+    /**
+     * 加载图片
+     *
+     * @param id
+     */
+    private void getImages(int id) {
+
     }
 
 }

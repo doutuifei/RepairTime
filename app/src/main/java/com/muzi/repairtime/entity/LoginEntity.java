@@ -1,7 +1,6 @@
 package com.muzi.repairtime.entity;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 /**
  * 作者: lipeng
@@ -15,17 +14,18 @@ public class LoginEntity extends BaseEntity {
      * user : {"id":8,"name":"AA","pass":null,"phone":"11111111111","check":1,"group":"心血管内科","type":"普通用户"}
      */
 
-    private UserBean user;
+    private UserBean obj;
 
     public UserBean getUser() {
-        return user;
+        return obj;
     }
 
-    public void setUser(UserBean user) {
-        this.user = user;
+    public void setUser(UserBean obj) {
+        this.obj = obj;
     }
 
-    public static class UserBean implements Parcelable {
+    public static class UserBean implements android.os.Parcelable {
+
         /**
          * id : 8
          * name : AA
@@ -34,14 +34,17 @@ public class LoginEntity extends BaseEntity {
          * check : 1
          * group : 心血管内科
          * type : 普通用户
+         * phoneId : 734f197756c1457fbc779efcd61c93c5
          */
 
         private int id;
         private String name;
+        private String pass;
         private String phone;
         private int check;
         private String group;
         private String type;
+        private String phoneId;
 
         public int getId() {
             return id;
@@ -57,6 +60,14 @@ public class LoginEntity extends BaseEntity {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public Object getPass() {
+            return pass;
+        }
+
+        public void setPass(String pass) {
+            this.pass = pass;
         }
 
         public String getPhone() {
@@ -91,6 +102,14 @@ public class LoginEntity extends BaseEntity {
             this.type = type;
         }
 
+        public String getPhoneId() {
+            return phoneId;
+        }
+
+        public void setPhoneId(String phoneId) {
+            this.phoneId = phoneId;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -100,10 +119,12 @@ public class LoginEntity extends BaseEntity {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeInt(this.id);
             dest.writeString(this.name);
+            dest.writeString(this.pass);
             dest.writeString(this.phone);
             dest.writeInt(this.check);
             dest.writeString(this.group);
             dest.writeString(this.type);
+            dest.writeString(this.phoneId);
         }
 
         public UserBean() {
@@ -112,13 +133,15 @@ public class LoginEntity extends BaseEntity {
         protected UserBean(Parcel in) {
             this.id = in.readInt();
             this.name = in.readString();
+            this.pass = in.readString();
             this.phone = in.readString();
             this.check = in.readInt();
             this.group = in.readString();
             this.type = in.readString();
+            this.phoneId = in.readString();
         }
 
-        public static final Parcelable.Creator<UserBean> CREATOR = new Parcelable.Creator<UserBean>() {
+        public static final Creator<UserBean> CREATOR = new Creator<UserBean>() {
             @Override
             public UserBean createFromParcel(Parcel source) {
                 return new UserBean(source);

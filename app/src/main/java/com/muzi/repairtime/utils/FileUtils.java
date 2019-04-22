@@ -19,11 +19,21 @@ public class FileUtils {
 
     private static final int BYTE_BUF_SIZE = 2048;
 
+    public static void createRootDir(String dir) {
+        if (StringUtils.isEmpty(dir)) {
+            return;
+        }
+        File file = new File(dir);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
+
     /**
      * Copies a file from assets.
      *
-     * @param context application context used to discover assets.
-     * @param assetName the relative file name within assets.
+     * @param context    application context used to discover assets.
+     * @param assetName  the relative file name within assets.
      * @param targetName the target file name, always over write the existing file.
      * @throws IOException if operation fails.
      */
@@ -36,10 +46,11 @@ public class FileUtils {
         try {
             AssetManager assets = context.getAssets();
             targetFile = new File(targetName);
-            if(!targetFile.getParentFile().exists()){
+
+            if (!targetFile.getParentFile().exists()) {
                 targetFile.getParentFile().mkdirs();
             }
-            if(!targetFile.exists()){
+            if (!targetFile.exists()) {
                 targetFile.createNewFile();
             }
             inputStream = assets.open(assetName);

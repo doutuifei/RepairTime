@@ -5,10 +5,13 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.command.BindingCommand;
 import com.muzi.repairtime.command.BindingConsumerAction;
 import com.muzi.repairtime.entity.BaseEntity;
+import com.muzi.repairtime.entity.CommitEntity;
 import com.muzi.repairtime.entity.ProjectItemEntity;
 import com.muzi.repairtime.entity.ProjectListEntity;
 import com.muzi.repairtime.event.EventConstan;
@@ -17,17 +20,24 @@ import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.RepairApi;
 import com.muzi.repairtime.observer.EntityObserver;
+import com.muzi.repairtime.utils.ImgPartUtils;
 import com.muzi.repairtime.utils.StringUtils;
 import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.dialog.ListDialog;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import okhttp3.MultipartBody;
+import top.zibin.luban.Luban;
 
 /**
  * 作者: lipeng
@@ -214,19 +224,103 @@ public class ApplyViewModel extends BaseViewModel {
             ToastUtils.showToast("请输入对问题的描述");
             return;
         }
+
+        imageCommit();
+    }
+
+    private void imageCommit() {
         RxHttp.getApi(RepairApi.class)
                 .commitRepair(itemField.get(),
                         item1Field.get(),
                         describeField.get())
-                .compose(RxUtils.<BaseEntity>scheduling())
+                .flatMap(new Function<CommitEntity, Observable<BaseEntity>>() {
+                    @Override
+                    public Observable<BaseEntity> apply(CommitEntity entity) throws Exception {
+                        uploadImage(entity);
+                        return RxHttp.getApi(RepairApi.class)
+                                .afterSubmitOrder(entity.getObj().getId());
+                    }
+                })
                 .compose(RxUtils.<BaseEntity>exceptionTransformer())
+                .compose(RxUtils.<BaseEntity>scheduling())
                 .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
-                    public void onSuccess(BaseEntity entity) {
-                        ToastUtils.showToast(entity.getMsg());
+                    public void onSuccess(BaseEntity baseEntity) {
+                        ToastUtils.showToast(baseEntity.getMsg());
                         LiveEventBus.get().with(EventConstan.CHECK_ITEM).postValue(3);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        e.printStackTrace();
+                    }
+                });
+
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param entity
+     */
+    private void uploadImage(final CommitEntity entity) {
+        ArrayList<ImageItem> selectedImages = ImagePicker.getInstance().getSelectedImages();
+        if (selectedImages.isEmpty()) {
+            return;
+        }
+        Observable.fromIterable(selectedImages)
+                .map(new Function<ImageItem, String>() {
+                    @Override
+                    public String apply(ImageItem imageItem) throws Exception {
+                        return imageItem.path;
+                    }
+                })
+                .toList()
+                .map(new Function<List<String>, List<File>>() {
+                    @Override
+                    public List<File> apply(List<String> list) throws Exception {
+                        return Luban.with(getContext()).load(list).get();
+                    }
+                })
+                .toObservable()
+                .map(new Function<List<File>, MultipartBody.Part[]>() {
+                    @Override
+                    public MultipartBody.Part[] apply(List<File> fileList) throws Exception {
+                        return ImgPartUtils.files2Part(fileList);
+                    }
+                })
+                .flatMap(new Function<MultipartBody.Part[], Observable<BaseEntity>>() {
+                    @Override
+                    public Observable<BaseEntity> apply(MultipartBody.Part[] parts) throws Exception {
+                        CommitEntity.ObjBean objBean = entity.getObj();
+                        return RxHttp.getApi(RepairApi.class)
+                                .upload(objBean.getId(), objBean.getReportgroup(), parts);
+                    }
+                })
+                .compose(RxUtils.<BaseEntity>scheduling())
+                .subscribe(new Observer<BaseEntity>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseEntity baseEntity) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
+
 }
