@@ -330,7 +330,6 @@ public class ApplyViewModel extends BaseViewModel {
         itemField.set("");
         item1Field.set("");
         describeField.set("");
-
     }
 
 }

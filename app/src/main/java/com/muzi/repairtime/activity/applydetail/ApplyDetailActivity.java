@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.muzi.repairtime.BR;
 import com.muzi.repairtime.BuildConfig;
 import com.muzi.repairtime.R;
+import com.muzi.repairtime.activity.ImagePreviewActivity;
 import com.muzi.repairtime.activity.base.BaseActivity;
 import com.muzi.repairtime.adapter.ImageAdapter;
 import com.muzi.repairtime.databinding.ActivityApplyDetailBinding;
@@ -94,11 +97,17 @@ public class ApplyDetailActivity extends BaseActivity<ActivityApplyDetailBinding
                 });
     }
 
-    private void initRecyclerView(List<String> list) {
+    private void initRecyclerView(final List<String> list) {
         binding.recycelView.setVisibility(View.VISIBLE);
         binding.recycelView.setLayoutManager(new ExGridLayoutManager(this, 3));
         ImageAdapter imageAdapter = new ImageAdapter(R.layout.list_item_image, list);
         binding.recycelView.setAdapter(imageAdapter);
+        binding.recycelView.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ImagePreviewActivity.startIntent(getContext(),list,position);
+            }
+        });
     }
 
 }
