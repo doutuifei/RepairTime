@@ -38,293 +38,311 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="报修科室" />
+                android:orientation="vertical">
 
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@{viewModel.room}" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal">
 
-        </LinearLayout>
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="报修科室" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:orientation="horizontal"
-            android:visibility='@{viewModel.statusId.get()==1?View.GONE:View.VISIBLE}'>
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@{viewModel.room}" />
 
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="维修人" />
+                </LinearLayout>
 
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@{viewModel.repair}" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal"
+                    android:visibility='@{viewModel.statusId.get()==1?View.GONE:View.VISIBLE}'>
 
-        </LinearLayout>
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="维修人" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:orientation="horizontal">
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@{viewModel.repair}" />
 
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="维修项目" />
+                </LinearLayout>
 
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@{viewModel.repairSec}" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal">
 
-        </LinearLayout>
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="维修项目" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:minHeight="40dp"
-            android:orientation="horizontal"
-            android:visibility="@{StringUtils.isEmpty(viewModel.takeTime.get())?View.GONE:View.VISIBLE}">
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@{viewModel.repairSec}" />
 
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="接单时间" />
+                </LinearLayout>
 
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@{viewModel.takeTime}" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:minHeight="40dp"
-            android:orientation="horizontal"
-            android:visibility="@{StringUtils.isEmpty(viewModel.finishTime.get())?View.GONE:View.VISIBLE}">
-
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="完成时间" />
-
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@{viewModel.finishTime}" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="报修时间" />
-
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@{viewModel.time}" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:minHeight="40dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="问题描述" />
-
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@{viewModel.desc}" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:minHeight="40dp"
-            android:orientation="horizontal"
-            android:visibility='@{viewModel.statusId.get()==3?View.VISIBLE:View.GONE}'>
-
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="满意度" />
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_ll">
-
-                <TextView
-                    android:id="@+id/tv_evaluate"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="点击完成评价"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal"
+                    android:visibility="@{StringUtils.isEmpty(viewModel.takeTime.get())?View.GONE:View.VISIBLE}">
 
-                <me.zhanghai.android.materialratingbar.MaterialRatingBar
-                    android:id="@+id/ratingBar"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="接单时间" />
+
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@{viewModel.takeTime}" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxHeight="16dp"
-                    android:minHeight="16dp"
-                    android:stepSize="1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_evaluate" />
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal"
+                    android:visibility="@{StringUtils.isEmpty(viewModel.finishTime.get())?View.GONE:View.VISIBLE}">
 
-            </android.support.constraint.ConstraintLayout>
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="完成时间" />
 
-        </LinearLayout>
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@{viewModel.finishTime}" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:minHeight="40dp"
-            android:orientation="horizontal">
+                </LinearLayout>
 
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="状态" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal">
 
-            <TextView
-                style="@style/text_user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@{viewModel.status}" />
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="报修时间" />
 
-        </LinearLayout>
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@{viewModel.time}" />
 
+                </LinearLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/bg_button"
-            android:text="删除订单"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:visibility='@{viewModel.statusId.get()==1?View.VISIBLE:View.GONE}'
-            app:onClickCommand="@{viewModel.delete}" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            android:visibility='@{viewModel.statusId.get()==2?View.VISIBLE:View.GONE}'>
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="问题描述" />
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_button"
-                android:text="订单完成"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                app:onClickCommand="@{viewModel.complete}" />
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@{viewModel.desc}" />
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_button"
-                android:text="订单未完成"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                app:onClickCommand="@{viewModel.uncomplete}" />
+                </LinearLayout>
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal"
+                    android:visibility='@{viewModel.statusId.get()==3?View.VISIBLE:View.GONE}'>
+
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="满意度" />
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_ll">
+
+                        <TextView
+                            android:id="@+id/tv_evaluate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="点击完成评价"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                            android:id="@+id/ratingBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxHeight="16dp"
+                            android:minHeight="16dp"
+                            android:stepSize="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_evaluate" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="状态" />
+
+                    <TextView
+                        style="@style/text_user_info"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@{viewModel.status}" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycelView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/bg_button"
+                    android:text="删除订单"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:visibility='@{viewModel.statusId.get()==1?View.VISIBLE:View.GONE}'
+                    app:onClickCommand="@{viewModel.delete}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:visibility='@{viewModel.statusId.get()==2?View.VISIBLE:View.GONE}'>
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_button"
+                        android:text="订单完成"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        app:onClickCommand="@{viewModel.complete}" />
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_button"
+                        android:text="订单未完成"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        app:onClickCommand="@{viewModel.uncomplete}" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
 
     </LinearLayout>
 

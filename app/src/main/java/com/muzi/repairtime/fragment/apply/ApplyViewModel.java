@@ -3,6 +3,7 @@ package com.muzi.repairtime.fragment.apply;
 import android.app.Application;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 
 import com.lzy.imagepicker.ImagePicker;
@@ -247,6 +248,7 @@ public class ApplyViewModel extends BaseViewModel {
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity baseEntity) {
+                        clean();
                         ToastUtils.showToast(baseEntity.getMsg());
                         LiveEventBus.get().with(EventConstan.CHECK_ITEM).postValue(3);
                     }
@@ -274,6 +276,7 @@ public class ApplyViewModel extends BaseViewModel {
                 .map(new Function<ImageItem, String>() {
                     @Override
                     public String apply(ImageItem imageItem) throws Exception {
+                        Log.e("ApplyViewModel", "image->" + imageItem.path);
                         return imageItem.path;
                     }
                 })
@@ -321,6 +324,13 @@ public class ApplyViewModel extends BaseViewModel {
 
                     }
                 });
+    }
+
+    private void clean() {
+        itemField.set("");
+        item1Field.set("");
+        describeField.set("");
+
     }
 
 }

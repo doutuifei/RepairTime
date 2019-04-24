@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,30 @@ import com.muzi.repairtime.R;
 import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.adapter.ImagePickerAdapter;
 import com.muzi.repairtime.databinding.FragmentApplyBinding;
+import com.muzi.repairtime.entity.BaseEntity;
+import com.muzi.repairtime.entity.CommitEntity;
+import com.muzi.repairtime.event.EventConstan;
+import com.muzi.repairtime.event.LiveEventBus;
+import com.muzi.repairtime.http.RxHttp;
+import com.muzi.repairtime.http.RxUtils;
+import com.muzi.repairtime.http.api.RepairApi;
+import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.richeditor.GlideImageLoader;
+import com.muzi.repairtime.utils.ImgPartUtils;
+import com.muzi.repairtime.utils.StringUtils;
+import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.dialog.SelectDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import okhttp3.MultipartBody;
+import top.zibin.luban.Luban;
 
 /**
  * 作者: lipeng
@@ -66,6 +86,13 @@ public class ApplyFragment extends BaseFragment<FragmentApplyBinding, ApplyViewM
 
         initImagePicker();
         initWidget();
+
+        binding.btnCommit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commit();
+            }
+        });
     }
 
     private void initWidget() {
@@ -165,6 +192,128 @@ public class ApplyFragment extends BaseFragment<FragmentApplyBinding, ApplyViewM
         imagePicker.setFocusHeight(800);                      //裁剪框的高度。单位像素（圆形自动取宽高最小值）
         imagePicker.setOutPutX(1000);                         //保存文件的宽度。单位像素
         imagePicker.setOutPutY(1000);                         //保存文件的高度。单位像素
+    }
+
+    private void commit() {
+        if (StringUtils.isEmpty(viewModel.itemField.get())) {
+            ToastUtils.showToast("请选择维修项目");
+            return;
+        }
+        if (StringUtils.isEmpty(viewModel.item1Field.get())) {
+            ToastUtils.showToast("请选择维修细项");
+            return;
+        }
+        if (StringUtils.isEmpty(viewModel.describeField.get())) {
+            ToastUtils.showToast("请输入对问题的描述");
+            return;
+        }
+
+        imageCommit();
+    }
+
+    private void imageCommit() {
+        RxHttp.getApi(RepairApi.class)
+                .commitRepair(viewModel.itemField.get(),
+                        viewModel.item1Field.get(),
+                        viewModel.describeField.get())
+                .flatMap(new Function<CommitEntity, Observable<BaseEntity>>() {
+                    @Override
+                    public Observable<BaseEntity> apply(CommitEntity entity) throws Exception {
+                        uploadImage(entity);
+                        return RxHttp.getApi(RepairApi.class)
+                                .afterSubmitOrder(entity.getObj().getId());
+                    }
+                })
+                .compose(RxUtils.<BaseEntity>exceptionTransformer())
+                .compose(RxUtils.<BaseEntity>scheduling())
+                .compose(this.<BaseEntity>bindUntilEvent())
+                .subscribe(new EntityObserver<BaseEntity>(this) {
+                    @Override
+                    public void onSuccess(BaseEntity baseEntity) {
+                        clean();
+                        ToastUtils.showToast(baseEntity.getMsg());
+                        LiveEventBus.get().with(EventConstan.CHECK_ITEM).postValue(3);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        e.printStackTrace();
+                    }
+                });
+
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param entity
+     */
+    private void uploadImage(final CommitEntity entity) {
+        if (selImageList.isEmpty()) {
+            return;
+        }
+        Observable.fromIterable(selImageList)
+                .map(new Function<ImageItem, String>() {
+                    @Override
+                    public String apply(ImageItem imageItem) throws Exception {
+                        Log.e("ApplyViewModel", "image->" + imageItem.path);
+                        return imageItem.path;
+                    }
+                })
+                .toList()
+                .map(new Function<List<String>, List<File>>() {
+                    @Override
+                    public List<File> apply(List<String> list) throws Exception {
+                        return Luban.with(getContext()).load(list).get();
+                    }
+                })
+                .toObservable()
+                .map(new Function<List<File>, MultipartBody.Part[]>() {
+                    @Override
+                    public MultipartBody.Part[] apply(List<File> fileList) throws Exception {
+                        return ImgPartUtils.files2Part(fileList);
+                    }
+                })
+                .flatMap(new Function<MultipartBody.Part[], Observable<BaseEntity>>() {
+                    @Override
+                    public Observable<BaseEntity> apply(MultipartBody.Part[] parts) throws Exception {
+                        CommitEntity.ObjBean objBean = entity.getObj();
+                        return RxHttp.getApi(RepairApi.class)
+                                .upload(objBean.getId(), objBean.getReportgroup(), parts);
+                    }
+                })
+                .compose(RxUtils.<BaseEntity>scheduling())
+                .subscribe(new Observer<BaseEntity>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseEntity baseEntity) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void clean() {
+        viewModel.itemField.set("");
+        viewModel.item1Field.set("");
+        viewModel.describeField.set("");
+
+        selImageList.clear();
+        adapter.setImages(selImageList);
     }
 
 }

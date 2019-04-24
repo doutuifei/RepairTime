@@ -125,8 +125,8 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
     }
 
     @Override
-    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
-        super.onLazyInitView(savedInstanceState);
+    public void onSupportVisible() {
+        super.onSupportVisible();
         binding.refreshLayout.setRefreshing(true);
         getData();
     }

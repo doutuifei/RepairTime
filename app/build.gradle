@@ -23,10 +23,12 @@ android {
         debug {
             minifyEnabled false
             buildConfigField("String", "BASE_URL", '"http://111.225.204.147:18080/RepairTime/"')
+            buildConfigField("String", "IMAGE_URL", '"http://111.225.204.147:18080"')
         }
         release {
             minifyEnabled false
             buildConfigField("String", "BASE_URL", '"http://111.225.204.147:18080/RepairTime/"')
+            buildConfigField("String", "IMAGE_URL", '"http://111.225.204.147:18080"')
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -37,6 +39,7 @@ dependencies {
     implementation ext.dependencies['design']
     implementation ext.dependencies['cardview']
     implementation ext.dependencies['appcompat']
+    implementation ext.dependencies['recyclerview']
     implementation ext.dependencies['constraintlayout']
 
     implementation ext.dependencies['multidex']

@@ -1,7 +1,8 @@
 package com.muzi.repairtime.http.api;
 
+import com.muzi.repairtime.entity.ImageEntity;
+
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -22,6 +23,6 @@ public interface ImageApi {
      */
     @FormUrlEncoded
     @POST("imageFile/getImagePathes")
-    Observable<ResponseBody> getImage(@Field("o_id") int id);
+    Observable<ImageEntity> getImage(@Field("o_id") int id);
 
 }

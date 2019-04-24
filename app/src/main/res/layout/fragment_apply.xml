@@ -100,8 +100,7 @@
                 android:gravity="center"
                 android:text="提交"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                app:onClickCommand="@{viewModel.commitClickCommand}" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 

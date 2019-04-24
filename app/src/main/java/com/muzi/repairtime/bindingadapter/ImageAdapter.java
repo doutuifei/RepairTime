@@ -1,7 +1,6 @@
 package com.muzi.repairtime.bindingadapter;
 
 import android.databinding.BindingAdapter;
-import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -24,7 +23,7 @@ public class ImageAdapter {
      */
     @SuppressWarnings("unchecked")
     @BindingAdapter(value = {"url", "placeholder"}, requireAll = false)
-    public static void setImageUri(ImageView imageView, String url, Drawable placeholder) {
+    public static void setImageUri(ImageView imageView, String url, int placeholder) {
         //使用Glide框架加载图片
         Glide.with(imageView.getContext())
                 .load(url)
