@@ -1,6 +1,5 @@
 package com.muzi.repairtime.fragment.employee;
 
-import android.arch.lifecycle.Observer;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,8 +17,6 @@ import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.adapter.ApplyTakeAdapter;
 import com.muzi.repairtime.databinding.FragmentItemApplyBinding;
 import com.muzi.repairtime.entity.RepairEntity;
-import com.muzi.repairtime.event.EventConstan;
-import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.RepairApi;
@@ -69,19 +66,6 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
     }
 
     @Override
-    public void initViewObservable() {
-        super.initViewObservable();
-        LiveEventBus.get()
-                .with(EventConstan.REFRESH_APPLY, Void.class)
-                .observe(this, new Observer<Void>() {
-                    @Override
-                    public void onChanged(@Nullable Void aVoid) {
-                        refresh();
-                    }
-                });
-    }
-
-    @Override
     public void initView() {
         super.initView();
         binding.refreshLayout.setProgressBackgroundColorSchemeColor(Color.WHITE);
@@ -89,13 +73,7 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
         binding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!listBeans.isEmpty()) {
-                    currentPage = 1;
-                    totalPage = 1;
-                    listBeans.clear();
-                    adapter.setNewData(listBeans);
-                }
-                getData();
+                refresh();
             }
         });
         binding.recycelView.setLayoutManager(new ExLinearLayoutManger(getContext()));
@@ -127,8 +105,7 @@ public class ApplyItemFragment extends BaseFragment<FragmentItemApplyBinding, Ba
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        binding.refreshLayout.setRefreshing(true);
-        getData();
+        refresh();
     }
 
     public void refresh() {

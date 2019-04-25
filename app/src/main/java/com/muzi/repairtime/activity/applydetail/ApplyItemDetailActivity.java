@@ -19,8 +19,6 @@ import com.muzi.repairtime.databinding.ActivityApplyItemDetailBinding;
 import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.entity.ImageEntity;
 import com.muzi.repairtime.entity.RepairEntity;
-import com.muzi.repairtime.event.EventConstan;
-import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.ImageApi;
@@ -125,10 +123,6 @@ public class ApplyItemDetailActivity extends BaseActivity<ActivityApplyItemDetai
                         binding.ratingBar.setProgress(star);
                         binding.ratingBar.setEnabled(false);
                         binding.tvEvaluate.setVisibility(View.GONE);
-
-                        LiveEventBus.get()
-                                .with(EventConstan.REFRESH_APPLY)
-                                .postValue(null);
                     }
                 });
     }

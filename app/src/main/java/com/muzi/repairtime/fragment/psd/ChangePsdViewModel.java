@@ -5,9 +5,12 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.activity.base.BaseViewModel;
+import com.muzi.repairtime.activity.login.LoginActivity;
 import com.muzi.repairtime.command.BindingCommand;
 import com.muzi.repairtime.command.BindingConsumerAction;
+import com.muzi.repairtime.data.DataProxy;
 import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
@@ -74,6 +77,10 @@ public class ChangePsdViewModel extends BaseViewModel {
                         oldPsdField.set("");
                         newPsdField.set("");
                         confirmPsdField.set("");
+
+                        DataProxy.getInstance().remove(Constans.KEY_TYPE, Constans.KEY_USER,Constans.KEY_PSD);
+                        startActivity(LoginActivity.class);
+                        finish();
                     }
                 });
     }

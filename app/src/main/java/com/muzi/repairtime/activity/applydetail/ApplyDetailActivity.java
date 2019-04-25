@@ -99,7 +99,7 @@ public class ApplyDetailActivity extends BaseActivity<ActivityApplyDetailBinding
 
     private void initRecyclerView(final List<String> list) {
         binding.recycelView.setVisibility(View.VISIBLE);
-        binding.recycelView.setLayoutManager(new ExGridLayoutManager(this, 3));
+        binding.recycelView.setLayoutManager(new ExGridLayoutManager(this, 4));
         ImageAdapter imageAdapter = new ImageAdapter(R.layout.list_item_image, list);
         binding.recycelView.setAdapter(imageAdapter);
         binding.recycelView.addOnItemTouchListener(new OnItemClickListener() {
