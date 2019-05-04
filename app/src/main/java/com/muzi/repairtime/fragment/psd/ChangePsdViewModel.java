@@ -5,6 +5,9 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.muzi.repairtime.Constans;
 import com.muzi.repairtime.activity.base.BaseViewModel;
 import com.muzi.repairtime.activity.login.LoginActivity;
@@ -14,11 +17,15 @@ import com.muzi.repairtime.data.DataProxy;
 import com.muzi.repairtime.entity.BaseEntity;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
+import com.muzi.repairtime.http.api.LoginApi;
 import com.muzi.repairtime.http.api.UserApi;
 import com.muzi.repairtime.observer.EntityObserver;
 import com.muzi.repairtime.utils.StringUtils;
 import com.muzi.repairtime.utils.ToastUtils;
 import com.trello.rxlifecycle2.android.FragmentEvent;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 
 /**
  * 作者: lipeng
@@ -67,18 +74,37 @@ public class ChangePsdViewModel extends BaseViewModel {
         }
         RxHttp.getApi(UserApi.class)
                 .changePsd(oldPsdField.get(), newPsdField.get())
+                .flatMap(new Function<BaseEntity, Observable<BaseEntity>>() {
+                    @Override
+                    public Observable<BaseEntity> apply(BaseEntity baseEntity) throws Exception {
+                        if ("0".equals(baseEntity.getErrInfo())) {
+                            return RxHttp.getApi(LoginApi.class)
+                                    .logout();
+                        }
+                        return Observable.just(baseEntity);
+                    }
+                })
                 .compose(RxUtils.<BaseEntity>scheduling())
                 .compose(RxUtils.<BaseEntity>exceptionTransformer())
                 .compose(getLifecycleProvider().<BaseEntity>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new EntityObserver<BaseEntity>(this) {
                     @Override
                     public void onSuccess(BaseEntity entity) {
-                        ToastUtils.showToast(entity.getMsg());
-                        oldPsdField.set("");
-                        newPsdField.set("");
-                        confirmPsdField.set("");
+                        ToastUtils.showToast("密码修改成功，请重新登录~");
+                        CloudPushService cloudPushService = PushServiceFactory.getCloudPushService();
+                        cloudPushService.unbindAccount(new CommonCallback() {
+                            @Override
+                            public void onSuccess(String s) {
 
-                        DataProxy.getInstance().remove(Constans.KEY_TYPE, Constans.KEY_USER,Constans.KEY_PSD);
+                            }
+
+                            @Override
+                            public void onFailed(String s, String s1) {
+
+                            }
+                        });
+                        DataProxy.getInstance().set(Constans.KEY_PSD, newPsdField.get());
+                        DataProxy.getInstance().remove(Constans.KEY_TYPE, Constans.KEY_USER);
                         startActivity(LoginActivity.class);
                         finish();
                     }

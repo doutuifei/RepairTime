@@ -74,6 +74,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan" /> <!-- Push SDK 相关组件，required -->
         <activity
             android:name="com.lzy.imagepicker.ui.ImagePreviewDelActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImagePickerThemeFullScreen" />
 
         <activity
