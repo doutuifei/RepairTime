@@ -20,6 +20,8 @@ import com.muzi.repairtime.data.MmkvModel;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.manager.AppManager;
 import com.muzi.repairtime.utils.FileUtils;
+import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.AlbumConfig;
 import com.yanzhenjie.permission.AndPermission;
 
 import java.io.File;
@@ -53,6 +55,7 @@ public class App extends Application {
         if (AndPermission.hasPermissions(instance, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             copyRing();
         }
+        initAlbum();
     }
 
     public static App getInstance() {
@@ -160,6 +163,12 @@ public class App extends Application {
                 }
             }).start();
         }
+    }
+
+    private void initAlbum() {
+        Album.initialize(AlbumConfig.newBuilder(this)
+                .setAlbumLoader(new MediaLoader())
+                .build());
     }
 
 }

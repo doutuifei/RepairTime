@@ -1,21 +1,18 @@
 package com.muzi.repairtime.fragment.apply;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.lzy.imagepicker.ImagePicker;
-import com.lzy.imagepicker.bean.ImageItem;
-import com.lzy.imagepicker.ui.ImageGridActivity;
-import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
-import com.lzy.imagepicker.view.CropImageView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.muzi.repairtime.BR;
 import com.muzi.repairtime.R;
+import com.muzi.repairtime.activity.ImagePreviewActivity;
 import com.muzi.repairtime.activity.base.BaseFragment;
 import com.muzi.repairtime.adapter.ImagePickerAdapter;
 import com.muzi.repairtime.databinding.FragmentApplyBinding;
@@ -26,21 +23,27 @@ import com.muzi.repairtime.event.LiveEventBus;
 import com.muzi.repairtime.http.RxHttp;
 import com.muzi.repairtime.http.RxUtils;
 import com.muzi.repairtime.http.api.RepairApi;
+import com.muzi.repairtime.manager.ExGridLayoutManager;
 import com.muzi.repairtime.observer.EntityObserver;
-import com.muzi.repairtime.richeditor.GlideImageLoader;
 import com.muzi.repairtime.utils.ImgPartUtils;
 import com.muzi.repairtime.utils.StringUtils;
 import com.muzi.repairtime.utils.ToastUtils;
 import com.muzi.repairtime.widget.dialog.SelectDialog;
+import com.yanzhenjie.album.Action;
+import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.AlbumFile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import okhttp3.MultipartBody;
 import top.zibin.luban.Luban;
 
@@ -50,7 +53,7 @@ import top.zibin.luban.Luban;
  * 邮箱: lipeng@moyi365.com
  * 功能: 维修申请
  */
-public class ApplyFragment extends BaseFragment<FragmentApplyBinding, ApplyViewModel> implements ImagePickerAdapter.OnRecyclerViewItemClickListener {
+public class ApplyFragment extends BaseFragment<FragmentApplyBinding, ApplyViewModel> {
 
     public static ApplyFragment getInstance() {
         ApplyFragment fragment = new ApplyFragment();
@@ -59,13 +62,10 @@ public class ApplyFragment extends BaseFragment<FragmentApplyBinding, ApplyViewM
         return fragment;
     }
 
-    public static final int IMAGE_ITEM_ADD = -1;
-    public static final int REQUEST_CODE_SELECT = 100;
-    public static final int REQUEST_CODE_PREVIEW = 101;
+    private int maxImgCount = 5;
+    private SelectDialog selectDialog;
     private ImagePickerAdapter adapter;
-    private ArrayList<ImageItem> selImageList; //当前选择的所有图片
-    private int maxImgCount = 5;               //允许选择图片最大数
-    private ArrayList<ImageItem> images = null;
+    private ArrayList<AlbumFile> mAlbumFiles = new ArrayList<>();
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,9 +83,7 @@ public class ApplyFragment extends BaseFragment<FragmentApplyBinding, ApplyViewM
         binding.toolbar.setTitle("维修申请");
         initToolbarNav(binding.toolbar);
 
-        initImagePicker();
-        initWidget();
-
+        initRecyclerView();
         binding.btnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,103 +92,115 @@ public class ApplyFragment extends BaseFragment<FragmentApplyBinding, ApplyViewM
         });
     }
 
-    private void initWidget() {
-        selImageList = new ArrayList<>();
-        adapter = new ImagePickerAdapter(getContext(), selImageList, maxImgCount);
-        adapter.setOnItemClickListener(this);
-
-        binding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+    private void initRecyclerView() {
+        mAlbumFiles.add(new AlbumFile());
+        binding.recyclerView.setLayoutManager(new ExGridLayoutManager(getContext(), 3));
         binding.recyclerView.setHasFixedSize(true);
+        adapter = new ImagePickerAdapter(R.layout.item_image, mAlbumFiles);
         binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+                AlbumFile albumFile = mAlbumFiles.get(position);
+                if (StringUtils.isEmpty(albumFile.getPath())) {
+                    initDialog();
+                } else {
+                    previewImage(0);
+                }
+            }
+
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                super.onItemChildClick(adapter, view, position);
+                if (view.getId() == R.id.iv_del) {
+                    removeImage(position);
+                }
+            }
+        });
     }
 
-    private SelectDialog showDialog(SelectDialog.SelectDialogListener listener, List<String> names) {
-        SelectDialog dialog = new SelectDialog(getActivity(), R.style.transparentFrameWindowStyle,
-                listener, names);
-        if (!getActivity().isFinishing()) {
-            dialog.show();
-        }
-        return dialog;
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-        switch (position) {
-            case IMAGE_ITEM_ADD:
-                List<String> names = new ArrayList<>();
-                names.add("拍照");
-                names.add("相册");
-                showDialog(new SelectDialog.SelectDialogListener() {
+    private void selectImage() {
+        Album.image(this)
+                .multipleChoice()
+                .camera(true)
+                .columnCount(3)
+                .selectCount(maxImgCount)
+                .checkedList(mAlbumFiles)
+                .onResult(new Action<ArrayList<AlbumFile>>() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        switch (position) {
-                            case 0: // 直接调起相机
-                                //打开选择,本次允许选择的数量
-                                ImagePicker.getInstance().setSelectLimit(maxImgCount - selImageList.size());
-                                Intent intent = new Intent(getActivity(), ImageGridActivity.class);
-                                intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
-                                startActivityForResult(intent, REQUEST_CODE_SELECT);
-                                break;
-                            case 1:
-                                //打开选择,本次允许选择的数量
-                                ImagePicker.getInstance().setSelectLimit(maxImgCount - selImageList.size());
-                                Intent intent1 = new Intent(getActivity(), ImageGridActivity.class);
-                                startActivityForResult(intent1, REQUEST_CODE_SELECT);
-                                break;
-                            default:
-                                break;
-                        }
+                    public void onAction(@NonNull ArrayList<AlbumFile> result) {
+                        notifyDataSetChanged(result);
                     }
-                }, names);
-                break;
-            default:
-                //打开预览
-                Intent intentPreview = new Intent(getActivity(), ImagePreviewDelActivity.class);
-                intentPreview.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, (ArrayList<ImageItem>) adapter.getImages());
-                intentPreview.putExtra(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, position);
-                intentPreview.putExtra(ImagePicker.EXTRA_FROM_ITEMS, true);
-                startActivityForResult(intentPreview, REQUEST_CODE_PREVIEW);
-                break;
-        }
+                })
+                .start();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
-            //添加图片返回
-            if (data != null && requestCode == REQUEST_CODE_SELECT) {
-                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                if (images != null) {
-                    selImageList.addAll(images);
-                    adapter.setImages(selImageList);
-                }
-            }
-        } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
-            //预览图片返回
-            if (data != null && requestCode == REQUEST_CODE_PREVIEW) {
-                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_IMAGE_ITEMS);
-                if (images != null) {
-                    selImageList.clear();
-                    selImageList.addAll(images);
-                    adapter.setImages(selImageList);
-                }
-            }
-        }
+    private void takePhoto() {
+        Album.camera(this) // Camera function.
+                .image() // Take Picture.
+                .onResult(new Action<String>() {
+                    @Override
+                    public void onAction(@NonNull String result) {
+                        notifyDataSetChanged(result);
+                    }
+                })
+                .start();
     }
 
-    private void initImagePicker() {
-        ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new GlideImageLoader());   //设置图片加载器
-        imagePicker.setShowCamera(true);                      //显示拍照按钮
-        imagePicker.setCrop(true);                           //允许裁剪（单选才有效）
-        imagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
-        imagePicker.setSelectLimit(maxImgCount);              //选中数量限制
-        imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
-        imagePicker.setFocusWidth(800);                       //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
-        imagePicker.setFocusHeight(800);                      //裁剪框的高度。单位像素（圆形自动取宽高最小值）
-        imagePicker.setOutPutX(1000);                         //保存文件的宽度。单位像素
-        imagePicker.setOutPutY(1000);                         //保存文件的高度。单位像素
+    private void previewImage(final int position) {
+        Observable.fromIterable(mAlbumFiles)
+                .filter(new Predicate<AlbumFile>() {
+                    @Override
+                    public boolean test(AlbumFile albumFile) throws Exception {
+                        return StringUtils.isNotEmpty(albumFile.getPath());
+                    }
+                })
+                .map(new Function<AlbumFile, String>() {
+                    @Override
+                    public String apply(AlbumFile albumFile) throws Exception {
+                        return albumFile.getPath();
+                    }
+                })
+                .toList()
+                .subscribe(new Consumer<List<String>>() {
+                    @Override
+                    public void accept(List<String> list) throws Exception {
+                        ImagePreviewActivity.startIntent(getContext(), list, position);
+                    }
+                });
+//        Album.galleryAlbum(this)
+//                .checkable(true)
+//                .checkedList(mAlbumFiles)
+//                .currentPosition(position)
+//                .onResult(new Action<ArrayList<AlbumFile>>() {
+//                    @Override
+//                    public void onAction(@NonNull ArrayList<AlbumFile> result) {
+//                        notifyDataSetChanged(result);
+//                    }
+//                })
+//                .start();
+    }
+
+    private void initDialog() {
+        if (selectDialog == null) {
+            selectDialog = new SelectDialog(getActivity(), new SelectDialog.SelectDialogListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            takePhoto();
+                            break;
+                        case 1:
+                            selectImage();
+                            break;
+
+                    }
+                }
+            }, Arrays.asList("拍照", "相册"));
+        }
+        if (!getActivity().isFinishing()) {
+            selectDialog.show();
+        }
     }
 
     private void commit() {
@@ -249,14 +259,20 @@ public class ApplyFragment extends BaseFragment<FragmentApplyBinding, ApplyViewM
      * @param entity
      */
     private void uploadImage(final CommitEntity entity) {
-        if (selImageList.isEmpty()) {
+        if (mAlbumFiles.size() < 1) {
             return;
         }
-        Observable.fromIterable(selImageList)
-                .map(new Function<ImageItem, String>() {
+        Observable.fromIterable(mAlbumFiles)
+                .filter(new Predicate<AlbumFile>() {
                     @Override
-                    public String apply(ImageItem imageItem) throws Exception {
-                        return imageItem.path;
+                    public boolean test(AlbumFile albumFile) throws Exception {
+                        return StringUtils.isNotEmpty(albumFile.getPath());
+                    }
+                })
+                .map(new Function<AlbumFile, String>() {
+                    @Override
+                    public String apply(AlbumFile albumFile) throws Exception {
+                        return albumFile.getPath();
                     }
                 })
                 .toList()
@@ -305,13 +321,50 @@ public class ApplyFragment extends BaseFragment<FragmentApplyBinding, ApplyViewM
                 });
     }
 
+    private void notifyDataSetChanged(ArrayList<AlbumFile> arrayList) {
+        if (arrayList.size() < maxImgCount) {
+            arrayList.add(new AlbumFile());
+        }
+        mAlbumFiles.clear();
+        mAlbumFiles.addAll(arrayList);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void notifyDataSetChanged(String path) {
+        if (StringUtils.isEmpty(path)) {
+            return;
+        }
+        AlbumFile albumFile = new AlbumFile();
+        albumFile.setPath(path);
+        AlbumFile lastFile = mAlbumFiles.get(mAlbumFiles.size() - 1);
+        if (StringUtils.isEmpty(lastFile.getPath())) {
+            mAlbumFiles.add(mAlbumFiles.size() - 1, albumFile);
+        }
+        if (mAlbumFiles.size() > maxImgCount) {
+            mAlbumFiles.remove(mAlbumFiles.size() - 1);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void removeImage(int position) {
+        AlbumFile albumFile = mAlbumFiles.get(mAlbumFiles.size() - 1);
+        if (StringUtils.isNotEmpty(albumFile.getPath())) {
+            mAlbumFiles.remove(position);
+            mAlbumFiles.add(new AlbumFile());
+            adapter.notifyDataSetChanged();
+        } else {
+            mAlbumFiles.remove(position);
+            adapter.notifyItemRemoved(position);
+        }
+    }
+
     private void clean() {
         viewModel.itemField.set("");
         viewModel.item1Field.set("");
         viewModel.describeField.set("");
-
-        selImageList.clear();
-        adapter.setImages(selImageList);
+        mAlbumFiles.clear();
+        mAlbumFiles.add(new AlbumFile());
+        adapter.notifyDataSetChanged();
     }
 
 }

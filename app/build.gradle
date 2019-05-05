@@ -93,4 +93,5 @@ dependencies {
     //图片压缩
     implementation 'top.zibin:Luban:1.1.8'
     implementation project(path: ':imagepicker')
+    implementation 'com.yanzhenjie:album:2.1.3'
 }

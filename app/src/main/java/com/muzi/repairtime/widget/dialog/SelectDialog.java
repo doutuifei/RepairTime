@@ -56,9 +56,9 @@ public class SelectDialog extends Dialog implements OnClickListener, OnItemClick
         public void onCancelClick(View v);
     }
 
-    public SelectDialog(Activity activity, int theme,
+    public SelectDialog(Activity activity,
                         SelectDialogListener listener, List<String> names) {
-        super(activity, theme);
+        super(activity,  R.style.transparentFrameWindowStyle);
         mActivity = activity;
         mListener = listener;
         this.mName=names;
