@@ -105,7 +105,7 @@ public class ApplyFragment extends BaseFragment<FragmentApplyBinding, ApplyViewM
                 if (StringUtils.isEmpty(albumFile.getPath())) {
                     initDialog();
                 } else {
-                    previewImage(0);
+                    previewImage(position);
                 }
             }
 

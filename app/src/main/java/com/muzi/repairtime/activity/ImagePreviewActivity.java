@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -78,15 +80,21 @@ public class ImagePreviewActivity extends AppCompatActivity {
         });
 
         mViewPager = findViewById(R.id.viewpager);
-        mTitleCount = (TextView) findViewById(R.id.tv_des);
+        mTitleCount = findViewById(R.id.tv_des);
 
         mAdapter = new ImagePageAdapter(this, imageList);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setCurrentItem(index, false);
 
-        //初始化当前页面的状态
-        mTitleCount.setText(getString(R.string.ip_preview_image_count, index + 1, imageList.size()));
-
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                //初始化当前页面的状态
+                Log.d("ImagePreviewActivity", "position:" + position);
+                mTitleCount.setText(getString(R.string.ip_preview_image_count, position + 1, imageList.size()));
+            }
+        });
     }
 
 }

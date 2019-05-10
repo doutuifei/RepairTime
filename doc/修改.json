@@ -1,0 +1,30 @@
+提交请求：${ctx}/order/submitOrder
+成功之后返回json 为：
+  {
+          "errInfo": "0",
+          "msg": "提交成功！",
+          "obj":
+          {
+                 "id": 151,
+                 "reportgroup": "心血管内科",
+                 "pic": "刘明阳",
+                 "reporter": "AA",
+                 "reporterphone": "11111111111",
+                 "repair_fir": "软件",
+                 "repair_sec": "LIS",
+                 "reporttime": null,
+                 "problem": "0.0",
+                 "acceptordertime": null,
+                 "repairer": null,
+                 "repairerphone": null,
+                 "orderstatus": null,
+                 "status_id": 0,
+                 "finishtime": null,
+                 "consumersatisfaction": null,
+                 "cs_id": null
+          }
+    }
+判断errInfo为0,即提交信息成功之后，执行请求${ctx}/order/androidUploadImage，并且每次将obj的id（名称叫做o_id）和reportgroup传过来，
+我后台进行处理（其中图片最多上传5张，并且每张大小不得大于10M，如果超出条件会立即弹出提示，不是点提交的时候弹出提示）
+
+然后再执行请求${ctx}/order/afterSubmitOrder   将obj的id（名称叫做o_id）传过来，我进行处理（web和安卓端推送消息等等）
